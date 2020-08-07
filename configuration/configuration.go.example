@@ -1,0 +1,19 @@
+package configuration
+
+import "time"
+
+
+var JWTSecret = []byte("secretCode")
+
+var FirebaseCredentialPath = "/gopath/gitlab.adplus.co.id/adplusdev/royal-canin/configuration/firebase.json"
+
+var Admins = []string{"xx@gmail.com", "xx@fsn.co.id"}
+
+
+var S3 = s3{
+	Endpoint:  "sgp1.digitaloceanspaces.com",
+	Region:    "sgp1",
+	Bucket:    "adf",
+	AccessKey: "7DKQ",
+	Secret:    "0ItyQp",
+}

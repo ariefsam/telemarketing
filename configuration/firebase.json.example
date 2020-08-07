@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gx",
+  "private_key_id": "08e19bb427xxxxxxxx",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxx\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-xxxx@xxxxx.com",
+  "client_id": "100270860xxxxxxxxxx",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fxxxxxx.com"
+}
