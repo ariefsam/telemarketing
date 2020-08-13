@@ -43,3 +43,13 @@ func (t *Telemarketer) Get(filter entity.FilterTelemarketer, limit int) (telemar
 	}
 	return
 }
+
+func (c *Telemarketer) Delete(email string) (err error) {
+	id := email
+	ctx, docRef, err := getFirestoreClient()
+	if err != nil {
+		return
+	}
+	_, err = docRef.Collection("telemarketer").Doc(id).Delete(ctx)
+	return
+}

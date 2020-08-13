@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/ariefsam/telemarketing/entity"
-	"github.com/ariefsam/telemarketing/repository"
+	"github.com/ariefsam/telemarketing/lib/repository"
 )
 
 func TestCustomer(t *testing.T) {
@@ -46,5 +46,7 @@ func TestCustomer(t *testing.T) {
 	if len(customers) == 1 {
 		assert.Equal(t, []entity.Customer{customer2}, customers)
 	}
+	c.Delete(customer.PhoneNumber)
+	c.Delete(customer2.PhoneNumber)
 
 }

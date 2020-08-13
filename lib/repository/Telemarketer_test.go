@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/ariefsam/telemarketing/entity"
-	"github.com/ariefsam/telemarketing/repository"
+	"github.com/ariefsam/telemarketing/lib/repository"
 )
 
 func TestTelemarketer(t *testing.T) {
@@ -22,4 +22,5 @@ func TestTelemarketer(t *testing.T) {
 	getTelemarketer, err := telemarketerRepository.Get(filter, 1)
 	assert.NoError(t, err)
 	assert.Equal(t, telemarketer, getTelemarketer[0])
+	telemarketerRepository.Delete(telemarketer.Email)
 }

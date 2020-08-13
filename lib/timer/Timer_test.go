@@ -16,7 +16,7 @@ func TestTimer(t *testing.T) {
 	expectedNow := tm.CurrentTimestamp()
 	expectedThen := tm.CurrentTimestamp()
 	assert.True(t, expectedNow >= now)
-	assert.True(t, expectedNow < expectedThen, fmt.Sprintf("%d - %d", expectedNow, expectedThen))
+	assert.True(t, expectedNow <= expectedThen, fmt.Sprintf("%d - %d", expectedNow, expectedThen))
 }
 
 func TestGenerateNumberCode(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/ariefsam/telemarketing/entity"
-	"github.com/ariefsam/telemarketing/repository"
+	"github.com/ariefsam/telemarketing/lib/repository"
 )
 
 func TestCallLog(t *testing.T) {
@@ -54,4 +54,7 @@ func TestCallLog(t *testing.T) {
 	if len(callLogs) == 1 {
 		assert.Equal(t, []entity.CallLog{callLog2}, callLogs)
 	}
+	c.Delete(callLog.Timestamp)
+	c.Delete(callLog2.Timestamp)
+	c.Delete(callLog3.Timestamp)
 }

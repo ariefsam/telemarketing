@@ -2,7 +2,7 @@ package repository_test
 
 import (
 	"github.com/ariefsam/telemarketing/configuration"
-	"github.com/ariefsam/telemarketing/repository"
+	"github.com/ariefsam/telemarketing/lib/repository"
 )
 
 func init() {

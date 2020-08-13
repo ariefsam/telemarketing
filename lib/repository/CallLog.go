@@ -110,7 +110,8 @@ func (c *CallLog) Get(filter entity.FilterCallLog, limit int) (callLogs []entity
 	return
 }
 
-func (c *CallLog) Delete(id string) (err error) {
+func (c *CallLog) Delete(timestamp int64) (err error) {
+	id := b64.NewInt64(timestamp).String()
 	ctx, docRef, err := getFirestoreClient()
 	if err != nil {
 		return

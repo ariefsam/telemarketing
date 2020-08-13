@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/ariefsam/telemarketing/entity"
-	"github.com/ariefsam/telemarketing/token_telemarketer"
+	"github.com/ariefsam/telemarketing/lib/token_telemarketer"
 	"github.com/stretchr/testify/assert"
 )
 
