@@ -2,9 +2,10 @@ package ioc
 
 import (
 	"github.com/ariefsam/telemarketing/configuration"
-	"github.com/ariefsam/telemarketing/firebaseauth"
-	"github.com/ariefsam/telemarketing/repository"
-	"github.com/ariefsam/telemarketing/token_telemarketer"
+	"github.com/ariefsam/telemarketing/lib/firebaseauth"
+	"github.com/ariefsam/telemarketing/lib/repository"
+	"github.com/ariefsam/telemarketing/lib/timer"
+	"github.com/ariefsam/telemarketing/lib/token_telemarketer"
 	"github.com/ariefsam/telemarketing/usecase"
 )
 
@@ -17,5 +18,6 @@ func Usecase() (usecase usecase.Usecase) {
 		CredentialPath: configuration.FirebaseCredentialPath,
 	}
 	usecase.TelemarketerRepository = &repository.Telemarketer{}
+	usecase.Timer = &timer.Timer{}
 	return
 }

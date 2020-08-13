@@ -81,7 +81,7 @@ module.exports = function (/* ctx */) {
         }
       },
       https: false,
-      port: 8080,
+      port: 8082,
       open: true // opens browser window automatically
     },
 
@@ -124,8 +124,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `Quasar App`,
-        short_name: `Quasar App`,
+        name: `Telemarketing`,
+        short_name: `Telemarketing`,
         description: `A Quasar Framework app`,
         display: 'standalone',
         orientation: 'portrait',

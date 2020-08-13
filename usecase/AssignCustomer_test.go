@@ -19,7 +19,7 @@ func TestAssignCustomer(t *testing.T) {
 	u.CustomerRepository = &mockCustomerRepository
 
 	filter := entity.FilterCustomer{
-		TelemarketerID: "Not Set",
+		TelemarketerID: new(string),
 	}
 
 	expectedCustomer := entity.Customer{

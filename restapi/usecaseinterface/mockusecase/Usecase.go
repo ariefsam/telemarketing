@@ -57,3 +57,9 @@ func (m *Usecase) LoginByFirebase(firebaseToken string) (token string, telemarke
 	err = args.Error(3)
 	return
 }
+
+func (m *Usecase) CurrentTimestamp() (timestamp int64) {
+	args := m.Called()
+	timestamp = args.Get(0).(int64)
+	return
+}

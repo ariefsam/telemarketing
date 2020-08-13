@@ -12,8 +12,9 @@ import (
 
 func TestGetCustomer(t *testing.T) {
 	var u usecase.Usecase
+	teleID := "aaa"
 	filter := entity.FilterCustomer{
-		TelemarketerID: "aaa",
+		TelemarketerID: &teleID,
 	}
 	limit := 10
 	expectedCustomer := []entity.Customer{

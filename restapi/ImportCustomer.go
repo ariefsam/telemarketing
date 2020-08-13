@@ -21,11 +21,15 @@ func (api *RestAPI) ImportCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	rows, err := f.GetRows("Sheet1")
-	for _, row := range rows {
-		customer := entity.Customer{
-			PhoneNumber: row[1],
-			Name:        row[0],
+	for idx, row := range rows {
+		if idx == 0 {
+			continue
 		}
-		api.Usecase.SaveCustomer(customer)
+		customer := entity.Customer{
+			PhoneNumber:      row[1],
+			Name:             row[0],
+			TimestampCreated: api.Usecase.CurrentTimestamp(),
+		}
+		go api.Usecase.SaveCustomer(customer)
 	}
 }

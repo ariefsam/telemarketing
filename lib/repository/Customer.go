@@ -33,8 +33,8 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 	}
 
 	var dsnap *firestore.DocumentSnapshot
-	if filter.PhoneNumber != "" {
-		dsnap, err = docRef.Collection("customer").Doc(filter.PhoneNumber).Get(ctx)
+	if filter.PhoneNumber != nil {
+		dsnap, err = docRef.Collection("customer").Doc(*filter.PhoneNumber).Get(ctx)
 		if err != nil {
 			return
 		}
@@ -46,19 +46,19 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 
 	fWhere := []filterWhere{}
 
-	if filter.TelemarketerID != "" {
+	if filter.TelemarketerID != nil {
 		fWhere = append(fWhere, filterWhere{
 			path:     "TelemarketerID",
 			operator: "==",
-			value:    filter.TelemarketerID,
+			value:    *filter.TelemarketerID,
 		})
 	}
 
-	if filter.Status != "" {
+	if filter.Status != nil {
 		fWhere = append(fWhere, filterWhere{
 			path:     "Status",
 			operator: "==",
-			value:    filter.Status,
+			value:    *filter.Status,
 		})
 	}
 

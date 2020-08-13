@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/ariefsam/telemarketing/configuration"
-	"github.com/ariefsam/telemarketing/firebaseauth"
+	"github.com/ariefsam/telemarketing/lib/firebaseauth"
 )
 
 func TestFirebaseAuth(t *testing.T) {

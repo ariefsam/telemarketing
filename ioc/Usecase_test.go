@@ -3,11 +3,10 @@ package ioc_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
-	"github.com/ariefsam/telemarketing/firebaseauth"
 	"github.com/ariefsam/telemarketing/ioc"
-	"github.com/ariefsam/telemarketing/repository"
+	"github.com/ariefsam/telemarketing/lib/firebaseauth"
+	"github.com/ariefsam/telemarketing/lib/repository"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestUsecase(t *testing.T) {
@@ -22,5 +21,6 @@ func TestUsecase(t *testing.T) {
 		assert.NotEmpty(t, f.CredentialPath)
 	}
 	assert.NotNil(t, u.TelemarketerRepository)
+	assert.NotNil(t, u.Timer)
 
 }

@@ -41,6 +41,7 @@ func Serve() {
 	r := mux.NewRouter()
 	r.HandleFunc("/api/login/firebase", api.LoginByFirebase).Methods("POST")
 	r.HandleFunc("/api/upload", api.ImportCustomer).Methods("POST")
+	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
 
 	r.PathPrefix("/").Handler(quasarHandler())
 

@@ -27,7 +27,7 @@ func TestCustomer(t *testing.T) {
 	err = c.Save(customer2)
 	assert.NoError(t, err)
 	filter := entity.FilterCustomer{
-		PhoneNumber: customer.PhoneNumber,
+		PhoneNumber: &customer.PhoneNumber,
 	}
 
 	customers, err := c.Get(filter, 1)
@@ -37,8 +37,8 @@ func TestCustomer(t *testing.T) {
 	}
 
 	filter = entity.FilterCustomer{
-		TelemarketerID: customer2.TelemarketerID,
-		Status:         customer2.Status,
+		TelemarketerID: &customer2.TelemarketerID,
+		Status:         &customer2.Status,
 	}
 	customers, err = c.Get(filter, 1)
 	assert.NoError(t, err)

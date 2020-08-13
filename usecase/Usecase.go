@@ -8,4 +8,5 @@ type Usecase struct {
 	TokenService           dependency.TokenService
 	FirebaseAuth           dependency.FirebaseAuth
 	TelemarketerRepository dependency.TelemarketerRepository
+	Timer                  dependency.Timer
 }

@@ -8,7 +8,7 @@ import (
 
 func (u *Usecase) AssignCustomer(telemarketingID string) (customer entity.Customer, err error) {
 	filter := entity.FilterCustomer{
-		TelemarketerID: "Not Set",
+		TelemarketerID: new(string),
 	}
 	customers, err := u.CustomerRepository.Get(filter, 1)
 	if err != nil {
