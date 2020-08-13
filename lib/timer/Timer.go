@@ -12,9 +12,12 @@ import (
 type Timer struct{}
 
 func (t *Timer) CurrentTimestamp() int64 {
-	rand.Seed(time.Now().UnixNano())
-	x := int64(GenerateNumberCode(3))
-	return time.Now().UnixNano() + x
+	// rand.Seed(time.Now().UnixNano())
+	// x := int64(GenerateNumberCode(3))
+
+	ts := time.Now().UnixNano()
+	// log.Println(ts)
+	return ts
 }
 
 func GenerateNumberCode(length int) (code int) {
