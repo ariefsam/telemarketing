@@ -9,49 +9,6 @@ import (
 )
 
 func TestListCustomerNotAdmin(t *testing.T) {
-	var api restapi.RestAPI
-
-	var mockUsecase mockusecase.Usecase
-	api.Usecase = &mockUsecase
-
-	dummyToken := "dummyTokenxxx"
-	limit := 100
-	request := map[string]interface{}{
-		"Token": dummyToken,
-		"Limit": limit,
-	}
-
-	expectedTelemarketer := entity.Telemarketer{
-		Email:   "arief@gmail.com",
-		IsAdmin: false,
-	}
-
-	mockUsecase.On("ParseToken", dummyToken).Return(true, expectedTelemarketer)
-
-	filter := entity.FilterCustomer{
-		TelemarketerID: &expectedTelemarketer.Email,
-	}
-
-	expectedCustomers := []entity.Customer{
-		entity.Customer{
-			Name:        "A",
-			PhoneNumber: "09123",
-		},
-		entity.Customer{
-			Name:        "B",
-			PhoneNumber: "091232",
-		},
-	}
-	mockUsecase.On("GetCustomer", filter, limit).Return(expectedCustomers, nil)
-
-	expectedResponse := map[string]interface{}{
-		"Customers": expectedCustomers,
-	}
-
-	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)
-}
-
-func TestListCustomerNotAdminBadTelemarketerID(t *testing.T) {
 	dummyToken := "dummyTokenxxx"
 	limit := 100
 
@@ -67,8 +24,9 @@ func TestListCustomerNotAdminBadTelemarketerID(t *testing.T) {
 	expectedTelemarketer := dummyTelemarketerNotAdmin()
 	mockUsecase.On("ParseToken", dummyToken).Return(true, expectedTelemarketer)
 	filter := entity.FilterCustomer{
-		TelemarketerID: &expectedTelemarketer.Email,
+		TelemarketerEmail: &expectedTelemarketer.Email,
 	}
+
 	expectedCustomers := dummyCustomers()
 	mockUsecase.On("GetCustomer", filter, limit).Return(expectedCustomers, nil)
 
@@ -79,23 +37,28 @@ func TestListCustomerNotAdminBadTelemarketerID(t *testing.T) {
 	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)
 }
 
-func dummyTelemarketerNotAdmin() (expectedTelemarketer entity.Telemarketer) {
-	expectedTelemarketer = entity.Telemarketer{
-		Email:   "arief@gmail.com",
-		IsAdmin: false,
-	}
-	return
-}
+func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
+	dummyToken := "dummyTokenxxx"
+	limit := 100
 
-func dummyCustomers() []entity.Customer {
-	return []entity.Customer{
-		entity.Customer{
-			Name:        "A",
-			PhoneNumber: "09123",
-		},
-		entity.Customer{
-			Name:        "B",
-			PhoneNumber: "091232",
+	request := map[string]interface{}{
+		"Token": dummyToken,
+		"Limit": limit,
+		"FilterCustomer": map[string]interface{}{
+			"TelemarketerEmail": "xxx",
 		},
 	}
+
+	var api restapi.RestAPI
+	var mockUsecase mockusecase.Usecase
+	api.Usecase = &mockUsecase
+
+	expectedTelemarketer := dummyTelemarketerNotAdmin()
+	mockUsecase.On("ParseToken", dummyToken).Return(true, expectedTelemarketer)
+
+	expectedResponse := map[string]interface{}{
+		"Error": "FilterCustomer TelemarketerEmail forbidden",
+	}
+
+	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)
 }

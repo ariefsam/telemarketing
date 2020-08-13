@@ -3,8 +3,6 @@ package restapi
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/ariefsam/telemarketing/entity"
 )
 
 func (api *RestAPI) ListCustomer(w http.ResponseWriter, r *http.Request) {
@@ -16,11 +14,19 @@ func (api *RestAPI) ListCustomer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	limit := api.parseInteger(post.Limit)
-	filter := entity.FilterCustomer{
-		TelemarketerID: &telemarketer.Email,
+
+	if post.FilterCustomer.TelemarketerEmail != nil && telemarketer.IsAdmin == false {
+		response["Error"] = "FilterCustomer TelemarketerEmail forbidden"
+		JSONView(w, response, http.StatusForbidden)
+		return
+
 	}
-	customers, err := api.Usecase.GetCustomer(filter, limit)
+
+	if telemarketer.IsAdmin == false {
+		post.FilterCustomer.TelemarketerEmail = &telemarketer.Email
+	}
+
+	customers, err := api.Usecase.GetCustomer(post.FilterCustomer, post.Limit)
 	if err != nil {
 		response["Error"] = err.Error()
 		JSONView(w, response, http.StatusBadGateway)

@@ -12,17 +12,17 @@ import (
 func TestCustomer(t *testing.T) {
 	var c repository.Customer
 	customer := entity.Customer{
-		Name:           "Member 01",
-		PhoneNumber:    "01234",
-		TelemarketerID: "tele001",
-		Status:         "Tertarik",
+		Name:              "Member 01",
+		PhoneNumber:       "01234",
+		TelemarketerEmail: "tele001",
+		Status:            "Tertarik",
 	}
 	err := c.Save(customer)
 
 	customer2 := entity.Customer{
-		PhoneNumber:    "012345",
-		TelemarketerID: "tele001",
-		Status:         "Tidak diangkat",
+		PhoneNumber:       "012345",
+		TelemarketerEmail: "tele001",
+		Status:            "Tidak diangkat",
 	}
 	err = c.Save(customer2)
 	assert.NoError(t, err)
@@ -37,8 +37,8 @@ func TestCustomer(t *testing.T) {
 	}
 
 	filter = entity.FilterCustomer{
-		TelemarketerID: &customer2.TelemarketerID,
-		Status:         &customer2.Status,
+		TelemarketerEmail: &customer2.TelemarketerEmail,
+		Status:            &customer2.Status,
 	}
 	customers, err = c.Get(filter, 1)
 	assert.NoError(t, err)

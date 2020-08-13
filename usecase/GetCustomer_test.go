@@ -14,19 +14,19 @@ func TestGetCustomer(t *testing.T) {
 	var u usecase.Usecase
 	teleID := "aaa"
 	filter := entity.FilterCustomer{
-		TelemarketerID: &teleID,
+		TelemarketerEmail: &teleID,
 	}
 	limit := 10
 	expectedCustomer := []entity.Customer{
 		entity.Customer{
-			PhoneNumber:    "0343",
-			TelemarketerID: "aaa",
-			Status:         "Empty",
+			PhoneNumber:       "0343",
+			TelemarketerEmail: "aaa",
+			Status:            "Empty",
 		},
 		entity.Customer{
-			PhoneNumber:    "03431",
-			TelemarketerID: "aaa",
-			Status:         "Empty",
+			PhoneNumber:       "03431",
+			TelemarketerEmail: "aaa",
+			Status:            "Empty",
 		},
 	}
 	var mockCustomerRepository mockdependency.CustomerRepository
