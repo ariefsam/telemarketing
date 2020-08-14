@@ -1,21 +1,23 @@
-
-.profile-info {
-  padding: 10px 15px;
-
-  .name {
-    padding: 0 15px;
-    font-size: 16px;
-    font-weight: 600;
+.profile-menu {
+  min-width: 240px;
+  .profile-info {
+    padding: 10px 15px;
+    .name {
+      padding: 0 15px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .q-avatar__content{
+      font-size: 32px;
+    }
   }
-}
-
-.profile-options {
-  padding: 5px 0;
-
-  .option {
-    padding: 0 15px;
-    width: 100%;
-    min-height: 42px;
+  .profile-options {
+    padding: 5px 0;
+    .option {
+      padding: 0 15px;
+      width: 100%;
+      min-height: 42px;
+    }
   }
 }
 
