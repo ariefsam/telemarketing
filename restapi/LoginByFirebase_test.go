@@ -8,17 +8,12 @@ import (
 	"testing"
 
 	"github.com/ariefsam/telemarketing/entity"
-	"github.com/ariefsam/telemarketing/restapi"
-	"github.com/ariefsam/telemarketing/restapi/usecaseinterface/mockusecase"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestLoginByFirebase(t *testing.T) {
 
-	var api restapi.RestAPI
-
-	var mockUsecase mockusecase.Usecase
-	api.Usecase = &mockUsecase
+	api, mockUsecase := initAPIAndUsecase()
 
 	firebaseToken := "firebaseTokenDummy"
 	expectedTelemarketerToken := "expectedTelemarketerTokenxxx"
