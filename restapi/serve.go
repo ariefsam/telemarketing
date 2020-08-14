@@ -44,6 +44,7 @@ func Serve() {
 	r.HandleFunc("/api/upload", api.ImportCustomer).Methods("POST")
 	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
 	r.HandleFunc("/api/customer/call", api.Call).Methods("POST")
+	r.HandleFunc("/api/customer/assign", api.AssignCustomer).Methods("POST")
 
 	r.PathPrefix("/").Handler(quasarHandler())
 
@@ -59,7 +60,7 @@ func Serve() {
 
 func quasarHandler() http.Handler {
 	var dir string
-	dir = "./quasar/dist/spa"
+	dir = "./frontend/dist/spa"
 	return http.StripPrefix("/", http.FileServer(http.Dir(dir)))
 }
 
