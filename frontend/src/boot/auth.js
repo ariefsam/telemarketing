@@ -86,40 +86,23 @@ var authService = {
     return LocalStorage.getItem("email");
   }
 }
-// alert(authService);
 
 Vue.prototype.$authService = authService
 
 export default ({ Vue, router }) => {
-//   router.beforeEach((to, from, next) => {
-//     var isTokenValid = authService.isTokenValid();
-//     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  router.beforeEach((to, from, next) => {
+    var isTokenValid = authService.isTokenValid();
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-//     var userDataComplete = false;
-//     var phoneNumber = authService.getPhoneNumber();
-//     var role = authService.getRole();
-//     var clinicName = authService.getClinicName();
-
-//     if (phoneNumber == "" || role == "" || clinicName == "") {
-//       userDataComplete = false
-//     } else {
-//       userDataComplete = true
-//     }
-
-//     if (requiresAuth && !isTokenValid) {
-//       next('/login');
-//     } else {
-//       // if user go to /login but he's/she's still autenticated then go to /
-//       if (to.path == '/login' && isTokenValid) {
-//         next('/')
-//       } else {
-//         // if user go to / but the profile not completed yet then go to /edit-profile
-//         if (to.path == '/' && !userDataComplete) {
-//           router.replace({ name: 'edit-profile' })
-//         } else {
-//           next()
-//         }
-//       }
-//     }
-//   });
+    if (requiresAuth && !isTokenValid) {
+      next('/login');
+    } else {
+      // if user go to /login but he's/she's still autenticated then go to /
+      if (to.path == '/login' && isTokenValid) {
+        next('/')
+      } else {
+        next()
+      }
+    }
+  });
 }

@@ -1,0 +1,38 @@
+.page-container-login {
+  background-image: url("~assets/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  .login-container {
+    position: absolute;
+    max-width: 460px;
+    background-color: rgba(235, 235, 235, 0.4);
+    padding: 30px 50px;
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 20px $grey-5;
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      color: $theme;
+    }
+    .subtitle {
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: $grey-8;
+    }
+    .social-button {
+      width: 100%;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: white;
+      padding: 9px 0;
+    }
+  }
+}
