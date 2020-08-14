@@ -36,5 +36,4 @@ func TestAssignCustomer(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expectedSavedCustomer, customer)
 	mockCustomerRepository.AssertCalled(t, "Save", expectedSavedCustomer)
-
 }
