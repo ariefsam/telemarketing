@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"log"
+
 	"cloud.google.com/go/firestore"
 	"github.com/ariefsam/telemarketing/entity"
 	"github.com/mitchellh/mapstructure"
@@ -64,8 +66,10 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 
 	var iter *firestore.DocumentIterator
 	if len(fWhere) == 0 {
+		log.Println("mengambil tanpa filter where")
 		iter = docRef.Collection("customer").Limit(limit).Documents(ctx)
 	} else {
+		log.Println("mengambil dengan filter where")
 		var query firestore.Query
 		for idx, val := range fWhere {
 			if idx == 0 {

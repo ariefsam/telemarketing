@@ -20,5 +20,19 @@ export default {
       email: "",
     };
   },
+  mounted() {
+    var vm=this;
+    var data_submit = {
+      Token: vm.$authService.getToken(),
+      Limit: 10000,
+    }
+    this.$axios
+        .post("/api/customer", data_submit)
+        .then(function (response) {
+          if (response.data) {
+            console.log(response.data);
+          }
+        })
+  }
 }
 </script>

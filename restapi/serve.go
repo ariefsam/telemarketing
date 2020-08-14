@@ -43,7 +43,7 @@ func Serve() {
 	r.HandleFunc("/api/login/firebase", api.LoginByFirebase).Methods("POST")
 	r.HandleFunc("/api/upload", api.ImportCustomer).Methods("POST")
 	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
-	r.HandleFunc("/api/customer/call", api.ListCustomer).Methods("POST")
+	r.HandleFunc("/api/customer/call", api.Call).Methods("POST")
 
 	r.PathPrefix("/").Handler(quasarHandler())
 
