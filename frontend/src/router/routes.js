@@ -12,7 +12,7 @@ const routes = [
       { path: '/import-customer', name: 'import-customer', component: () => import('pages/ImportCustomer.vue') },
     ],
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   },
 

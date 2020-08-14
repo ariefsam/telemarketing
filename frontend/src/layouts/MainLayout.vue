@@ -12,19 +12,15 @@
         />  
         <q-toolbar-title>Telemarketing App</q-toolbar-title>
         <q-space />
-        <!--here profile icon-->
-        <div class="profile-menu">
+        <!--here is account-->
+        <div>
           <q-btn flat no-caps>
-            <q-avatar size="34px">
-              <img :src="user.profilePic" @error="onImageLoadFailure($event)"/>
-            </q-avatar>
+            <q-avatar text-color="white" icon="fas fa-user-circle" />
             <div class="name q-ml-sm">{{user.name}}</div>
             <q-menu transition-show="jump-down" transition-hide="jump-up">
-              <div style="width: 240px">
+              <div class="profile-menu">
                 <div class="row no-wrap items-center profile-info">
-                  <q-avatar size="34px">
-                    <img :src="user.profilePic" @error="onImageLoadFailure($event)"/>
-                  </q-avatar>
+                  <q-avatar size="lg" color="primary" text-color="white" icon="fas fa-user-circle" />
                   <div class="name">{{user.email}}</div>
                 </div>
                 <q-separator inset />
@@ -84,6 +80,21 @@ export default {
           separator: false,
           link: { name: "customer" }
         },
+      ],
+      user:{},
+    };
+  },
+  mounted() {
+    var vm = this;
+    var user = vm.$authService.getUser();
+    console.log(user)
+    this.user = {
+      name: "Agung Kurniawan", // user.Name masih kosong
+      email: user.Email,
+      isAdmin: user.IsAdmin
+    }
+    if (this.user.isAdmin){
+      this.menuList.push(
         {
           icon: "fas fa-headset",
           label: "Telemarketer",
@@ -96,22 +107,7 @@ export default {
           separator: false,
           link: { name: "admin-customer" }
         }
-      ],
-      user:{},
-    };
-  },
-  mounted() {
-    var vm = this;
-    this.user = {
-      profilePic: vm.$authService.getProfilePicture(),
-      name: vm.$authService.getUserName(),
-      email: vm.$authService.getEmail()
-    }
-    // Dummy
-    this.user = {
-      profilePic: 'test',
-      name: 'Agung Kurniawan',
-      email: 'agung@fsn.co.id'
+      )
     }
   },
 
