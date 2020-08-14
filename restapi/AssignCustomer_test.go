@@ -5,7 +5,7 @@ import (
 )
 
 func TestAssignCustomer(t *testing.T) {
-	api, mockUsecase := initAPIAndUsecase()
+	api, mockUsecase := setupAPIAndUsecase()
 
 	dummyToken, expectedTelemarketer := setupMockParseToken(mockUsecase)
 	request := map[string]interface{}{

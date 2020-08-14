@@ -1,6 +1,7 @@
 package restapi
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"strings"
@@ -42,6 +43,7 @@ func Serve() {
 	r.HandleFunc("/api/login/firebase", api.LoginByFirebase).Methods("POST")
 	r.HandleFunc("/api/upload", api.ImportCustomer).Methods("POST")
 	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
+	r.HandleFunc("/api/customer/call", api.ListCustomer).Methods("POST")
 
 	r.PathPrefix("/").Handler(quasarHandler())
 
@@ -59,4 +61,9 @@ func quasarHandler() http.Handler {
 	var dir string
 	dir = "./quasar/dist/spa"
 	return http.StripPrefix("/", http.FileServer(http.Dir(dir)))
+}
+
+func getPostModel(r *http.Request) (post RequestModel) {
+	json.NewDecoder(r.Body).Decode(&post)
+	return
 }

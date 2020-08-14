@@ -4,12 +4,10 @@ import (
 	"testing"
 
 	"github.com/ariefsam/telemarketing/entity"
-	"github.com/ariefsam/telemarketing/restapi"
-	"github.com/ariefsam/telemarketing/restapi/usecaseinterface/mockusecase"
 )
 
 func TestListCustomerNotAdmin(t *testing.T) {
-	api, mockUsecase := initAPIAndUsecase()
+	api, mockUsecase := setupAPIAndUsecase()
 	dummyToken, expectedTelemarketer := setupMockParseToken(mockUsecase)
 	limit := 100
 
@@ -33,7 +31,7 @@ func TestListCustomerNotAdmin(t *testing.T) {
 }
 
 func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
-	api, mockUsecase := initAPIAndUsecase()
+	api, mockUsecase := setupAPIAndUsecase()
 	dummyToken, _ := setupMockParseToken(mockUsecase)
 	limit := 100
 
@@ -50,12 +48,4 @@ func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
 	}
 
 	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)
-}
-
-func initAPIAndUsecase() (api *restapi.RestAPI, mockUsecase *mockusecase.Usecase) {
-	var m mockusecase.Usecase
-	api = new(restapi.RestAPI)
-	mockUsecase = &m
-	api.Usecase = mockUsecase
-	return
 }

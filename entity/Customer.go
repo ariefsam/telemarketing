@@ -6,4 +6,5 @@ type Customer struct {
 	Status            string
 	TelemarketerEmail string
 	TimestampCreated  int64
+	TimestampUpdated  int64
 }

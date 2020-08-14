@@ -18,14 +18,14 @@ func TestGetCallLog(t *testing.T) {
 	limit := 10
 	expectedCallLogs := []entity.CallLog{
 		entity.CallLog{
-			TelemarketerID: "s",
-			PhoneNumber:    "09234",
-			Timestamp:      123000,
+			TelemarketerEmail: "s@gmail.com",
+			PhoneNumber:       "09234",
+			Timestamp:         123000,
 		},
 		entity.CallLog{
-			TelemarketerID: "s",
-			PhoneNumber:    "09234",
-			Timestamp:      123100,
+			TelemarketerEmail: "s@gmail.com",
+			PhoneNumber:       "09234",
+			Timestamp:         123100,
 		},
 	}
 

@@ -1,13 +1,11 @@
 package restapi
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
 func (api *RestAPI) AssignCustomer(w http.ResponseWriter, r *http.Request) {
-	var post RequestModel
-	json.NewDecoder(r.Body).Decode(&post)
+	post := getPostModel(r)
 
 	telemarketer, err := api.authOrResponseError(post, w)
 	if err != nil {

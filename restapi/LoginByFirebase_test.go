@@ -13,7 +13,7 @@ import (
 
 func TestLoginByFirebase(t *testing.T) {
 
-	api, mockUsecase := initAPIAndUsecase()
+	api, mockUsecase := setupAPIAndUsecase()
 
 	firebaseToken := "firebaseTokenDummy"
 	expectedTelemarketerToken := "expectedTelemarketerTokenxxx"

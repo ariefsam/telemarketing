@@ -6,4 +6,6 @@ type RequestModel struct {
 	Token          *string
 	Limit          int
 	FilterCustomer entity.FilterCustomer
+	PhoneNumber    string
+	Status         string
 }

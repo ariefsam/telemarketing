@@ -1,9 +1,9 @@
 package entity
 
 type FilterCallLog struct {
-	PhoneNumber    string
-	Status         string
-	TelemarketerID string
-	TimestampStart int64
-	TimestampEnd   int64
+	PhoneNumber       string
+	Status            string
+	TelemarketerEmail string
+	TimestampStart    int64
+	TimestampEnd      int64
 }

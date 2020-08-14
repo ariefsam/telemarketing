@@ -13,9 +13,9 @@ import (
 func TestSaveCallLog(t *testing.T) {
 	var u usecase.Usecase
 	callLog := entity.CallLog{
-		PhoneNumber:    "0123123",
-		Status:         "Terdaftar",
-		TelemarketerID: "t01",
+		PhoneNumber:       "0123123",
+		Status:            "Terdaftar",
+		TelemarketerEmail: "t01@gmail.com",
 	}
 	var mockCallLogRepository mockdependency.CallLogRepository
 	mockCallLogRepository.On("Save", callLog).Return(nil)
