@@ -9,7 +9,8 @@ import (
 )
 
 func TestListCustomerNotAdmin(t *testing.T) {
-	dummyToken := "dummyTokenxxx"
+	api, mockUsecase := initAPIAndUsecase()
+	dummyToken, expectedTelemarketer := setupMockParseToken(mockUsecase)
 	limit := 100
 
 	request := map[string]interface{}{
@@ -17,12 +18,6 @@ func TestListCustomerNotAdmin(t *testing.T) {
 		"Limit": limit,
 	}
 
-	var api restapi.RestAPI
-	var mockUsecase mockusecase.Usecase
-	api.Usecase = &mockUsecase
-
-	expectedTelemarketer := dummyTelemarketerNotAdmin()
-	mockUsecase.On("ParseToken", dummyToken).Return(true, expectedTelemarketer)
 	filter := entity.FilterCustomer{
 		TelemarketerEmail: &expectedTelemarketer.Email,
 	}
@@ -38,7 +33,8 @@ func TestListCustomerNotAdmin(t *testing.T) {
 }
 
 func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
-	dummyToken := "dummyTokenxxx"
+	api, mockUsecase := initAPIAndUsecase()
+	dummyToken, _ := setupMockParseToken(mockUsecase)
 	limit := 100
 
 	request := map[string]interface{}{
@@ -49,16 +45,17 @@ func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
 		},
 	}
 
-	var api restapi.RestAPI
-	var mockUsecase mockusecase.Usecase
-	api.Usecase = &mockUsecase
-
-	expectedTelemarketer := dummyTelemarketerNotAdmin()
-	mockUsecase.On("ParseToken", dummyToken).Return(true, expectedTelemarketer)
-
 	expectedResponse := map[string]interface{}{
 		"Error": "FilterCustomer TelemarketerEmail forbidden",
 	}
 
 	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)
+}
+
+func initAPIAndUsecase() (api *restapi.RestAPI, mockUsecase *mockusecase.Usecase) {
+	var m mockusecase.Usecase
+	api = new(restapi.RestAPI)
+	mockUsecase = &m
+	api.Usecase = mockUsecase
+	return
 }

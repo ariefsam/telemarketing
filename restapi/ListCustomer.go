@@ -7,13 +7,14 @@ import (
 
 func (api *RestAPI) ListCustomer(w http.ResponseWriter, r *http.Request) {
 	var post RequestModel
-	response := map[string]interface{}{}
 	json.NewDecoder(r.Body).Decode(&post)
 
 	telemarketer, err := api.authOrResponseError(post, w)
 	if err != nil {
 		return
 	}
+
+	response := map[string]interface{}{}
 
 	if post.FilterCustomer.TelemarketerEmail != nil && telemarketer.IsAdmin == false {
 		response["Error"] = "FilterCustomer TelemarketerEmail forbidden"

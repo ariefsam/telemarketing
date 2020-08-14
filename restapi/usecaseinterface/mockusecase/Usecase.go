@@ -12,7 +12,7 @@ type Usecase struct {
 func (m *Usecase) AssignCustomer(telemarketerEmail string) (customer entity.Customer, err error) {
 	args := m.Called(telemarketerEmail)
 	customer = args.Get(0).(entity.Customer)
-	err = args.Error(0)
+	err = args.Error(1)
 	return
 }
 
