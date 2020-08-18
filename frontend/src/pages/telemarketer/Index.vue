@@ -53,12 +53,11 @@ export default {
     return {
       telemarketers: [],
       telemarketerDataColumns: [
-        { name: 'name', label: 'NAME', align: 'left', field: 'Name', sortable: true },
         { name: 'email', label: 'EMAIL', align: 'left', field: 'Email', sortable: true },
-        { name: 'isAdmin', label: 'Admin', align: 'left', field: 'IsAdmin', sortable: true },
+        { name: 'isAdmin', label: 'Admin', align: 'center', field: 'IsAdmin', sortable: true },
       ],
       telemarketerDataFilter: "",
-      telemarketerDataVisible: ['name', 'email', 'isAdmin'],
+      telemarketerDataVisible: ['email', 'isAdmin'],
       telemarketerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
@@ -81,12 +80,10 @@ export default {
     // dummy
     vm.telemarketers = [
       {
-        Name: "Arief Hidayatulloh",
         Email: "arief@fsn.co.id",
         IsAdmin: true,
       },
       {
-        Name: "Agung Kurniawan",
         Email: "agung@fsn.co.id",
         IsAdmin: true,
       }

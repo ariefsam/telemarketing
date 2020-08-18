@@ -1,16 +1,17 @@
 <template>
   <q-page class="page-index">
     <div class="row justify-between">
-      <div class="title">Customer</div>
-      <!--<div>
+      <div class="title">Customer List</div>
+      <div>
         <q-btn
           color="light-green-9"
           text-color="white"
-          icon="add"
-          label="Request"
+          icon="fas fa-file-import"
+          label="Import"
           class="q-pr-sm"
+          :to="'/import-customer'"
         />
-      </div>-->
+      </div>
     </div>
     <div class="table-filter">
       <q-card class="q-pa-md">
@@ -20,7 +21,11 @@
         <q-card-section class="row content q-col-gutter-md">
           <div class="col-md-4">
             <div class="field-name q-mb-xs">Response</div>
-            <q-select filled v-model="response" :options="options" label="Please select" @input="filter"/>
+            <q-select filled v-model="response" :options="responseOptions" label="Please select" @input="filter"/>
+          </div>
+          <div class="col-md-4">
+            <div class="field-name q-mb-xs">Telemarketer</div>
+            <q-input filled v-model="telemarketer" label="Telemarketer email" @keydown.enter.prevent="filter"/>
           </div>
         </q-card-section>
       </q-card>
@@ -55,7 +60,7 @@
 
 <script>
 export default {
-  name: 'CustomerIndex',
+  name: 'AdminCustomerIndex',
 
   data() {
     return {
@@ -63,18 +68,20 @@ export default {
       customerDataColumns: [
         { name: 'name', label: 'NAME', align: 'left', field: 'Name', sortable: true },
         { name: 'phoneNumber', label: 'PHONE NUMBER', align: 'center', field: 'PhoneNumber', sortable: true },
-        { name: 'status', label: "STATUS", align: 'center', field: 'Status', sortable: true }
+        { name: 'status', label: "STATUS", align: 'center', field: 'Status', sortable: true },
+        { name: 'telemarketer', label: "TELEMARKETER", align: 'left', field: 'TelemarketerEmail', sortable: true }
       ],
       customerDataFilter: "",
-      customerDataVisible: ['name', 'phoneNumber', 'status'],
+      customerDataVisible: ['name', 'phoneNumber', 'status', 'telemarketer'],
       customerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
       // filter model
-      options: [
+      responseOptions: [
         'No Response', 'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
       ],
       response: "",
+      telemarketer: "",
     }
   },
 
@@ -110,6 +117,7 @@ export default {
         Token: vm.$authService.getToken(),
         FilterCustomer: {
           Status: vm.response,
+          TelemarketerEmail: vm.telemarketer,
         },
         Limit: 10000,
       }
@@ -125,7 +133,7 @@ export default {
           }
         })
       console.log(data_submit)
-    }
+    },
   }
 }
 </script>

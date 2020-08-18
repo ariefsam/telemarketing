@@ -10,8 +10,7 @@ const routes = [
       { path: '/customer/:phoneNumber', name: 'customer-detail', component: () => import('pages/customer/Detail.vue') },
       { path: '/telemarketer', name: 'telemarketer', component: () => import('pages/telemarketer/Index.vue') },
       { path: '/telemarketer/create', name: 'telemarketer-create', component: () => import('pages/telemarketer/Create.vue') },
-
-      { path: '/admin-customer', name: 'admin-customer', component: () => import('pages/AdminCustomer.vue') },
+      { path: '/admin-customer', name: 'admin-customer', component: () => import('pages/admin-customer/Index.vue') },
       { path: '/import-customer', name: 'import-customer', component: () => import('pages/ImportCustomer.vue') },
     ],
     meta: {
