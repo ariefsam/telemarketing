@@ -137,7 +137,7 @@ export default {
           vm.customer = response.data.Customers[0]
         }
       })
-    // Assign Status if there's a value
+    // Assign Status if there's a value in it
     this.assignStatus(this.customer.Status)
   },
 
