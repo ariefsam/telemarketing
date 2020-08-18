@@ -99,6 +99,7 @@
   </q-page>
 </template>
 
+
 <script>
 export default {
   name: 'CustomerDetail',
