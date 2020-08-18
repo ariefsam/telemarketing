@@ -68,12 +68,12 @@ export default {
       Limit: 10000,
     }
     this.$axios
-        .post("/api/customer", data_submit)
-        .then(function (response) {
-          if (response.data) {
-            vm.customers = response.data.Customers
-          }
-        })
+      .post("/api/customer", data_submit)
+      .then(function (response) {
+        if (response.data) {
+          vm.customers = response.data.Customers
+        }
+      })
   },
 
   methods: {
