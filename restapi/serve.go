@@ -45,6 +45,13 @@ func Serve() {
 	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
 	r.HandleFunc("/api/customer/call", api.Call).Methods("POST")
 	r.HandleFunc("/api/customer/assign", api.AssignCustomer).Methods("POST")
+	r.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
+		resp := map[string]string{
+			"Status": "Ok",
+			"URL":    r.URL.String(),
+		}
+		JSONView(w, resp, http.StatusOK)
+	})
 
 	r.PathPrefix("/").Handler(quasarHandler())
 
