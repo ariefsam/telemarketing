@@ -25,10 +25,10 @@
                 <div class="field-name q-mb-xs">Phone Number <span style="color: red; font-weight: normal">*</span></div>
                 <q-input filled v-model="customer.PhoneNumber" dense :rules="[val => !!val || 'Field is required']"/>
               </div>
-              <div>
+              <!--<div>
                 <div class="field-name q-mb-xs">Additonal Information </div>
                 <q-input filled v-model="additionalInfo" type="textarea"/>
-              </div>
+              </div>-->
             </q-card-section>
           </q-card>
           
@@ -76,7 +76,7 @@
                     </div>
                   </div>
                 </div>  
-                <div class="row justify-end">
+                <div class="row justify-end q-mt-lg">
                   <q-btn class="q-px-lg" color="primary" text-color="white" type="submit" label="Save"/>
                 </div>
               </div>
@@ -149,6 +149,7 @@ export default {
       console.log("Call by Skype")
     },
     onSubmit() {
+      var vm=this;
       console.log(this.customer)
       console.log(this.additionalInfo)
       console.log(this.response)
@@ -156,6 +157,21 @@ export default {
         this.alert = true
       }else {
         // Submit data
+        var data_submit = {
+          Token: vm.$authService.getToken(),
+          PhoneNumber: vm.customerPhoneNumber,
+          Status: vm.response,
+        }
+        this.$axios
+          .post("/api/customer/call", data_submit)
+          .then(function (response) {
+            if (response.data) {
+              console.log(response.data)
+            }
+          })
+          .catch(function(error) {
+            console.log(error)
+          });
       }
     },
     assignStatus(status){
