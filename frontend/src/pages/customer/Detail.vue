@@ -48,7 +48,7 @@
                         label="Skype"
                         class="q-px-sm"
                         no-caps
-                        @click="callBySkype"
+                        v-bind:href="'skype://+'+customer.PhoneNumber+'?call'"
                       />
                     </div>
                   </div>
