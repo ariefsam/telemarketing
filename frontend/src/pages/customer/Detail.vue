@@ -1,10 +1,10 @@
 <template>
   <q-page class="customer-detail">
-     <div class="row items-center q-mb-md">
+    <div class="row items-center q-mb-md">
       <q-btn round color="blue-grey" icon="chevron_left" size="sm" @click="backToIndex"/> 
       <div text-color="blue-grey" class="q-ml-sm text-bold" style="font-size:16px;">Back</div>
     </div>
-    <div class="row justify">
+    <div class="row">
       <div class="title">Customer | Phone: {{customerPhoneNumber}}</div>
     </div>
     <div class="detail-container">
@@ -17,11 +17,11 @@
             </q-card-section>
             <q-separator />
             <q-card-section class="content">
-              <div class="q-mb-md">
+              <div class="q-mb-xs">
                 <div class="field-name q-mb-xs">Name <span style="color: red; font-weight: normal">*</span></div>
                 <q-input filled v-model="customer.Name" dense :rules="[val => !!val || 'Field is required']"/>
               </div>
-              <div class="q-mb-md">
+              <div class="q-mb-xs">
                 <div class="field-name q-mb-xs">Phone Number <span style="color: red; font-weight: normal">*</span></div>
                 <q-input filled v-model="customer.PhoneNumber" dense :rules="[val => !!val || 'Field is required']"/>
               </div>
@@ -172,6 +172,7 @@ export default {
           .catch(function(error) {
             console.log(error)
           });
+        console.log(data_submit)
       }
     },
     assignStatus(status){

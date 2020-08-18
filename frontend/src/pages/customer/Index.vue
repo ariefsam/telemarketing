@@ -1,5 +1,5 @@
 <template>
-  <q-page class="customer-index">
+  <q-page class="page-index">
     <div class="row justify-between">
       <div class="title">Customer</div>
       <!--<div>
@@ -18,7 +18,6 @@
         :columns="customerDataColumns"
         row-key="phoneNumber"
         :filter="customerDataFilter"
-        class="question-table"
         :visible-columns="customerDataVisible"
         :pagination.sync="customerDataPagination"
         @row-click="onRowClick"
