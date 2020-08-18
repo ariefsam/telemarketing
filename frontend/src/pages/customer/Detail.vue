@@ -137,6 +137,8 @@ export default {
           vm.customer = response.data.Customers[0]
         }
       })
+    // Assign Status if there's a value
+    this.assignStatus(this.customer.Status)
   },
 
   methods: {
@@ -156,7 +158,27 @@ export default {
         // Submit data
       }
     },
-
+    assignStatus(status){
+      if (status == 'Tertarik'){
+        this.tertarik = true
+        this.response = 'Tertarik'
+      } else if (status == 'Hubungi Kembali') {
+        this.hubungiKembali = true
+        this.response = 'Hubungi Kembali'
+      }else if (status == 'Tidak Tertarik') {
+        this.tidakTertarik = true
+        this.response = 'Tidak Tertarik'
+      }else if (status == 'Tidak Aktif') {
+        this.tidakAktif = true
+        this.response = 'Tidak Aktif'
+      }else if (status == 'Tidak Menjawab') {
+        this.tidakMenjawab = true
+        this.response = 'Tidak Menjawab'
+      } else if (status == 'Tidak Terdaftar') {
+        this.tidakTerdaftar = true
+        this.response = 'Tidak Terdaftar'
+      }
+    },
     reset() {
       this.tertarik = false
       this.hubungiKembali = false
@@ -165,7 +187,6 @@ export default {
       this.tidakMenjawab = false
       this.tidakTerdaftar = false
     },
-
     activateTertarik() {
       if (this.tertarik){
         this.tertarik = false
