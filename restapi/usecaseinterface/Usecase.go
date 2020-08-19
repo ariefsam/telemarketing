@@ -11,4 +11,5 @@ type Usecase interface {
 	ParseToken(token string) (isValid bool, telemarketer entity.Telemarketer)
 	LoginByFirebase(firebaseToken string) (token string, telemarketer entity.Telemarketer, isValid bool, err error)
 	CurrentTimestamp() int64
+	SaveTelemarketer(telemarketer entity.Telemarketer) (err error)
 }

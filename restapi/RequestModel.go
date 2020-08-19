@@ -8,4 +8,5 @@ type RequestModel struct {
 	FilterCustomer entity.FilterCustomer
 	PhoneNumber    string
 	Status         string
+	Telemarketer   entity.Telemarketer
 }

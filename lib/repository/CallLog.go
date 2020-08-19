@@ -116,6 +116,6 @@ func (c *CallLog) Delete(timestamp int64) (err error) {
 	if err != nil {
 		return
 	}
-	_, err = docRef.Collection("call_log").Doc(id).Delete(ctx)
+	_, err = docRef.Collection("callLog").Doc(id).Delete(ctx)
 	return
 }

@@ -25,5 +25,5 @@ func assertRequestResponse(t *testing.T, handlerFunc http.HandlerFunc, requestBo
 	body, _ := ioutil.ReadAll(resp.Body)
 	actualResponse := map[string]interface{}{}
 	json.Unmarshal(body, &actualResponse)
-	assert.Equal(t, expectedBodyResponse, body)
+	assert.JSONEq(t, string(expectedBodyResponse), string(body))
 }

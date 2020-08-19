@@ -45,6 +45,7 @@ func Serve() {
 	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
 	r.HandleFunc("/api/customer/call", api.Call).Methods("POST")
 	r.HandleFunc("/api/customer/assign", api.AssignCustomer).Methods("POST")
+	r.HandleFunc("/api/telemarketer/save", api.SaveTelemarketer).Methods("POST")
 	r.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
 		resp := map[string]string{
 			"Status": "Ok",

@@ -63,3 +63,9 @@ func (m *Usecase) CurrentTimestamp() (timestamp int64) {
 	timestamp = args.Get(0).(int64)
 	return
 }
+
+func (m *Usecase) SaveTelemarketer(telemarketer entity.Telemarketer) (err error) {
+	args := m.Called(telemarketer)
+	err = args.Error(0)
+	return
+}

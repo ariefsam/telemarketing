@@ -4,8 +4,18 @@ import "github.com/ariefsam/telemarketing/entity"
 
 func dummyTelemarketerNotAdmin() (expectedTelemarketer entity.Telemarketer) {
 	expectedTelemarketer = entity.Telemarketer{
+		Name:    "Arief",
 		Email:   "arief@gmail.com",
 		IsAdmin: false,
+	}
+	return
+}
+
+func dummyTelemarketerAdmin() (expectedTelemarketer entity.Telemarketer) {
+	expectedTelemarketer = entity.Telemarketer{
+		Name:    "Arief",
+		Email:   "arief@gmail.com",
+		IsAdmin: true,
 	}
 	return
 }

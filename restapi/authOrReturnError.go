@@ -29,3 +29,18 @@ func (api *RestAPI) authOrResponseError(post RequestModel, w http.ResponseWriter
 	}
 	return
 }
+
+func (api *RestAPI) authAdminOrResponseError(post RequestModel, w http.ResponseWriter) (telemarketer entity.Telemarketer, err error) {
+	response := map[string]string{}
+	telemarketer, err = api.authOrResponseError(post, w)
+	if err != nil {
+		return
+	}
+	if !telemarketer.IsAdmin {
+		err = errors.New("Unauthorized")
+		response["Error"] = err.Error()
+		JSONView(w, response, http.StatusUnauthorized)
+		return
+	}
+	return
+}

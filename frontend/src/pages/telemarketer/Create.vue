@@ -1,7 +1,7 @@
 <template>
   <q-page class="page-index">
     <div class="row items-center q-mb-md">
-      <q-btn round color="blue-grey" icon="chevron_left" size="sm" @click="backToIndex"/> 
+      <q-btn round color="blue-grey" icon="chevron_left" size="sm" @click="backToIndex" />
       <div text-color="blue-grey" class="q-ml-sm text-bold" style="font-size:16px;">Back</div>
     </div>
     <div class="row">
@@ -9,7 +9,7 @@
     </div>
     <div class="row">
       <q-form @submit="onSubmit" class="col-md-6">
-       <q-input
+        <q-input
           color="grey-8"
           v-model="name"
           filled
@@ -18,7 +18,7 @@
           class="field"
           :rules="[val => !!val || 'Field is required']"
         />
-       <q-input
+        <q-input
           color="grey-8"
           v-model="email"
           filled
@@ -28,12 +28,7 @@
           :rules="[val => !!val || 'Field is required']"
         />
         <div>
-          <q-toggle
-            v-model="isAdmin"
-            checked-icon="check"
-            color="green"
-            unchecked-icon="clear"
-          />Admin
+          <q-toggle v-model="isAdmin" checked-icon="check" color="green" unchecked-icon="clear" />Admin
         </div>
         <div class="q-mt-md">
           <q-btn label="Submit" type="submit" color="primary" />
@@ -45,41 +40,45 @@
 
 <script>
 export default {
-  name: 'TelemarketerCreate',
+  name: "TelemarketerCreate",
 
   data() {
     return {
-      name:"",
+      name: "",
       email: "",
       isAdmin: false,
-    }
+    };
   },
 
   methods: {
     onSubmit() {
-      var vm=this;
+      var vm = this;
       // Submit data
       var data_submit = {
         Token: vm.$authService.getToken(),
-        Name: vm.Name,
-        Email: vm.email,
-        IsAdmin: vm.isAdmin,
-      }
+        Telemarketer: {
+          Name: vm.Name,
+          Email: vm.email,
+          IsAdmin: vm.isAdmin,
+        },
+      };
       this.$axios
-        .post("/api/telemarketer/create", data_submit)
+        .post("/api/telemarketer/save", data_submit)
         .then(function (response) {
           if (response.data) {
-            console.log(response.data)
+            vm.$router.push({
+              name: "telemarketer",
+            });
           }
         })
-        .catch(function(error) {
-          console.log(error)
+        .catch(function (error) {
+          alert(error.response.data.Error);
         });
-      console.log(data_submit)
-    }, 
+      console.log(data_submit);
+    },
     backToIndex() {
-      this.$router.replace({name: "telemarketer"});
-    }
-  }
-}
+      this.$router.replace({ name: "telemarketer" });
+    },
+  },
+};
 </script>

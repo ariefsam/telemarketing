@@ -14,11 +14,15 @@ func (t *Telemarketer) Save(telemarketer entity.Telemarketer) (err error) {
 	if err != nil {
 		return
 	}
+	if telemarketer.Email == "" {
+		err = errors.New("Cannot save telemarketer because email is empty, " + telemarketer.Name)
+		return
+	}
 	dataInsert := map[string]interface{}{}
 	mapstructure.Decode(telemarketer, &dataInsert)
 	_, err = docRef.Collection("telemarketer").Doc(telemarketer.Email).Set(ctx, dataInsert)
 	if err != nil {
-		err = errors.Wrap(err, "Failed to save callLog")
+		err = errors.Wrap(err, "Failed to save telemarketer email: "+telemarketer.Email)
 		return
 	}
 	return

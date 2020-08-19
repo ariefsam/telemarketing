@@ -13,6 +13,13 @@ func setupMockParseToken(mockUsecase *mockusecase.Usecase) (dummyToken string, e
 	return
 }
 
+func setupMockParseTokenAdmin(mockUsecase *mockusecase.Usecase) (dummyToken string, expectedTelemarketer entity.Telemarketer) {
+	dummyToken = "dTOkne"
+	expectedTelemarketer = dummyTelemarketerAdmin()
+	mockUsecase.On("ParseToken", dummyToken).Return(true, expectedTelemarketer)
+	return
+}
+
 func setupAPIAndUsecase() (api *restapi.RestAPI, mockUsecase *mockusecase.Usecase) {
 	var m mockusecase.Usecase
 	api = new(restapi.RestAPI)

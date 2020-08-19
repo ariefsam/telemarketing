@@ -1,7 +1,6 @@
 package restapi
 
 import (
-	"log"
 	"net/http"
 )
 
@@ -25,8 +24,6 @@ func (api *RestAPI) ListCustomer(w http.ResponseWriter, r *http.Request) {
 	if telemarketer.IsAdmin == false {
 		post.FilterCustomer.TelemarketerEmail = &telemarketer.Email
 	}
-
-	log.Printf("%+v customer filter", post.FilterCustomer)
 
 	customers, err := api.Usecase.GetCustomer(post.FilterCustomer, post.Limit)
 	if err != nil {
