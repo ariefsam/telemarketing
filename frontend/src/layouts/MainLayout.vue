@@ -9,7 +9,7 @@
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
-        />  
+        />
         <q-toolbar-title>Telemarketing App</q-toolbar-title>
         <q-space />
         <!--here is account-->
@@ -39,7 +39,13 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above bordered :width="250" content-class="bg-grey-0" v-model="leftDrawerOpen">
+    <q-drawer
+      show-if-above
+      bordered
+      :width="250"
+      content-class="bg-grey-0"
+      v-model="leftDrawerOpen"
+    >
       <q-scroll-area class="fit">
         <q-list v-for="(menuItem, index) in menuList" :key="index">
           <q-item clickable :to="menuItem.link" v-ripple>
@@ -63,7 +69,7 @@
 <script>
 export default {
   name: "MainLayout",
-  
+
   data() {
     return {
       leftDrawerOpen: false,
@@ -72,42 +78,44 @@ export default {
           icon: "dashboard",
           label: "Dashboard",
           separator: true,
-          link: { name: "dashboard" }
-        },
-        {
-          icon: "fas fa-user",
-          label: "Customer",
-          separator: false,
-          link: { name: "customer" }
+          link: { name: "dashboard" },
         },
       ],
-      user:{},
+      user: {},
     };
   },
   mounted() {
     var vm = this;
     var user = vm.$authService.getUser();
-    console.log(user)
+    console.log(user);
     this.user = {
-      name: "Agung Kurniawan", // user.Name masih kosong
+      name: user.Name, // user.Name masih kosong
       email: user.Email,
-      isAdmin: user.IsAdmin
+      isAdmin: user.IsAdmin,
+    };
+    if (!this.user.isAdmin) {
+      this.menuList.push({
+        icon: "fas fa-user",
+        label: "Customer",
+        separator: false,
+        link: { name: "customer" },
+      });
     }
-    if (this.user.isAdmin){
+    if (this.user.isAdmin) {
       this.menuList.push(
         {
           icon: "fas fa-headset",
           label: "Telemarketer",
           separator: false,
-          link: { name: "telemarketer" }
+          link: { name: "telemarketer" },
         },
         {
           icon: "fas fa-user-tie",
           label: "Admin Customer",
           separator: false,
-          link: { name: "admin-customer" }
+          link: { name: "admin-customer" },
         }
-      )
+      );
     }
   },
 
@@ -115,11 +123,11 @@ export default {
     logout() {
       var vm = this;
       vm.$authService.logout();
-      this.$router.replace({ name: 'login' })
+      this.$router.replace({ name: "login" });
     },
-    onImageLoadFailure (event) {
-      event.target.src = require('assets/default.jpg')
-    }
-  }
+    onImageLoadFailure(event) {
+      event.target.src = require("assets/default.jpg");
+    },
+  },
 };
 </script>

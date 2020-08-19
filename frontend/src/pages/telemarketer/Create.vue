@@ -11,6 +11,15 @@
       <q-form @submit="onSubmit" class="col-md-6">
        <q-input
           color="grey-8"
+          v-model="name"
+          filled
+          label="Name *"
+          type="text"
+          class="field"
+          :rules="[val => !!val || 'Field is required']"
+        />
+       <q-input
+          color="grey-8"
           v-model="email"
           filled
           label="Email Address *"
@@ -40,6 +49,7 @@ export default {
 
   data() {
     return {
+      name:"",
       email: "",
       isAdmin: false,
     }
@@ -51,6 +61,7 @@ export default {
       // Submit data
       var data_submit = {
         Token: vm.$authService.getToken(),
+        Name: vm.Name,
         Email: vm.email,
         IsAdmin: vm.isAdmin,
       }
