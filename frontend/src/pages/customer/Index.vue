@@ -19,7 +19,7 @@
         </q-card-section>
         <q-card-section class="row content q-col-gutter-md">
           <div class="col-md-4">
-            <div class="field-name q-mb-xs">Response</div>
+            <div class="field-name q-mb-xs">Status</div>
             <q-select filled v-model="response" :options="options" label="Please select" @input="filter"/>
           </div>
         </q-card-section>
@@ -72,7 +72,7 @@ export default {
       },
       // filter model
       options: [
-        'No Response', 'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
+        'No Status', 'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
       ],
       response: "",
     }
@@ -102,7 +102,7 @@ export default {
       });
     },
     filter() {
-      if(this.response == 'No Response'){
+      if(this.response == 'No Status'){
         this.response = ''
       }
       var vm=this;
