@@ -20,7 +20,17 @@
         <q-card-section class="row content q-col-gutter-md">
           <div class="col-md-4">
             <div class="field-name q-mb-xs">Status</div>
-            <q-select filled v-model="response" :options="options" label="Please select" @input="filter"/>
+            <q-select
+              filled
+              v-model="response"
+              :options="options"
+              label="Please select"
+              @input="filter"
+            />
+            <div class="col-md-4">
+              <br />
+              <q-btn @click="assignCustomer" label="Assign New Customer To Me"></q-btn>
+            </div>
           </div>
         </q-card-section>
       </q-card>
@@ -36,7 +46,13 @@
         @row-click="onRowClick"
       >
         <template v-slot:top-right>
-          <q-input color="grey-8" dense debounce="300" v-model="customerDataFilter" placeholder="Search">
+          <q-input
+            color="grey-8"
+            dense
+            debounce="300"
+            v-model="customerDataFilter"
+            placeholder="Search"
+          >
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -55,46 +71,85 @@
 
 <script>
 export default {
-  name: 'CustomerIndex',
+  name: "CustomerIndex",
 
   data() {
     return {
       customers: [],
       customerDataColumns: [
-        { name: 'name', label: 'NAME', align: 'left', field: 'Name', sortable: true },
-        { name: 'phoneNumber', label: 'PHONE NUMBER', align: 'center', field: 'PhoneNumber', sortable: true },
-        { name: 'status', label: "STATUS", align: 'center', field: 'Status', sortable: true }
+        {
+          name: "name",
+          label: "NAME",
+          align: "left",
+          field: "Name",
+          sortable: true,
+        },
+        {
+          name: "phoneNumber",
+          label: "PHONE NUMBER",
+          align: "center",
+          field: "PhoneNumber",
+          sortable: true,
+        },
+        {
+          name: "status",
+          label: "STATUS",
+          align: "center",
+          field: "Status",
+          sortable: true,
+        },
       ],
       customerDataFilter: "",
-      customerDataVisible: ['name', 'phoneNumber', 'status'],
+      customerDataVisible: ["name", "phoneNumber", "status"],
       customerDataPagination: {
-        rowsPerPage: 5 // current rows per page being displayed
+        rowsPerPage: 5, // current rows per page being displayed
       },
       // filter model
       options: [
-        'No Status', 'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
+        "No Status",
+        "Tertarik",
+        "Hubungi Kembali",
+        "Tidak Tertarik",
+        "Tidak Aktif",
+        "Tidak Menjawab",
+        "Tidak Terdaftar",
       ],
       response: "",
-    }
+    };
   },
 
   mounted() {
-    var vm=this;
-    var data_submit = {
-      Token: vm.$authService.getToken(),
-      Limit: 10000,
-    }
-    this.$axios
-      .post("/api/customer", data_submit)
-      .then(function (response) {
-        if (response.data) {
-          vm.customers = response.data.Customers
-        }
-      })
+    this.loadCustomer()
   },
 
   methods: {
+    loadCustomer() {
+      var vm = this;
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+        Limit: 10000,
+      };
+      this.$axios.post("/api/customer", data_submit).then(function (response) {
+        if (response.data) {
+          vm.customers = response.data.Customers;
+        }
+      });
+    },
+    assignCustomer() {
+      var vm=this;
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+      };
+      this.$axios
+        .post("/api/customer/assign", data_submit)
+        .then(function (response) {
+          if (response.data) {
+            vm.customers.push(response.data.Customer);
+          }
+        });
+    },
     onRowClick(evt, row) {
+      var vm=this;
       console.log("clicked on", row.PhoneNumber);
       this.$router.push({
         name: "customer-detail",
@@ -102,30 +157,28 @@ export default {
       });
     },
     filter() {
-      if(this.response == 'No Status'){
-        this.response = ''
+      if (this.response == "No Status") {
+        this.response = "";
       }
-      var vm=this;
+      var vm = this;
       var data_submit = {
         Token: vm.$authService.getToken(),
         FilterCustomer: {
           Status: vm.response,
         },
         Limit: 10000,
-      }
-      this.$axios
-        .post("/api/customer", data_submit)
-        .then(function (response) {
-          if (response.data) {
-            if(response.data.Customers){
-              vm.customers = response.data.Customers
-            }else {
-              vm.customers = []
-            }
+      };
+      this.$axios.post("/api/customer", data_submit).then(function (response) {
+        if (response.data) {
+          if (response.data.Customers) {
+            vm.customers = response.data.Customers;
+          } else {
+            vm.customers = [];
           }
-        })
-      console.log(data_submit)
-    }
-  }
-}
+        }
+      });
+      console.log(data_submit);
+    },
+  },
+};
 </script>

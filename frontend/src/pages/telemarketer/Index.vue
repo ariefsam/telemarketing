@@ -53,11 +53,12 @@ export default {
     return {
       telemarketers: [],
       telemarketerDataColumns: [
+        { name: 'name', label: 'Name', align: 'left', field: 'Email', sortable: true },
         { name: 'email', label: 'EMAIL', align: 'left', field: 'Email', sortable: true },
         { name: 'isAdmin', label: 'Admin', align: 'center', field: 'IsAdmin', sortable: true },
       ],
       telemarketerDataFilter: "",
-      telemarketerDataVisible: ['email', 'isAdmin'],
+      telemarketerDataVisible: ['name', 'email', 'isAdmin'],
       telemarketerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
@@ -71,23 +72,13 @@ export default {
       Limit: 10000,
     }
     this.$axios
-      .post("/api/telemarketer", data_submit)
+      .post("/api/telemarketer/get", data_submit)
       .then(function (response) {
         if (response.data) {
           vm.telemarketers = response.data.Telemarketers
         }
       })
-    // dummy
-    vm.telemarketers = [
-      {
-        Email: "arief@fsn.co.id",
-        IsAdmin: true,
-      },
-      {
-        Email: "agung@fsn.co.id",
-        IsAdmin: true,
-      }
-    ]
+   
   },
 
   methods: {

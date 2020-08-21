@@ -87,7 +87,6 @@ export default {
   mounted() {
     var vm = this;
     var user = vm.$authService.getUser();
-    console.log(user);
     this.user = {
       name: user.Name, // user.Name masih kosong
       email: user.Email,

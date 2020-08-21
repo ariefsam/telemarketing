@@ -5,6 +5,7 @@ import (
 	"github.com/ariefsam/telemarketing/entity"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 )
 
 type Telemarketer struct{}
@@ -44,6 +45,22 @@ func (t *Telemarketer) Get(filter entity.FilterTelemarketer, limit int) (telemar
 		mapstructure.Decode(dsnap.Data(), &telemarketer)
 		telemarketers = append(telemarketers, telemarketer)
 		return
+	}
+	iter := docRef.Collection("telemarketer").Limit(limit).Documents(ctx)
+	for {
+		dsnap, err = iter.Next()
+
+		if err == iterator.Done {
+			err = nil
+			break
+		}
+		if err != nil {
+			return
+		}
+		var telemarketer entity.Telemarketer
+		data := dsnap.Data()
+		mapstructure.Decode(data, &telemarketer)
+		telemarketers = append(telemarketers, telemarketer)
 	}
 	return
 }

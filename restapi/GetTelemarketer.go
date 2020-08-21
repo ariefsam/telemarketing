@@ -1,6 +1,8 @@
 package restapi
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func (api *RestAPI) GetTelemarketer(w http.ResponseWriter, r *http.Request) {
 	post := getPostModel(r)
@@ -8,6 +10,7 @@ func (api *RestAPI) GetTelemarketer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+
 	telemarketers, err := api.Usecase.GetTelemarketer(post.FilterTelemarketer, post.Limit)
 	if err != nil {
 		responseError(w, err, http.StatusBadGateway)

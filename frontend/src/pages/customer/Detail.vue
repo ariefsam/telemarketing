@@ -48,7 +48,7 @@
                         label="Skype"
                         class="q-px-sm"
                         no-caps
-                        v-bind:href="'skype://+'+customer.PhoneNumber+'?call'"
+                        @click="callBySkype"
                       />
                     </div>
                   </div>
@@ -146,7 +146,8 @@ export default {
       this.$router.replace({name: "customer"});
     },
     callBySkype(){
-      console.log("Call by Skype")
+      // console.log("Call by Skype")
+      window.location='skype://+'+this.customer.PhoneNumber+'?call'
     },
     onSubmit() {
       var vm=this;

@@ -1,6 +1,7 @@
 package repository_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,5 +23,17 @@ func TestTelemarketer(t *testing.T) {
 	getTelemarketer, err := telemarketerRepository.Get(filter, 1)
 	assert.NoError(t, err)
 	assert.Equal(t, telemarketer, getTelemarketer[0])
+
+	telemarketer2 := entity.Telemarketer{
+		Email: "arief2@gmail.com",
+	}
+	err = telemarketerRepository.Save(telemarketer2)
+	assert.NoError(t, err)
+
+	getTelemarketer, err = telemarketerRepository.Get(entity.FilterTelemarketer{}, 100)
+	assert.NoError(t, err)
+	assert.True(t, len(getTelemarketer) > 1, "Failed get telemarketers, length: "+fmt.Sprintf("%d", len(getTelemarketer)))
+
 	telemarketerRepository.Delete(telemarketer.Email)
+	telemarketerRepository.Delete(telemarketer2.Email)
 }
