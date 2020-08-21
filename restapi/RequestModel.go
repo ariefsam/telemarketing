@@ -3,10 +3,11 @@ package restapi
 import "github.com/ariefsam/telemarketing/entity"
 
 type RequestModel struct {
-	Token          *string
-	Limit          int
-	FilterCustomer entity.FilterCustomer
-	PhoneNumber    string
-	Status         string
-	Telemarketer   entity.Telemarketer
+	Token              *string
+	Limit              int
+	FilterCustomer     entity.FilterCustomer
+	PhoneNumber        string
+	Status             string
+	Telemarketer       entity.Telemarketer
+	FilterTelemarketer entity.FilterTelemarketer
 }

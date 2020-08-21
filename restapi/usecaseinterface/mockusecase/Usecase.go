@@ -69,3 +69,10 @@ func (m *Usecase) SaveTelemarketer(telemarketer entity.Telemarketer) (err error)
 	err = args.Error(0)
 	return
 }
+
+func (m *Usecase) GetTelemarketer(filter entity.FilterTelemarketer, limit int) (telemarketers []entity.Telemarketer, err error) {
+	args := m.Called(filter, limit)
+	telemarketers = args.Get(0).([]entity.Telemarketer)
+	err = args.Error(1)
+	return
+}

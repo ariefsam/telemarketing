@@ -12,4 +12,5 @@ type Usecase interface {
 	LoginByFirebase(firebaseToken string) (token string, telemarketer entity.Telemarketer, isValid bool, err error)
 	CurrentTimestamp() int64
 	SaveTelemarketer(telemarketer entity.Telemarketer) (err error)
+	GetTelemarketer(filter entity.FilterTelemarketer, limit int) ([]entity.Telemarketer, error)
 }
