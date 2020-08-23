@@ -21,7 +21,8 @@ module.exports = function (/* ctx */) {
       'firebase',
       'i18n',
       'axios',
-      'auth'
+      'auth',
+      'restapi'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

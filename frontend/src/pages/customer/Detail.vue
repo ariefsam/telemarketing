@@ -1,7 +1,7 @@
 <template>
   <q-page class="customer-detail">
     <div class="row items-center q-mb-md">
-      <q-btn round color="blue-grey" icon="chevron_left" size="sm" @click="backToIndex"/> 
+      <q-btn round color="blue-grey" icon="chevron_left" size="sm" @click="backToIndex" />
       <div text-color="blue-grey" class="q-ml-sm text-bold" style="font-size:16px;">Back</div>
     </div>
     <div class="row">
@@ -18,12 +18,28 @@
             <q-separator />
             <q-card-section class="content">
               <div class="q-mb-xs">
-                <div class="field-name q-mb-xs">Name <span style="color: red; font-weight: normal">*</span></div>
-                <q-input filled v-model="customer.Name" dense :rules="[val => !!val || 'Field is required']"/>
+                <div class="field-name q-mb-xs">
+                  Name
+                  <span style="color: red; font-weight: normal">*</span>
+                </div>
+                <q-input
+                  filled
+                  v-model="customer.Name"
+                  dense
+                  :rules="[val => !!val || 'Field is required']"
+                />
               </div>
               <div class="q-mb-xs">
-                <div class="field-name q-mb-xs">Phone Number <span style="color: red; font-weight: normal">*</span></div>
-                <q-input filled v-model="customer.PhoneNumber" dense :rules="[val => !!val || 'Field is required']"/>
+                <div class="field-name q-mb-xs">
+                  Phone Number
+                  <span style="color: red; font-weight: normal">*</span>
+                </div>
+                <q-input
+                  filled
+                  v-model="customer.PhoneNumber"
+                  dense
+                  :rules="[val => !!val || 'Field is required']"
+                />
               </div>
               <!--<div>
                 <div class="field-name q-mb-xs">Additonal Information </div>
@@ -31,7 +47,6 @@
               </div>-->
             </q-card-section>
           </q-card>
-          
 
           <!--Customer Response-->
           <q-card class="customer-response col-md-8">
@@ -53,31 +68,100 @@
                     </div>
                   </div>
                   <div>
-                    <div class="title">Response <span style="color: red; font-weight: normal">*</span></div>
+                    <div class="title">
+                      Response
+                      <span style="color: red; font-weight: normal">*</span>
+                    </div>
                     <div class="row q-col-gutter-sm">
                       <div class="col-md-4">
-                        <q-btn outline icon="fas fa-smile" stack color="green-9" label="Tertarik" class="full-width q-py-sm" no-caps v-bind:class="{ 'active-tertarik': tertarik }" @click="activateTertarik"/>
+                        <q-btn
+                          outline
+                          icon="fas fa-smile"
+                          stack
+                          color="green-9"
+                          label="Tertarik"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-tertarik': tertarik }"
+                          @click="activateTertarik"
+                        />
                       </div>
                       <div class="col-md-4">
-                        <q-btn outline icon="fas fa-reply" stack color="blue-9" label="Hubungi Kembali" class="full-width q-py-sm" no-caps v-bind:class="{ 'active-hubungi-kembali': hubungiKembali }" @click="activateHubungiKembali"/>
+                        <q-btn
+                          outline
+                          icon="fas fa-reply"
+                          stack
+                          color="blue-9"
+                          label="Hubungi Kembali"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-hubungi-kembali': hubungiKembali }"
+                          @click="activateHubungiKembali"
+                        />
                       </div>
                       <div class="col-md-4">
-                        <q-btn outline icon="fas fa-frown" stack color="red-9" label="Tidak Tertarik" class="full-width q-py-sm" no-caps v-bind:class="{ 'active-tidak-tertarik': tidakTertarik }" @click="activateTidakTertarik"/>
+                        <q-btn
+                          outline
+                          icon="fas fa-frown"
+                          stack
+                          color="red-9"
+                          label="Tidak Tertarik"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-tidak-tertarik': tidakTertarik }"
+                          @click="activateTidakTertarik"
+                        />
                       </div>
                       <div class="col-md-4">
-                        <q-btn outline icon="fas fa-times" stack color="grey-6" label="Tidak Aktif" class="full-width q-py-sm" no-caps v-bind:class="{ 'active-tidak-aktif': tidakAktif }" @click="activateTidakAktif"/>
+                        <q-btn
+                          outline
+                          icon="fas fa-times"
+                          stack
+                          color="grey-6"
+                          label="Tidak Aktif"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-tidak-aktif': tidakAktif }"
+                          @click="activateTidakAktif"
+                        />
                       </div>
                       <div class="col-md-4">
-                        <q-btn outline icon="fas fa-share" stack color="orange-7" label="Tidak Menjawab" class="full-width q-py-sm" no-caps v-bind:class="{ 'active-tidak-menjawab': tidakMenjawab }" @click="activateTidakMenjawab"/>
+                        <q-btn
+                          outline
+                          icon="fas fa-share"
+                          stack
+                          color="orange-7"
+                          label="Tidak Menjawab"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-tidak-menjawab': tidakMenjawab }"
+                          @click="activateTidakMenjawab"
+                        />
                       </div>
                       <div class="col-md-4">
-                        <q-btn outline icon="fas fa-ban" stack color="black" label="Tidak Terdaftar" class="full-width q-py-sm" no-caps v-bind:class="{ 'active-tidak-terdaftar': tidakTerdaftar }" @click="activateTidakTerdaftar"/>
+                        <q-btn
+                          outline
+                          icon="fas fa-ban"
+                          stack
+                          color="black"
+                          label="Tidak Terdaftar"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-tidak-terdaftar': tidakTerdaftar }"
+                          @click="activateTidakTerdaftar"
+                        />
                       </div>
                     </div>
                   </div>
-                </div>  
+                </div>
                 <div class="row justify-end q-mt-lg">
-                  <q-btn class="q-px-lg" color="primary" text-color="white" type="submit" label="Save"/>
+                  <q-btn
+                    class="q-px-lg"
+                    color="primary"
+                    text-color="white"
+                    type="submit"
+                    label="Save"
+                  />
                 </div>
               </div>
             </div>
@@ -91,9 +175,7 @@
           <div class="text-h6 text-center">Alert</div>
         </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          Response is required
-        </q-card-section>
+        <q-card-section class="q-pt-none">Response is required</q-card-section>
       </q-card>
     </q-dialog>
   </q-page>
@@ -102,7 +184,7 @@
 
 <script>
 export default {
-  name: 'CustomerDetail',
+  name: "CustomerDetail",
 
   data() {
     return {
@@ -118,153 +200,141 @@ export default {
       tidakAktif: false,
       tidakMenjawab: false,
       tidakTerdaftar: false,
-    }
+    };
   },
 
-  mounted(){
-    var vm=this;
+  mounted() {
+    var vm = this;
     var data_submit = {
       Token: vm.$authService.getToken(),
       FilterCustomer: {
         PhoneNumber: vm.customerPhoneNumber,
       },
       Limit: 10000,
-    }
-    this.$axios
-      .post("/api/customer", data_submit)
-      .then(function (response) {
-        if (response.data) {
-          vm.customer = response.data.Customers[0]
-        }
-      })
+    };
+    this.$axios.post("/api/customer", data_submit).then(function (response) {
+      if (response.data) {
+        vm.customer = response.data.Customers[0];
+      }
+    });
     // Assign Status if there's a value in it
-    this.assignStatus(this.customer.Status)
+    this.assignStatus(this.customer.Status);
   },
 
   methods: {
-    backToIndex(){
-      this.$router.replace({name: "customer"});
+    backToIndex() {
+      this.$router.replace({ name: "customer" });
     },
-    callBySkype(){
+    callBySkype() {
       // console.log("Call by Skype")
-      window.location='skype://+'+this.customer.PhoneNumber+'?call'
+      window.location = "skype://+" + this.customer.PhoneNumber + "?call";
     },
     onSubmit() {
-      var vm=this;
-      console.log(this.customer)
-      console.log(this.additionalInfo)
-      console.log(this.response)
-      if(this.response == ''){
-        this.alert = true
-      }else {
+      var vm = this;
+      console.log(this.customer);
+      console.log(this.additionalInfo);
+      console.log(this.response);
+      if (this.response == "") {
+        this.alert = true;
+      } else {
         // Submit data
         var data_submit = {
           Token: vm.$authService.getToken(),
           PhoneNumber: vm.customerPhoneNumber,
           Status: vm.response,
-        }
-        this.$axios
-          .post("/api/customer/call", data_submit)
-          .then(function (response) {
-            if (response.data) {
-              console.log(response.data)
-            }
-          })
-          .catch(function(error) {
-            console.log(error)
-          });
-        console.log(data_submit)
+        };
+        vm.$restapi.callCustomer(data_submit, ()=>{vm.$router.push({ name: "customer" })});
       }
     },
-    assignStatus(status){
-      if (status == 'Tertarik'){
-        this.tertarik = true
-        this.response = 'Tertarik'
-      } else if (status == 'Hubungi Kembali') {
-        this.hubungiKembali = true
-        this.response = 'Hubungi Kembali'
-      }else if (status == 'Tidak Tertarik') {
-        this.tidakTertarik = true
-        this.response = 'Tidak Tertarik'
-      }else if (status == 'Tidak Aktif') {
-        this.tidakAktif = true
-        this.response = 'Tidak Aktif'
-      }else if (status == 'Tidak Menjawab') {
-        this.tidakMenjawab = true
-        this.response = 'Tidak Menjawab'
-      } else if (status == 'Tidak Terdaftar') {
-        this.tidakTerdaftar = true
-        this.response = 'Tidak Terdaftar'
+    assignStatus(status) {
+      if (status == "Tertarik") {
+        this.tertarik = true;
+        this.response = "Tertarik";
+      } else if (status == "Hubungi Kembali") {
+        this.hubungiKembali = true;
+        this.response = "Hubungi Kembali";
+      } else if (status == "Tidak Tertarik") {
+        this.tidakTertarik = true;
+        this.response = "Tidak Tertarik";
+      } else if (status == "Tidak Aktif") {
+        this.tidakAktif = true;
+        this.response = "Tidak Aktif";
+      } else if (status == "Tidak Menjawab") {
+        this.tidakMenjawab = true;
+        this.response = "Tidak Menjawab";
+      } else if (status == "Tidak Terdaftar") {
+        this.tidakTerdaftar = true;
+        this.response = "Tidak Terdaftar";
       }
     },
     reset() {
-      this.tertarik = false
-      this.hubungiKembali = false
-      this.tidakTertarik = false
-      this.tidakAktif = false
-      this.tidakMenjawab = false
-      this.tidakTerdaftar = false
+      this.tertarik = false;
+      this.hubungiKembali = false;
+      this.tidakTertarik = false;
+      this.tidakAktif = false;
+      this.tidakMenjawab = false;
+      this.tidakTerdaftar = false;
     },
     activateTertarik() {
-      if (this.tertarik){
-        this.tertarik = false
-        this.response = ''
-      }else {
-        this.reset()
-        this.tertarik = true
-        this.response = 'Tertarik'
+      if (this.tertarik) {
+        this.tertarik = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.tertarik = true;
+        this.response = "Tertarik";
       }
     },
     activateHubungiKembali() {
-      if (this.hubungiKembali){
-        this.hubungiKembali = false
-        this.response = ''
-      }else {
-        this.reset()
-        this.hubungiKembali = true
-        this.response = 'Hubungi Kembali'
+      if (this.hubungiKembali) {
+        this.hubungiKembali = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.hubungiKembali = true;
+        this.response = "Hubungi Kembali";
       }
     },
     activateTidakTertarik() {
-      if (this.tidakTertarik){
-        this.tidakTertarik = false
-        this.response = ''
-      }else {
-        this.reset()
-        this.tidakTertarik = true
-        this.response = 'Tidak Tertarik'
+      if (this.tidakTertarik) {
+        this.tidakTertarik = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.tidakTertarik = true;
+        this.response = "Tidak Tertarik";
       }
     },
     activateTidakAktif() {
-      if (this.tidakAktif){
-        this.tidakAktif = false
-        this.response = ''
-      }else {
-        this.reset()
-        this.tidakAktif = true
-        this.response = 'Tidak Aktif'
+      if (this.tidakAktif) {
+        this.tidakAktif = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.tidakAktif = true;
+        this.response = "Tidak Aktif";
       }
     },
     activateTidakMenjawab() {
-      if(this.tidakMenjawab){
-        this.tidakMenjawab = false
-        this.response = ''
-      }else {
-        this.reset()
-        this.tidakMenjawab = true
-        this.response = 'Tidak Menjawab'
+      if (this.tidakMenjawab) {
+        this.tidakMenjawab = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.tidakMenjawab = true;
+        this.response = "Tidak Menjawab";
       }
     },
     activateTidakTerdaftar() {
-      if(this.tidakTerdaftar){
-        this.tidakTerdaftar = false
-        this.response = ''
-      }else {
-        this.reset()
-        this.tidakTerdaftar = true
-        this.response = 'Tidak Terdaftar'
+      if (this.tidakTerdaftar) {
+        this.tidakTerdaftar = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.tidakTerdaftar = true;
+        this.response = "Tidak Terdaftar";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

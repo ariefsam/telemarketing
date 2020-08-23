@@ -12,8 +12,10 @@ import (
 
 func TestGetCallLog(t *testing.T) {
 	var u usecase.Usecase
+	var timestampEnd int64
+	timestampEnd = 13000000
 	filter := entity.FilterCallLog{
-		TimestampEnd: 1300000000,
+		TimestampEnd: timestampEnd,
 	}
 	limit := 10
 	expectedCallLogs := []entity.CallLog{
