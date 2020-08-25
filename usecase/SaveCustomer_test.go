@@ -13,9 +13,9 @@ import (
 func TestSaveCustomer(t *testing.T) {
 	var u usecase.Usecase
 	customer := entity.Customer{
-		PhoneNumber:       "0123123",
-		Status:            "Terdaftar",
-		TelemarketerEmail: "t01",
+		PhoneNumber:    "0123123",
+		Status:         "Terdaftar",
+		TelemarketerID: "t0ee1",
 	}
 	var mockCustomerRepository mockdependency.CustomerRepository
 	u.CustomerRepository = &mockCustomerRepository

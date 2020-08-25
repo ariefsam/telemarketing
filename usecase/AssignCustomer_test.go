@@ -19,7 +19,7 @@ func TestAssignCustomer(t *testing.T) {
 	u.CustomerRepository = &mockCustomerRepository
 
 	filter := entity.FilterCustomer{
-		TelemarketerEmail: new(string),
+		TelemarketerID: new(string),
 	}
 
 	expectedCustomer := entity.Customer{
@@ -29,7 +29,7 @@ func TestAssignCustomer(t *testing.T) {
 	mockCustomerRepository.On("Get", filter, limit).Return([]entity.Customer{expectedCustomer}, nil)
 
 	expectedSavedCustomer := expectedCustomer
-	expectedSavedCustomer.TelemarketerEmail = telemarketerID
+	expectedSavedCustomer.TelemarketerID = telemarketerID
 	mockCustomerRepository.On("Save", expectedSavedCustomer).Return(nil)
 
 	customer, err := u.AssignCustomer(telemarketerID)

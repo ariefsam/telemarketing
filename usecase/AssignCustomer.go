@@ -6,9 +6,9 @@ import (
 	"github.com/ariefsam/telemarketing/entity"
 )
 
-func (u *Usecase) AssignCustomer(telemarketerEmail string) (customer entity.Customer, err error) {
+func (u *Usecase) AssignCustomer(telemarketerID string) (customer entity.Customer, err error) {
 	filter := entity.FilterCustomer{
-		TelemarketerEmail: new(string),
+		TelemarketerID: new(string),
 	}
 	customers, err := u.CustomerRepository.Get(filter, 1)
 	if err != nil {
@@ -19,7 +19,7 @@ func (u *Usecase) AssignCustomer(telemarketerEmail string) (customer entity.Cust
 		return
 	}
 	customer = customers[0]
-	customer.TelemarketerEmail = telemarketerEmail
+	customer.TelemarketerID = telemarketerID
 	err = u.CustomerRepository.Save(customer)
 	return
 }
