@@ -22,7 +22,7 @@ func (api *RestAPI) ListCustomer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if telemarketer.IsAdmin == false {
-		post.FilterCustomer.TelemarketerID = &telemarketer.Email
+		post.FilterCustomer.TelemarketerID = &telemarketer.ID
 	}
 
 	customers, err := api.Usecase.GetCustomer(post.FilterCustomer, post.Limit)

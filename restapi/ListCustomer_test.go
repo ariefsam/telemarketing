@@ -17,7 +17,7 @@ func TestListCustomerNotAdmin(t *testing.T) {
 	}
 
 	filter := entity.FilterCustomer{
-		TelemarketerID: &expectedTelemarketer.Email,
+		TelemarketerID: &expectedTelemarketer.ID,
 	}
 
 	expectedCustomers := dummyCustomers()

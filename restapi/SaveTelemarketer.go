@@ -17,7 +17,7 @@ func (api *RestAPI) SaveTelemarketer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := map[string]interface{}{
-		"Telemarketer": post.Telemarketer,
+		"Status": "ok",
 	}
 	JSONView(w, response, http.StatusOK)
 	return
