@@ -43,8 +43,8 @@ func TestCallLog(t *testing.T) {
 	assert.NoError(t, err)
 
 	filter := entity.FilterCallLog{
-		TelemarketerEmail: callLog2.TelemarketerEmail,
-		Status:            callLog2.Status,
+		TelemarketerEmail: &callLog2.TelemarketerEmail,
+		Status:            &callLog2.Status,
 		TimestampStart:    1231000,
 		TimestampEnd:      1250000,
 	}

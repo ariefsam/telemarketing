@@ -53,28 +53,13 @@ func TestCallHisCustomer(t *testing.T) {
 	currentTimestamp := int64(1500000000000)
 	mockUsecase.On("CurrentTimestamp").Return(currentTimestamp)
 
-	callLog := entity.CallLog{
-		Name:           getCustomer.Name,
-		PhoneNumber:    getCustomer.PhoneNumber,
-		TelemarketerID: telemarketer.ID,
-		Status:         status,
-		Timestamp:      currentTimestamp,
-	}
-
-	savedCustomer := getCustomer
-	savedCustomer.Status = status
-	savedCustomer.TimestampUpdated = currentTimestamp
-
-	mockUsecase.On("SaveCallLog", callLog).Return(nil)
-	mockUsecase.On("SaveCustomer", savedCustomer).Return(nil)
+	mockUsecase.On("Call", telemarketer, getCustomer, status, currentTimestamp).Return(nil)
 
 	expectedResponse := map[string]interface{}{
-		"CallLog":  callLog,
-		"Customer": savedCustomer,
+		"Status": "ok",
 	}
 
 	assertRequestResponse(t, api.Call, request, expectedResponse)
-	mockUsecase.AssertCalled(t, "SaveCallLog", callLog)
-	mockUsecase.AssertCalled(t, "SaveCustomer", savedCustomer)
+	mockUsecase.AssertCalled(t, "Call", telemarketer, getCustomer, status, currentTimestamp)
 
 }

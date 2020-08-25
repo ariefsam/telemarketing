@@ -10,14 +10,14 @@ func (api *RestAPI) CreateTelemarketer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = api.Usecase.SaveTelemarketer(post.Telemarketer)
+	err = api.Usecase.CreateTelemarketer(post.Telemarketer)
 	if err != nil {
 		responseError(w, err, http.StatusBadGateway)
 		return
 	}
 
 	response := map[string]interface{}{
-		"Telemarketer": post.Telemarketer,
+		"Status": "ok",
 	}
 	JSONView(w, response, http.StatusOK)
 	return

@@ -4,6 +4,12 @@ import auth from 'firebase/auth' // not used but needed
 import config from './environment.json'
 
 export const fireApp = firebase.initializeApp(config)
+
+fireApp.firestore().settings({
+    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+});
+
+fireApp.firestore().enablePersistence()
 export const firestoreDB = fireApp.firestore();
 
 export const AUTH = fireApp.auth()

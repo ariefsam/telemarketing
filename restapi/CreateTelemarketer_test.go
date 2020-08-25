@@ -47,11 +47,7 @@ func TestCreateTelemarketerAdmin(t *testing.T) {
 
 	mockUsecase.On("CreateTelemarketer", savedTelemarketer).Return(nil)
 	expectedResponse := map[string]interface{}{
-		"Telemarketer": map[string]interface{}{
-			"Name":    "Arief",
-			"Email":   "arief@fsn.co.id",
-			"IsAdmin": false,
-		},
+		"Status": "ok",
 	}
 	assertRequestResponse(t, api.CreateTelemarketer, request, expectedResponse)
 	mockUsecase.AssertCalled(t, "CreateTelemarketer", savedTelemarketer)

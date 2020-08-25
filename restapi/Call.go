@@ -30,37 +30,16 @@ func (api *RestAPI) Call(w http.ResponseWriter, r *http.Request) {
 	}
 	customer := customers[0]
 
-	if telemarketer.Email != customers[0].TelemarketerID {
+	if telemarketer.ID != customers[0].TelemarketerID {
 		responseError(w, errors.New("Forbidden Customer"), http.StatusBadRequest)
 		return
 	}
 
 	status := post.Status
 	timestamp := api.Usecase.CurrentTimestamp()
-	callLog := entity.CallLog{
-		Name:           customer.Name,
-		PhoneNumber:    customer.PhoneNumber,
-		Status:         status,
-		Timestamp:      timestamp,
-		TelemarketerID: telemarketer.ID,
-	}
-	err = api.Usecase.SaveCallLog(callLog)
-	if err != nil {
-		responseError(w, err, http.StatusBadGateway)
-		return
-	}
-
-	customer.Status = status
-	customer.TelemarketerID = telemarketer.ID
-	customer.TimestampUpdated = timestamp
-	err = api.Usecase.SaveCustomer(customer)
-	if err != nil {
-		responseError(w, err, http.StatusBadGateway)
-		return
-	}
+	err = api.Usecase.Call(telemarketer, customer, status, timestamp)
 	response := map[string]interface{}{
-		"CallLog":  callLog,
-		"Customer": customer,
+		"Status": "ok",
 	}
 	JSONView(w, response, http.StatusOK)
 	return

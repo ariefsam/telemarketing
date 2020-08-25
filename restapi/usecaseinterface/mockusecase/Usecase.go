@@ -30,8 +30,8 @@ func (m *Usecase) GetCustomer(filter entity.FilterCustomer, limit int) (customer
 	return
 }
 
-func (m *Usecase) SaveCallLog(callLog entity.CallLog) (err error) {
-	args := m.Called(callLog)
+func (m *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, timestamp int64) (err error) {
+	args := m.Called(telemarketer, customer, status, timestamp)
 	err = args.Error(0)
 	return
 }
@@ -65,6 +65,12 @@ func (m *Usecase) CurrentTimestamp() (timestamp int64) {
 }
 
 func (m *Usecase) SaveTelemarketer(telemarketer entity.Telemarketer) (err error) {
+	args := m.Called(telemarketer)
+	err = args.Error(0)
+	return
+}
+
+func (m *Usecase) CreateTelemarketer(telemarketer entity.Telemarketer) (err error) {
 	args := m.Called(telemarketer)
 	err = args.Error(0)
 	return
