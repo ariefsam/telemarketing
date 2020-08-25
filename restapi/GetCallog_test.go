@@ -18,8 +18,8 @@ func TestGetCallLogNotAdmin(t *testing.T) {
 	}
 	status := "Tertarik"
 	filter := entity.FilterCallLog{
-		TelemarketerEmail: &telemarketer.Email,
-		Status:            &status,
+		TelemarketerID: &telemarketer.Email,
+		Status:         &status,
 	}
 	limit := 1
 	callLogs := []entity.CallLog{

@@ -12,7 +12,7 @@ func (api *RestAPI) GetCallLog(w http.ResponseWriter, r *http.Request) {
 	}
 	filter := post.FilterCallLog
 	if !telemarketer.IsAdmin {
-		filter.TelemarketerEmail = &telemarketer.Email
+		filter.TelemarketerID = &telemarketer.ID
 	}
 
 	CallLogs, err := api.Usecase.GetCallLog(filter, post.Limit)

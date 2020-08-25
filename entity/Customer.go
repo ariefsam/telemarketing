@@ -1,10 +1,11 @@
 package entity
 
 type Customer struct {
-	Name              string
-	PhoneNumber       string
-	Status            string
-	TelemarketerEmail string
-	TimestampCreated  int64
-	TimestampUpdated  int64
+	ID               string
+	Name             string
+	PhoneNumber      string
+	Status           string
+	TelemarketerID   string
+	TimestampCreated int64
+	TimestampUpdated int64
 }

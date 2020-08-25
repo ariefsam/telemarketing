@@ -30,7 +30,7 @@ func (api *RestAPI) Call(w http.ResponseWriter, r *http.Request) {
 	}
 	customer := customers[0]
 
-	if telemarketer.Email != customers[0].TelemarketerEmail {
+	if telemarketer.Email != customers[0].TelemarketerID {
 		responseError(w, errors.New("Forbidden Customer"), http.StatusBadRequest)
 		return
 	}
@@ -38,11 +38,11 @@ func (api *RestAPI) Call(w http.ResponseWriter, r *http.Request) {
 	status := post.Status
 	timestamp := api.Usecase.CurrentTimestamp()
 	callLog := entity.CallLog{
-		Name:              customer.Name,
-		PhoneNumber:       customer.PhoneNumber,
-		Status:            status,
-		Timestamp:         timestamp,
-		TelemarketerEmail: telemarketer.Email,
+		Name:           customer.Name,
+		PhoneNumber:    customer.PhoneNumber,
+		Status:         status,
+		Timestamp:      timestamp,
+		TelemarketerID: telemarketer.ID,
 	}
 	err = api.Usecase.SaveCallLog(callLog)
 	if err != nil {
@@ -51,7 +51,7 @@ func (api *RestAPI) Call(w http.ResponseWriter, r *http.Request) {
 	}
 
 	customer.Status = status
-	customer.TelemarketerEmail = telemarketer.Email
+	customer.TelemarketerID = telemarketer.ID
 	customer.TimestampUpdated = timestamp
 	err = api.Usecase.SaveCustomer(customer)
 	if err != nil {

@@ -17,7 +17,7 @@ func TestListCustomerNotAdmin(t *testing.T) {
 	}
 
 	filter := entity.FilterCustomer{
-		TelemarketerEmail: &expectedTelemarketer.Email,
+		TelemarketerID: &expectedTelemarketer.Email,
 	}
 
 	expectedCustomers := dummyCustomers()
@@ -30,7 +30,7 @@ func TestListCustomerNotAdmin(t *testing.T) {
 	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)
 }
 
-func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
+func TestListCustomerNotAdminBadTelemarketerID(t *testing.T) {
 	api, mockUsecase := setupAPIAndUsecase()
 	dummyToken, _ := setupMockParseToken(mockUsecase)
 	limit := 100
@@ -39,12 +39,12 @@ func TestListCustomerNotAdminBadTelemarketerEmail(t *testing.T) {
 		"Token": dummyToken,
 		"Limit": limit,
 		"FilterCustomer": map[string]interface{}{
-			"TelemarketerEmail": "xxx",
+			"TelemarketerID": "xxx",
 		},
 	}
 
 	expectedResponse := map[string]interface{}{
-		"Error": "FilterCustomer TelemarketerEmail forbidden",
+		"Error": "FilterCustomer TelemarketerID forbidden",
 	}
 
 	assertRequestResponse(t, api.ListCustomer, request, expectedResponse)

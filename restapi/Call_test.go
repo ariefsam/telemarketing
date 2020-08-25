@@ -15,8 +15,8 @@ func TestCallNotHisCustomer(t *testing.T) {
 	}
 
 	getCustomer := entity.Customer{
-		PhoneNumber:       "12312",
-		TelemarketerEmail: "nothisemail@gmail.com",
+		PhoneNumber:    "12312",
+		TelemarketerID: "badidtele",
 	}
 	filterCustomer := entity.FilterCustomer{
 		PhoneNumber: &getCustomer.PhoneNumber,
@@ -42,8 +42,8 @@ func TestCallHisCustomer(t *testing.T) {
 	}
 
 	getCustomer := entity.Customer{
-		PhoneNumber:       "12312",
-		TelemarketerEmail: telemarketer.Email,
+		PhoneNumber:    "12312",
+		TelemarketerID: telemarketer.ID,
 	}
 	filterCustomer := entity.FilterCustomer{
 		PhoneNumber: &getCustomer.PhoneNumber,
@@ -54,11 +54,11 @@ func TestCallHisCustomer(t *testing.T) {
 	mockUsecase.On("CurrentTimestamp").Return(currentTimestamp)
 
 	callLog := entity.CallLog{
-		Name:              getCustomer.Name,
-		PhoneNumber:       getCustomer.PhoneNumber,
-		TelemarketerEmail: telemarketer.Email,
-		Status:            status,
-		Timestamp:         currentTimestamp,
+		Name:           getCustomer.Name,
+		PhoneNumber:    getCustomer.PhoneNumber,
+		TelemarketerID: telemarketer.ID,
+		Status:         status,
+		Timestamp:      currentTimestamp,
 	}
 
 	savedCustomer := getCustomer

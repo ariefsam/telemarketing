@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ariefsam/telemarketing/ioc"
+	"github.com/ariefsam/telemarketing/restapi/usecaseinterface"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
@@ -34,10 +34,9 @@ func (fs FileSystem) Open(path string) (http.File, error) {
 
 	return f, nil
 }
-func Serve() {
-	usecase := ioc.Usecase()
+func Serve(usecase usecaseinterface.Usecase) {
 	api := RestAPI{
-		Usecase: &usecase,
+		Usecase: usecase,
 	}
 	r := mux.NewRouter()
 	r.HandleFunc("/api/login/firebase", api.LoginByFirebase).Methods("POST")
@@ -47,6 +46,7 @@ func Serve() {
 	r.HandleFunc("/api/call-log/get", api.GetCallLog).Methods("POST")
 	r.HandleFunc("/api/customer/assign", api.AssignCustomer).Methods("POST")
 	r.HandleFunc("/api/telemarketer/save", api.SaveTelemarketer).Methods("POST")
+	r.HandleFunc("/api/telemarketer/create", api.CreateTelemarketer).Methods("POST")
 	r.HandleFunc("/api/telemarketer/get", api.GetTelemarketer).Methods("POST")
 	r.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
 		resp := map[string]string{

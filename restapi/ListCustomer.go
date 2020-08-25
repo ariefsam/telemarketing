@@ -14,15 +14,15 @@ func (api *RestAPI) ListCustomer(w http.ResponseWriter, r *http.Request) {
 
 	response := map[string]interface{}{}
 
-	if post.FilterCustomer.TelemarketerEmail != nil && telemarketer.IsAdmin == false {
-		response["Error"] = "FilterCustomer TelemarketerEmail forbidden"
+	if post.FilterCustomer.TelemarketerID != nil && telemarketer.IsAdmin == false {
+		response["Error"] = "FilterCustomer TelemarketerID forbidden"
 		JSONView(w, response, http.StatusForbidden)
 		return
 
 	}
 
 	if telemarketer.IsAdmin == false {
-		post.FilterCustomer.TelemarketerEmail = &telemarketer.Email
+		post.FilterCustomer.TelemarketerID = &telemarketer.Email
 	}
 
 	customers, err := api.Usecase.GetCustomer(post.FilterCustomer, post.Limit)

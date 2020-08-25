@@ -13,8 +13,8 @@ func TestAssignCustomer(t *testing.T) {
 	}
 
 	expectedCustomer := dummyCustomers()[0]
-	expectedCustomer.TelemarketerEmail = expectedTelemarketer.Email
-	mockUsecase.On("AssignCustomer", expectedTelemarketer.Email).Return(expectedCustomer, nil)
+	expectedCustomer.TelemarketerID = expectedTelemarketer.ID
+	mockUsecase.On("AssignCustomer", expectedTelemarketer.ID).Return(expectedCustomer, nil)
 
 	expectedResponse := map[string]interface{}{
 		"Customer": expectedCustomer,
