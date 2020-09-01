@@ -36,11 +36,11 @@ func (c *CallLog) Get(filter entity.FilterCallLog, limit int) (callLogs []entity
 	var dsnap *firestore.DocumentSnapshot
 	fWhere := []filterWhere{}
 
-	if filter.TelemarketerEmail != nil {
+	if filter.TelemarketerID != nil {
 		fWhere = append(fWhere, filterWhere{
-			path:     "TelemarketerEmail",
+			path:     "TelemarketerID",
 			operator: "==",
-			value:    &filter.TelemarketerEmail,
+			value:    &filter.TelemarketerID,
 		})
 	}
 

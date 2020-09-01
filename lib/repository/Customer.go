@@ -46,11 +46,11 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 
 	fWhere := []filterWhere{}
 
-	if filter.TelemarketerEmail != nil {
+	if filter.TelemarketerID != nil {
 		fWhere = append(fWhere, filterWhere{
-			path:     "TelemarketerEmail",
+			path:     "TelemarketerID",
 			operator: "==",
-			value:    *filter.TelemarketerEmail,
+			value:    *filter.TelemarketerID,
 		})
 	}
 
