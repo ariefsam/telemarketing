@@ -30,8 +30,8 @@ func (m *Usecase) GetCustomer(filter entity.FilterCustomer, limit int) (customer
 	return
 }
 
-func (m *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, timestamp int64) (err error) {
-	args := m.Called(telemarketer, customer, status, timestamp)
+func (m *Usecase) SaveCallLog(callLog entity.CallLog) (err error) {
+	args := m.Called(callLog)
 	err = args.Error(0)
 	return
 }
