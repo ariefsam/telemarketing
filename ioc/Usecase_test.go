@@ -22,5 +22,6 @@ func TestUsecase(t *testing.T) {
 	}
 	assert.NotNil(t, u.TelemarketerRepository)
 	assert.NotNil(t, u.Timer)
+	assert.NotNil(t, u.IDGenerator)
 
 }

@@ -8,6 +8,7 @@ type Usecase interface {
 	GetCustomer(filter entity.FilterCustomer, limit int) (customers []entity.Customer, err error)
 	SaveCallLog(callLog entity.CallLog) (err error)
 	SaveCustomer(customer entity.Customer) (err error)
+	Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, currentTimestamp int64) (err error)
 	ParseToken(token string) (isValid bool, telemarketer entity.Telemarketer)
 	LoginByFirebase(firebaseToken string) (token string, telemarketer entity.Telemarketer, isValid bool, err error)
 	CurrentTimestamp() int64

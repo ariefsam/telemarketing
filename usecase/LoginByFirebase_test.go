@@ -34,7 +34,7 @@ func TestLoginByFirebase(t *testing.T) {
 		Name:  "Dadang",
 	}
 	filterTelemarketing := entity.FilterTelemarketer{
-		Email: expectedAuthData.Email,
+		Email: &expectedAuthData.Email,
 	}
 	mockTelemarketer.On("Get", filterTelemarketing, 1).Return([]entity.Telemarketer{expectedTelemarketer}, nil)
 

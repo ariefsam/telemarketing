@@ -17,13 +17,16 @@ func assertRequestResponse(t *testing.T, handlerFunc http.HandlerFunc, requestBo
 	req := httptest.NewRequest("POST", "http://localhost/", bodyReader)
 	w := httptest.NewRecorder()
 
-	expectedBodyResponse, _ := json.Marshal(expectedResponse)
+	expectedBodyResponse, err := json.Marshal(expectedResponse)
+	assert.NoError(t, err)
 
 	handlerFunc(w, req)
 
 	resp := w.Result()
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	assert.NoError(t, err)
 	actualResponse := map[string]interface{}{}
 	json.Unmarshal(body, &actualResponse)
+
 	assert.JSONEq(t, string(expectedBodyResponse), string(body))
 }

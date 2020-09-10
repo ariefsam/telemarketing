@@ -42,6 +42,12 @@ func (m *Usecase) SaveCustomer(customer entity.Customer) (err error) {
 	return
 }
 
+func (m *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, currentTimestamp int64) (err error) {
+	args := m.Called(telemarketer, customer, status, currentTimestamp)
+	err = args.Error(0)
+	return
+}
+
 func (m *Usecase) ParseToken(token string) (isValid bool, telemarketer entity.Telemarketer) {
 	args := m.Called(token)
 	isValid = args.Bool(0)

@@ -1,6 +1,6 @@
 package entity
 
 type FilterTelemarketer struct {
-	Email   string
-	IsAdmin bool
+	Email   *string
+	IsAdmin *bool
 }

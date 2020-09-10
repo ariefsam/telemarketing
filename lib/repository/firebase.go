@@ -23,6 +23,6 @@ func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, e
 		log.Fatalln(err)
 	}
 	client, err := app.Firestore(ctx)
-	docRef = client.Collection("db").Doc("telemarketing_")
+	docRef = client.Collection("db").Doc("telemarketing")
 	return
 }

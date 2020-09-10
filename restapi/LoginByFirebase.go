@@ -2,6 +2,7 @@ package restapi
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -20,6 +21,7 @@ func (api *RestAPI) LoginByFirebase(w http.ResponseWriter, r *http.Request) {
 
 	token, telemarketer, isValid, err := api.Usecase.LoginByFirebase(firebaseToken)
 	if err != nil {
+		log.Println(err)
 		response["Error"] = "Login failed"
 		JSONView(w, response, http.StatusBadGateway)
 		return

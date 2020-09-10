@@ -12,20 +12,11 @@ func (u *Usecase) LoginByFirebase(firebaseToken string) (token string, telemarke
 		return
 	}
 
-	var telemarketers []entity.Telemarketer
-	filter := entity.FilterTelemarketer{
-		Email: authData.Email,
-	}
-	telemarketers, err = u.TelemarketerRepository.Get(filter, 1)
+	telemarketer, isValid, err = u.getTelemarketerByEmail(authData.Email)
 	if err != nil {
 		return
 	}
-	if len(telemarketers) == 0 {
-		isValid = false
-		return
-	}
 
-	telemarketer = telemarketers[0]
 	token = u.TokenService.Create(telemarketer)
 	return
 }

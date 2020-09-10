@@ -8,8 +8,7 @@ import (
 
 func main() {
 	var p usecase_eventsource.Projection
-	go p.FirestoreToRedis()
-	go p.ProjectRedis()
+	go p.FirestoreProjection()
 
 	usecase := ioc_eventsource.Usecase()
 	restapi.Serve(&usecase)
