@@ -21,11 +21,19 @@
         <q-card-section class="row content q-col-gutter-md">
           <div class="col-md-4">
             <div class="field-name q-mb-xs">Status</div>
-            <q-select filled v-model="response" :options="responseOptions" label="Please select" @input="filter"/>
+            <q-select filled v-model="response" :options="responseOptions" label="Please select" @input="filter">
+              <template v-if="response" v-slot:append>
+                <q-icon name="cancel" @click.stop="resetFilterStatus" class="cursor-pointer" />
+              </template>
+            </q-select>
           </div>
           <div class="col-md-4">
             <div class="field-name q-mb-xs">Telemarketer</div>
-            <q-input filled v-model="telemarketer" label="Telemarketer email" @keydown.enter.prevent="filter"/>
+            <q-input filled v-model="telemarketerName" label="Telemarketer Name" @keydown.enter.prevent="filter">
+              <template v-if="telemarketerName" v-slot:append>
+                <q-icon name="cancel" @click="resetFilterTelemarketerName" class="cursor-pointer" />
+              </template>
+            </q-input>
           </div>
         </q-card-section>
       </q-card>
@@ -69,19 +77,22 @@ export default {
         { name: 'name', label: 'NAME', align: 'left', field: 'Name', sortable: true },
         { name: 'phoneNumber', label: 'PHONE NUMBER', align: 'center', field: 'PhoneNumber', sortable: true },
         { name: 'status', label: "STATUS", align: 'center', field: 'Status', sortable: true },
-        { name: 'telemarketer', label: "TELEMARKETER", align: 'left', field: 'TelemarketerEmail', sortable: true }
+        { name: 'telemarketerName', label: "TELEMARKETER NAME", align: 'center', field: 'TelemarketerName', sortable: true }
       ],
       customerDataFilter: "",
-      customerDataVisible: ['name', 'phoneNumber', 'status', 'telemarketer'],
+      customerDataVisible: ['name', 'phoneNumber', 'status', 'telemarketerName'],
       customerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
+      telemarketers: [],
+      isTelemarketersReady: false, 
+
       // filter model
       responseOptions: [
-        'No Status', 'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
+        'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
       ],
       response: "",
-      telemarketer: "",
+      telemarketerName: "",
     }
   },
 
@@ -92,15 +103,38 @@ export default {
       Limit: 10000,
     }
     this.$axios
+      .post("/api/telemarketer/get", data_submit)
+      .then(function (response) {
+        if (response.data) {
+          vm.telemarketers = response.data.Telemarketers
+          vm.isTelemarketersReady = true
+        }
+      })
+
+    this.$axios
       .post("/api/customer", data_submit)
       .then(function (response) {
         if (response.data) {
           vm.customers = response.data.Customers
+          if (vm.isTelemarketersReady){
+            vm.generateTelemarketers()
+          }
         }
       })
   },
 
   methods: {
+    generateTelemarketers(){
+      var vm = this
+      this.customers.forEach(function(data) {
+        var index = vm.telemarketers.findIndex(x => x.ID === data.TelemarketerID);
+        var telemarketerName = ''
+        if (index >= 0){
+          telemarketerName = vm.telemarketers[index].Name
+        }
+        vm.$set(data, "TelemarketerName", telemarketerName);
+      });
+    },
     onRowClick(evt, row) {
       console.log("clicked on", row.PhoneNumber);
       this.$router.push({
@@ -109,15 +143,17 @@ export default {
       });
     },
     filter() {
-      if(this.response == 'No Status'){
-        this.response = ''
-      }
       var vm=this;
+      var index = vm.telemarketers.findIndex(x => x.Name === vm.telemarketerName);  
+      var telemarketerID = undefined
+      if (index >= 0){
+        telemarketerID = vm.telemarketers[index].ID
+      }
       var data_submit = {
         Token: vm.$authService.getToken(),
         FilterCustomer: {
           Status: vm.response,
-          TelemarketerEmail: vm.telemarketer,
+          TelemarketerID: telemarketerID,
         },
         Limit: 10000,
       }
@@ -127,12 +163,21 @@ export default {
           if (response.data) {
             if(response.data.Customers){
               vm.customers = response.data.Customers
+              vm.generateTelemarketers()
             }else {
               vm.customers = []
             }
           }
         })
-      console.log(data_submit)
+      // console.log(data_submit)
+    },
+    resetFilterStatus(){
+      this.response = ""
+      this.filter()
+    },
+    resetFilterTelemarketerName(){
+      this.telemarketerName = ""
+      this.filter()
     },
     importCustomer() {
       var vm=this;
