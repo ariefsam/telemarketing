@@ -16,6 +16,9 @@ func init() {
 var FirebaseAccountPath string
 
 func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, err error) {
+	if FirebaseAccountPath == "" {
+		FirebaseAccountPath = "configuration/firebase.json"
+	}
 	ctx = context.Background()
 	sa := option.WithCredentialsFile(FirebaseAccountPath)
 	app, err := firebase.NewApp(ctx, nil, sa)

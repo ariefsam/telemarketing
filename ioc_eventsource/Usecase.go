@@ -6,7 +6,7 @@ import (
 	"github.com/ariefsam/telemarketing/usecase_eventsource"
 )
 
-func Usecase() (usecase usecase_eventsource.Usecase) {
+func Usecase() (usecase usecase_eventsource.UsecaseEvent) {
 	usecase_eventsource.FirebaseAccountPath = configuration.FirebaseCredentialPath
 	usecase.Usecase = ioc.Usecase()
 	return

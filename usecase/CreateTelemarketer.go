@@ -7,6 +7,15 @@ import (
 )
 
 func (u *Usecase) CreateTelemarketer(telemarketer entity.Telemarketer) (err error) {
+	err = u.ValidateCreateTelemarketer(telemarketer)
+	if err != nil {
+		return
+	}
+	err = u.TelemarketerRepository.Save(telemarketer)
+	return
+}
+
+func (u *Usecase) ValidateCreateTelemarketer(telemarketer entity.Telemarketer) (err error) {
 	var isExist bool
 	_, isExist, err = u.getTelemarketerByEmail(telemarketer.Email)
 	if err != nil {
@@ -16,6 +25,5 @@ func (u *Usecase) CreateTelemarketer(telemarketer entity.Telemarketer) (err erro
 		err = errors.New("Email already exist")
 		return
 	}
-	err = u.TelemarketerRepository.Save(telemarketer)
 	return
 }

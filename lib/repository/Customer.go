@@ -18,7 +18,7 @@ func (c *Customer) Save(customer entity.Customer) (err error) {
 	dataInsert := map[string]interface{}{}
 	mapstructure.Decode(customer, &dataInsert)
 
-	_, err = docRef.Collection("customer").Doc(customer.PhoneNumber).Set(ctx, dataInsert)
+	_, err = docRef.Collection("customer").Doc(customer.ID).Set(ctx, dataInsert)
 	if err != nil {
 		err = errors.Wrap(err, "Failed to save customer")
 		return
@@ -33,16 +33,6 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 	}
 
 	var dsnap *firestore.DocumentSnapshot
-	if filter.PhoneNumber != nil {
-		dsnap, err = docRef.Collection("customer").Doc(*filter.PhoneNumber).Get(ctx)
-		if err != nil {
-			return
-		}
-		var customer entity.Customer
-		mapstructure.Decode(dsnap.Data(), &customer)
-		customers = append(customers, customer)
-		return
-	}
 
 	fWhere := []filterWhere{}
 
@@ -51,6 +41,14 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 			path:     "TelemarketerID",
 			operator: "==",
 			value:    *filter.TelemarketerID,
+		})
+	}
+
+	if filter.PhoneNumber != nil {
+		fWhere = append(fWhere, filterWhere{
+			path:     "PhoneNumber",
+			operator: "==",
+			value:    *filter.PhoneNumber,
 		})
 	}
 

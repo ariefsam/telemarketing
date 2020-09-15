@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { Dialog } from "quasar";
+
 export default {
   name: "TelemarketerCreate",
 
@@ -53,17 +55,16 @@ export default {
   methods: {
     onSubmit() {
       var vm = this;
-      // Submit data
       var data_submit = {
         Token: vm.$authService.getToken(),
         Telemarketer: {
-          Name: vm.Name,
+          Name: vm.name,
           Email: vm.email,
           IsAdmin: vm.isAdmin,
         },
       };
       this.$axios
-        .post("/api/telemarketer/save", data_submit)
+        .post("/api/telemarketer/create", data_submit)
         .then(function (response) {
           if (response.data) {
             vm.$router.push({
@@ -72,7 +73,12 @@ export default {
           }
         })
         .catch(function (error) {
-          alert(error.response.data.Error);
+          vm.$q.dialog({
+            title: "Error Create Telemarketer",
+            message: error.response.data.Error,
+            cancel: true,
+            persistent: true,
+          });
         });
       console.log(data_submit);
     },

@@ -42,6 +42,12 @@ func (m *Usecase) SaveCustomer(customer entity.Customer) (err error) {
 	return
 }
 
+func (m *Usecase) CreateCustomer(customer entity.Customer) (err error) {
+	args := m.Called(customer)
+	err = args.Error(0)
+	return
+}
+
 func (m *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, currentTimestamp int64) (err error) {
 	args := m.Called(telemarketer, customer, status, currentTimestamp)
 	err = args.Error(0)
@@ -86,5 +92,11 @@ func (m *Usecase) GetTelemarketer(filter entity.FilterTelemarketer, limit int) (
 	args := m.Called(filter, limit)
 	telemarketers = args.Get(0).([]entity.Telemarketer)
 	err = args.Error(1)
+	return
+}
+
+func (m *Usecase) GenerateID() (id string) {
+	args := m.Called()
+	id = args.String(0)
 	return
 }

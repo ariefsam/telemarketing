@@ -25,7 +25,8 @@ export default {
   mounted() {
     var vm = this;
     var token = vm.$authService.getToken();
-    vm.uploadUrl = "/api/upload?token=" + token;
+    var source = vm.$route.params.source;
+    vm.uploadUrl = "/api/upload?source="+source+"&token=" + token;
   },
 };
 </script>

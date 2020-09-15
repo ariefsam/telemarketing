@@ -21,7 +21,7 @@ func (t *Telemarketer) Save(telemarketer entity.Telemarketer) (err error) {
 	}
 	dataInsert := map[string]interface{}{}
 	mapstructure.Decode(telemarketer, &dataInsert)
-	_, err = docRef.Collection("telemarketer").Doc(telemarketer.Email).Set(ctx, dataInsert)
+	_, err = docRef.Collection("telemarketer").Doc(telemarketer.ID).Set(ctx, dataInsert)
 	if err != nil {
 		err = errors.Wrap(err, "Failed to save telemarketer email: "+telemarketer.Email)
 		return
@@ -39,8 +39,8 @@ func (t *Telemarketer) Get(filter entity.FilterTelemarketer, limit int) (telemar
 
 	iter := docRef.Collection("telemarketer").Limit(limit).Documents(ctx)
 
-	if filter.Email != "" {
-		iter = docRef.Collection("telemarketer").Where("Email", "==", filter.Email).Documents(ctx)
+	if filter.Email != nil {
+		iter = docRef.Collection("telemarketer").Where("Email", "==", *filter.Email).Documents(ctx)
 	}
 
 	for {

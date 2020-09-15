@@ -8,6 +8,7 @@ type Usecase interface {
 	GetCustomer(filter entity.FilterCustomer, limit int) (customers []entity.Customer, err error)
 	SaveCallLog(callLog entity.CallLog) (err error)
 	SaveCustomer(customer entity.Customer) (err error)
+	CreateCustomer(customer entity.Customer) (err error)
 	Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, currentTimestamp int64) (err error)
 	ParseToken(token string) (isValid bool, telemarketer entity.Telemarketer)
 	LoginByFirebase(firebaseToken string) (token string, telemarketer entity.Telemarketer, isValid bool, err error)
@@ -15,4 +16,5 @@ type Usecase interface {
 	CreateTelemarketer(telemarketer entity.Telemarketer) (err error)
 	SaveTelemarketer(telemarketer entity.Telemarketer) (err error)
 	GetTelemarketer(filter entity.FilterTelemarketer, limit int) ([]entity.Telemarketer, error)
+	GenerateID() (id string)
 }

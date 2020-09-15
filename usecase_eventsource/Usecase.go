@@ -1,6 +1,7 @@
 package usecase_eventsource
 
 import (
+	"log"
 	"time"
 
 	"github.com/ariefsam/telemarketing/entity"
@@ -8,17 +9,17 @@ import (
 	"github.com/pkg/errors"
 )
 
-type Usecase struct {
+type UsecaseEvent struct {
 	usecase.Usecase
 }
 
 type Event struct {
 	Name      string
-	Data      []interface{}
+	Data      interface{}
 	Timestamp int64
 }
 
-func save(event string, data []interface{}) (err error) {
+func save(event string, data interface{}) (err error) {
 	ctx, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
@@ -28,17 +29,33 @@ func save(event string, data []interface{}) (err error) {
 		Data:      data,
 		Timestamp: time.Now().UnixNano(),
 	}
-
-	_, err = docRef.Collection("Event").Doc(generateID()).Set(ctx, dataInsert)
+	eventID := generateID()
+	_, err = docRef.Collection("Event").Doc(eventID).Set(ctx, dataInsert)
 	if err != nil {
-		err = errors.Wrap(err, "Failed to save data")
+		err = errors.Wrap(err, "Failed to save data: "+eventID)
+		log.Println(err)
 		return
 	}
 	return
 }
 
-func (u *Usecase) SaveCustomer(customer entity.Customer) (err error) {
-	err = save("SaveCustomer", []interface{}{customer})
+func (u *UsecaseEvent) CreateTelemarketer(telemarketer entity.Telemarketer) (err error) {
+	err = u.Usecase.ValidateCreateTelemarketer(telemarketer)
+	log.Println("Create telemarketer")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	err = save("CreateTelemarketer", telemarketer)
+	return
+}
+
+func (u *UsecaseEvent) CreateCustomer(customer entity.Customer) (err error) {
+	err = u.Usecase.ValidateCreateCustomer(customer)
+	if err != nil {
+		return
+	}
+	err = save("CreateCustomer", customer)
 	return
 }
 

@@ -54,7 +54,7 @@ func (p *Projection) FirestoreProjection() {
 			for _, change := range dsnap.Changes {
 				switch change.Kind {
 				case firestore.DocumentAdded:
-					log.Printf("%+v", change.Doc.Data())
+					// log.Printf("%+v", change.Doc.Data())
 					data := change.Doc.Data()
 
 					var event Event
@@ -77,11 +77,23 @@ func (p *Projection) FirestoreProjection() {
 
 func (p *Projection) ProcessEvent(event Event) {
 	usecase := ioc.Usecase()
-	if event.Name == "SaveCustomer" {
-		log.Printf("Processing %+v", event)
+
+	// log.Printf("Processing %+v", event)
+	if event.Name == "CreateCustomer" {
 		var data entity.Customer
-		mapstructure.Decode(event.Data[0], &data)
-		usecase.SaveCustomer(data)
+		mapstructure.Decode(event.Data, &data)
+		err := usecase.CreateCustomer(data)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+	if event.Name == "CreateTelemarketer" {
+		var data entity.Telemarketer
+		mapstructure.Decode(event.Data, &data)
+		err := usecase.CreateTelemarketer(data)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 }

@@ -9,7 +9,7 @@
           icon="fas fa-file-import"
           label="Import"
           class="q-pr-sm"
-          :to="'/import-customer'"
+          @click="importCustomer"
         />
       </div>
     </div>
@@ -134,6 +134,29 @@ export default {
         })
       console.log(data_submit)
     },
+    importCustomer() {
+      var vm=this;
+      this.$q.dialog({
+        title: 'Data Source',
+        message: 'What is the data source?',
+        prompt: {
+          model: '',
+          isValid: val => val.length > 2,
+          type: 'text' // optional
+
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        vm.$router.push({
+          name: 'import-customer', params: { source: data },
+        });
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
   }
 }
 </script>

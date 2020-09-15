@@ -3,6 +3,7 @@ package ioc
 import (
 	"github.com/ariefsam/telemarketing/configuration"
 	"github.com/ariefsam/telemarketing/lib/firebaseauth"
+	"github.com/ariefsam/telemarketing/lib/idgenerator"
 	"github.com/ariefsam/telemarketing/lib/repository"
 	"github.com/ariefsam/telemarketing/lib/timer"
 	"github.com/ariefsam/telemarketing/lib/token_telemarketer"
@@ -19,5 +20,6 @@ func Usecase() (usecase usecase.Usecase) {
 	}
 	usecase.TelemarketerRepository = &repository.Telemarketer{}
 	usecase.Timer = &timer.Timer{}
+	usecase.IDGenerator = &idgenerator.IDGenerator{}
 	return
 }
