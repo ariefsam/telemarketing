@@ -59,6 +59,15 @@ func (u *UsecaseEvent) CreateCustomer(customer entity.Customer) (err error) {
 	return
 }
 
+func (u *UsecaseEvent) AssignCustomer(telemarketerID string) (customer entity.Customer, err error) {
+	err = u.Usecase.ValidateAssignCustomer(telemarketerID)
+	if err != nil {
+		return
+	}
+	err = save("AssignCustomer", telemarketerID)
+	return
+}
+
 /*
 AssignCustomer(telemarketerEmail string) (customer entity.Customer, err error)
 	GetCallLog(filter entity.FilterCallLog, limit int) (callLogs []entity.CallLog, err error)

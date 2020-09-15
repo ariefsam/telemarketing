@@ -12,6 +12,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
 	github.com/keimoon/gore v0.0.0-20160317032603-1ac8b93b5fdb
+	github.com/ledisdb/ledisdb v0.0.0-20200510135210-d35789ec47e6
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.5.1
