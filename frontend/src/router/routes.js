@@ -12,6 +12,7 @@ const routes = [
       { path: '/report', name: 'report', component: () => import('pages/report/Index.vue') },
       { path: '/telemarketer', name: 'telemarketer', component: () => import('pages/telemarketer/Index.vue') },
       { path: '/telemarketer/create', name: 'telemarketer-create', component: () => import('pages/telemarketer/Create.vue') },
+      { path: '/telemarketer/:id/edit', name: 'telemarketer-edit', component: () => import('pages/telemarketer/Edit.vue') },
       { path: '/admin-customer', name: 'admin-customer', component: () => import('pages/admin-customer/Index.vue') },
       { path: '/import-customer/:source', name: 'import-customer', component: () => import('pages/admin-customer/ImportCustomer.vue') },
     ],

@@ -5,7 +5,7 @@
       <div text-color="blue-grey" class="q-ml-sm text-bold" style="font-size:16px;">Back</div>
     </div>
     <div class="row">
-      <div class="title">Create Telemarketer</div>
+      <div class="title">Edit Telemarketer</div>
     </div>
     <div class="row">
       <q-form @submit="onSubmit" class="col-md-6">
@@ -65,7 +65,7 @@
 import { Dialog } from "quasar";
 
 export default {
-  name: "TelemarketerCreate",
+  name: "TelemarketerEdit",
 
   data() {
     return {
@@ -75,6 +75,14 @@ export default {
       callTarget: null,
       closingTarget: null,
     };
+  },
+
+  mounted(){
+    // this.name = "Agung"
+    // this.email = "agung@fsn.co.id"
+    // this.isAdmin = true
+    // this.callTarget = 10
+    // this.closingTarget = 10
   },
 
   methods: {
@@ -92,23 +100,23 @@ export default {
           },
         },
       };
-      this.$axios
-        .post("/api/telemarketer/create", data_submit)
-        .then(function (response) {
-          if (response.data) {
-            vm.$router.push({
-              name: "telemarketer",
-            });
-          }
-        })
-        .catch(function (error) {
-          vm.$q.dialog({
-            title: "Error Create Telemarketer",
-            message: error.response.data.Error,
-            cancel: true,
-            persistent: true,
-          });
-        });
+      // this.$axios
+      //   .post("/api/telemarketer/create", data_submit)
+      //   .then(function (response) {
+      //     if (response.data) {
+      //       vm.$router.push({
+      //         name: "telemarketer",
+      //       });
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     vm.$q.dialog({
+      //       title: "Error Edit Telemarketer",
+      //       message: error.response.data.Error,
+      //       cancel: true,
+      //       persistent: true,
+      //     });
+      //   });
       console.log(data_submit);
     },
     backToIndex() {

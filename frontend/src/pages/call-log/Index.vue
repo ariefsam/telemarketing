@@ -29,14 +29,14 @@
             />
           </div>
           <div class="col-md-12">
+          <div class="field-name q-mb-xs">Timestamp</div>
             <div class="row">
               <q-input
                 filled
                 color="grey-8"
                 v-model="start_date"
                 label="Start Date *"
-                hint="Start date"
-                class="col-sm-6 col-xs-12 q-pr-sm"
+                class="col-sm-6 col-xs-12 q-pr-sm q-mb-sm"
               >
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
@@ -51,8 +51,7 @@
                 color="grey-8"
                 v-model="start_time"
                 label="Start Time *"
-                hint="Start time"
-                class="col-sm-6 col-xs-12 q-pl-sm"
+                class="col-sm-6 col-xs-12 q-pl-sm q-mb-sm"
               >
                 <template v-slot:append>
                   <q-icon name="access_time" class="cursor-pointer">
@@ -69,7 +68,6 @@
                 color="grey-8"
                 v-model="end_date"
                 label="End Date *"
-                hint="End date"
                 class="col-sm-6 col-xs-12 q-pr-sm"
               >
                 <template v-slot:append>
@@ -85,7 +83,6 @@
                 color="grey-8"
                 v-model="end_time"
                 label="End Time *"
-                hint="End time"
                 class="col-sm-6 col-xs-12 q-pl-sm"
               >
                 <template v-slot:append>
@@ -119,9 +116,27 @@
           </q-input>
         </template>
         <template v-slot:top-left>
-          <div>
+          <div class="q-mb-sm">
             <span class="q-pr-sm">Total Call Logs</span>
             <span class="text-bold" style="font-size: 14px">{{data.length}}</span>
+          </div>
+          <div class="row justify-between">
+            <div class="column q-mr-md">
+              <div>Total Tertarik</div>
+              <div>Total Hubungi Kembali</div>
+              <div>Total Tidak Tertarik</div>
+              <div>Total Tidak Aktif</div>
+              <div>Total Tidak Menjawab</div>
+              <div>Total Tidak Terdaftar</div>
+            </div>
+            <div class="column">
+              <div class="text-bold">0</div>
+              <div class="text-bold">0</div>
+              <div class="text-bold">0</div>
+              <div class="text-bold">0</div>
+              <div class="text-bold">0</div>
+              <div class="text-bold">0</div>
+            </div>
           </div>
         </template>
         <q-td :style="{width: '170px'}" slot="body-cell-action" slot-scope="props" :props="props">
@@ -155,7 +170,7 @@ export default {
       dataColumns: [
         {
           name: "date",
-          label: "Date",
+          label: "DATE",
           align: "left",
           field: "Date",
           sortable: true,
@@ -181,7 +196,7 @@ export default {
           field: "Status",
           sortable: true,
         },
-        { name: "action", align: "center", label: "Action" },
+        { name: "action", align: "center", label: "ACTION" },
       ],
       dataFilter: "",
       dataVisible: ["date", "name", "phoneNumber", "status", "action"],

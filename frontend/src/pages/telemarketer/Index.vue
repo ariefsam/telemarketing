@@ -40,6 +40,17 @@
           <div v-if="props.value == true">Yes</div>
           <div v-else>No</div>
         </q-td>
+        <q-td slot="body-cell-action" slot-scope="props" :props="props">
+          <q-btn
+            color="primary"
+            icon="edit"
+            class="action-btn q-mx-xs"
+            @click.stop="editTelemarketer(props.row.ID)"
+            padding="sm"
+          >
+            <q-tooltip>Edit Telemarketer</q-tooltip>
+          </q-btn>
+        </q-td>
       </q-table>
     </div>
   </q-page>
@@ -53,12 +64,16 @@ export default {
     return {
       telemarketers: [],
       telemarketerDataColumns: [
-        { name: 'name', label: 'Name', align: 'left', field: 'Email', sortable: true },
-        { name: 'email', label: 'EMAIL', align: 'left', field: 'Email', sortable: true },
+        { name: 'name', label: 'Name', align: 'left', field: 'Name', sortable: true },
+        { name: 'email', label: 'Email', align: 'left', field: 'Email', sortable: true },
         { name: 'isAdmin', label: 'Admin', align: 'center', field: 'IsAdmin', sortable: true },
+        { name: 'weeklyTargetCall', label: 'Weekly Target Call', align: 'center', field: 'WeeklyTarget.Call', sortable: true },
+        { name: 'weeklyTargetClosing', label: 'Weekly Target Closing', align: 'center', field: 'WeeklyTarget.Closing', sortable: true },
+        { name: 'performance', label: 'Performance', align: 'center', field: 'Performance', sortable: true },
+        { name: "action", align: "center", label: "Action" },
       ],
       telemarketerDataFilter: "",
-      telemarketerDataVisible: ['name', 'email', 'isAdmin'],
+      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'weeklyTargetCall', 'weeklyTargetClosing', 'performance', 'action'],
       telemarketerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
@@ -84,6 +99,12 @@ export default {
   methods: {
     onRowClick(evt, row) {
       console.log("clicked on", row.Email);
+    },
+    editTelemarketer(telemarketerID) {
+      this.$router.push({
+        name: "telemarketer-edit",
+        params: { id: telemarketerID },
+      });
     },
   }
 }
