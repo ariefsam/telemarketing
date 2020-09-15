@@ -127,4 +127,18 @@ func (p *Projection) ProcessEvent(event Event) {
 		}
 	}
 
+	if event.Name == "Call" {
+		data := struct {
+			Telemarketer entity.Telemarketer
+			Customer     entity.Customer
+			Status       string
+			Timestamp    int64
+		}{}
+		mapstructure.Decode(event.Data, &data)
+		err := usecase.Call(data.Telemarketer, data.Customer, data.Status, data.Timestamp)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 }

@@ -79,6 +79,19 @@ func (u *UsecaseEvent) SaveCustomer(customer entity.Customer) (err error) {
 	return
 }
 
+func (u *UsecaseEvent) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, timestamp int64) (err error) {
+	data := struct {
+		Telemarketer entity.Telemarketer
+		Customer     entity.Customer
+		Status       string
+		Timestamp    int64
+	}{
+		telemarketer, customer, status, timestamp,
+	}
+	err = save("Call", data)
+	return
+}
+
 /*
 AssignCustomer(telemarketerEmail string) (customer entity.Customer, err error)
 	GetCallLog(filter entity.FilterCallLog, limit int) (callLogs []entity.CallLog, err error)
