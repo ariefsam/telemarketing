@@ -37,6 +37,15 @@ func (t *Telemarketer) Get(filter entity.FilterTelemarketer, limit int) (telemar
 
 	var dsnap *firestore.DocumentSnapshot
 
+	if filter.ID != nil {
+		dsnap, err = docRef.Collection("telemarketer").Doc(*filter.ID).Get(ctx)
+		m := dsnap.Data()
+		telemarketer := entity.Telemarketer{}
+		mapstructure.Decode(m, &telemarketer)
+		telemarketers = []entity.Telemarketer{telemarketer}
+		return
+	}
+
 	iter := docRef.Collection("telemarketer").Limit(limit).Documents(ctx)
 
 	if filter.Email != nil {
