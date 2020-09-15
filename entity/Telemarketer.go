@@ -10,4 +10,8 @@ type Telemarketer struct {
 		Call    int
 		Closing int
 	}
+	Performance struct {
+		Call    int
+		Closing int
+	}
 }
