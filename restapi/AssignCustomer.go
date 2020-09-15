@@ -1,7 +1,10 @@
 package restapi
 
 import (
+	"errors"
 	"net/http"
+
+	"github.com/ariefsam/telemarketing/entity"
 )
 
 func (api *RestAPI) AssignCustomer(w http.ResponseWriter, r *http.Request) {
@@ -11,20 +14,34 @@ func (api *RestAPI) AssignCustomer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-
-	response := map[string]interface{}{}
-	err = api.Usecase.ValidateAssignCustomer(telemarketer.ID)
+	emptyString := ""
+	filter := entity.FilterCustomer{
+		TelemarketerID: &emptyString,
+	}
+	customers, err := api.Usecase.GetCustomer(filter, 1)
 	if err != nil {
 		responseError(w, err, http.StatusBadGateway)
 		return
 	}
-	err = api.Usecase.AssignCustomer(telemarketer.ID)
+	if len(customers) == 0 {
+		responseError(w, errors.New("No customer left"), http.StatusBadGateway)
+		return
+	}
+	customer := customers[0]
+
+	response := map[string]interface{}{}
+	err = api.Usecase.ValidateAssignCustomer(telemarketer.ID, customer.ID)
+	if err != nil {
+		responseError(w, err, http.StatusBadGateway)
+		return
+	}
+	err = api.Usecase.AssignCustomer(telemarketer.ID, customer.ID)
 	if err != nil {
 		response["Error"] = err.Error()
 		JSONView(w, response, http.StatusBadGateway)
 		return
 	}
 
-	response["status"] = "ok"
+	response["Customer"] = customer
 	JSONView(w, response, http.StatusOK)
 }

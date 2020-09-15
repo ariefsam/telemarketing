@@ -59,12 +59,18 @@ func (u *UsecaseEvent) CreateCustomer(customer entity.Customer) (err error) {
 	return
 }
 
-func (u *UsecaseEvent) AssignCustomer(telemarketerID string) (err error) {
-	err = u.Usecase.ValidateAssignCustomer(telemarketerID)
+func (u *UsecaseEvent) AssignCustomer(telemarketerID string, customerID string) (err error) {
+	err = u.Usecase.ValidateAssignCustomer(telemarketerID, customerID)
 	if err != nil {
 		return
 	}
-	err = save("AssignCustomer", telemarketerID)
+	data := []string{telemarketerID, customerID}
+	err = save("AssignCustomer", data)
+	return
+}
+
+func (u *UsecaseEvent) SaveTelemarketer(telemarketer entity.Telemarketer) (err error) {
+	err = save("SaveTelemarketer", telemarketer)
 	return
 }
 

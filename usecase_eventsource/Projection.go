@@ -96,9 +96,22 @@ func (p *Projection) ProcessEvent(event Event) {
 		}
 	}
 	if event.Name == "AssignCustomer" {
-		var data string
+		var data []string
 		mapstructure.Decode(event.Data, &data)
-		err := usecase.AssignCustomer(data)
+		if len(data) != 2 {
+			log.Println("Bad assign customer")
+		} else {
+			err := usecase.AssignCustomer(data[0], data[1])
+			if err != nil {
+				log.Println(err)
+			}
+		}
+	}
+
+	if event.Name == "SaveTelemarketer" {
+		var data entity.Telemarketer
+		mapstructure.Decode(event.Data, &data)
+		err := usecase.SaveTelemarketer(data)
 		if err != nil {
 			log.Println(err)
 		}

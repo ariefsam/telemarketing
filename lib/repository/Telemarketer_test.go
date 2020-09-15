@@ -18,7 +18,7 @@ func TestTelemarketer(t *testing.T) {
 	err := telemarketerRepository.Save(telemarketer)
 	assert.NoError(t, err)
 	filter := entity.FilterTelemarketer{
-		Email: "arief@gmail.com",
+		Email: &telemarketer.Email,
 	}
 	getTelemarketer, err := telemarketerRepository.Get(filter, 1)
 	assert.NoError(t, err)

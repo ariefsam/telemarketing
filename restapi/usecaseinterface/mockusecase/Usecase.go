@@ -9,10 +9,9 @@ type Usecase struct {
 	mock.Mock
 }
 
-func (m *Usecase) AssignCustomer(telemarketerID string) (customer entity.Customer, err error) {
-	args := m.Called(telemarketerID)
-	customer = args.Get(0).(entity.Customer)
-	err = args.Error(1)
+func (m *Usecase) AssignCustomer(telemarketerID string, customerID string) (err error) {
+	args := m.Called(telemarketerID, customerID)
+	err = args.Error(0)
 	return
 }
 

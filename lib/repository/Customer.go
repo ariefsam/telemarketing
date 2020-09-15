@@ -35,6 +35,18 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 	var dsnap *firestore.DocumentSnapshot
 
 	fWhere := []filterWhere{}
+	if filter.ID != nil {
+		dsnap, errs := docRef.Collection("customer").Doc(*filter.ID).Get(ctx)
+		if errs != nil {
+			err = errs
+			return
+		}
+		m := dsnap.Data()
+		var customer entity.Customer
+		mapstructure.Decode(m, &customer)
+		customers = []entity.Customer{customer}
+		return
+	}
 
 	if filter.TelemarketerID != nil {
 		fWhere = append(fWhere, filterWhere{

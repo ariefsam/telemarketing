@@ -6,11 +6,11 @@ import (
 	"github.com/ariefsam/telemarketing/entity"
 )
 
-func (u *Usecase) AssignCustomer(telemarketerID string) (err error) {
+func (u *Usecase) AssignCustomer(telemarketerID string, customerID string) (err error) {
 	filter := entity.FilterCustomer{
 		TelemarketerID: new(string),
 	}
-	err = u.ValidateAssignCustomer(telemarketerID)
+	err = u.ValidateAssignCustomer(telemarketerID, customerID)
 	if err != nil {
 		return
 	}
@@ -28,6 +28,7 @@ func (u *Usecase) AssignCustomer(telemarketerID string) (err error) {
 	return
 }
 
-func (u *Usecase) ValidateAssignCustomer(telemarketerID string) (err error) {
+func (u *Usecase) ValidateAssignCustomer(telemarketerID string, customerID string) (err error) {
+
 	return
 }

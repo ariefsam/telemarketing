@@ -12,6 +12,7 @@ import (
 func TestCustomer(t *testing.T) {
 	var c repository.Customer
 	customer := entity.Customer{
+		ID:             "c01",
 		Name:           "Member 01",
 		PhoneNumber:    "01234",
 		TelemarketerID: "tele001",
@@ -20,6 +21,7 @@ func TestCustomer(t *testing.T) {
 	err := c.Save(customer)
 
 	customer2 := entity.Customer{
+		ID:             "c02",
 		PhoneNumber:    "012345",
 		TelemarketerID: "tele001",
 		Status:         "Tidak diangkat",

@@ -3,8 +3,8 @@ package usecaseinterface
 import "github.com/ariefsam/telemarketing/entity"
 
 type Usecase interface {
-	AssignCustomer(telemarketerID string) (err error)
-	ValidateAssignCustomer(telemarketerID string) (err error)
+	AssignCustomer(telemarketerID string, customerID string) (err error)
+	ValidateAssignCustomer(telemarketerID string, customerID string) (err error)
 	GetCallLog(filter entity.FilterCallLog, limit int) (callLogs []entity.CallLog, err error)
 	GetCustomer(filter entity.FilterCustomer, limit int) (customers []entity.Customer, err error)
 	SaveCallLog(callLog entity.CallLog) (err error)
