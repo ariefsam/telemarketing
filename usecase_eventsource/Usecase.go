@@ -59,7 +59,7 @@ func (u *UsecaseEvent) CreateCustomer(customer entity.Customer) (err error) {
 	return
 }
 
-func (u *UsecaseEvent) AssignCustomer(telemarketerID string) (customer entity.Customer, err error) {
+func (u *UsecaseEvent) AssignCustomer(telemarketerID string) (err error) {
 	err = u.Usecase.ValidateAssignCustomer(telemarketerID)
 	if err != nil {
 		return

@@ -18,13 +18,13 @@ func (api *RestAPI) AssignCustomer(w http.ResponseWriter, r *http.Request) {
 		responseError(w, err, http.StatusBadGateway)
 		return
 	}
-	err := api.Usecase.AssignCustomer(telemarketer.ID)
+	err = api.Usecase.AssignCustomer(telemarketer.ID)
 	if err != nil {
 		response["Error"] = err.Error()
 		JSONView(w, response, http.StatusBadGateway)
 		return
 	}
 
-	response["Customer"] = customer
+	response["status"] = "ok"
 	JSONView(w, response, http.StatusOK)
 }

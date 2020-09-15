@@ -98,7 +98,7 @@ func (p *Projection) ProcessEvent(event Event) {
 	if event.Name == "AssignCustomer" {
 		var data string
 		mapstructure.Decode(event.Data, &data)
-		_, err := usecase.AssignCustomer(data)
+		err := usecase.AssignCustomer(data)
 		if err != nil {
 			log.Println(err)
 		}
