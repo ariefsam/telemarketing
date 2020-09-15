@@ -67,13 +67,14 @@ export default {
         { name: 'name', label: 'Name', align: 'left', field: 'Name', sortable: true },
         { name: 'email', label: 'Email', align: 'left', field: 'Email', sortable: true },
         { name: 'isAdmin', label: 'Admin', align: 'center', field: 'IsAdmin', sortable: true },
-        { name: 'weeklyTargetCall', label: 'Weekly Target Call', align: 'center', field: 'WeeklyTarget.Call', sortable: true },
-        { name: 'weeklyTargetClosing', label: 'Weekly Target Closing', align: 'center', field: 'WeeklyTarget.Closing', sortable: true },
-        { name: 'performance', label: 'Performance', align: 'center', field: 'Performance', sortable: true },
+        { name: 'performanceCall', label: 'Performance Call', align: 'center', field: row => row.Performance.Call, sortable: true },
+        { name: 'performanceClosing', label: 'Performance Closing', align: 'center', field: row => row.Performance.Closing, sortable: true },
+        { name: 'weeklyTargetCall', label: 'Weekly Target Call', align: 'center', field: row => row.WeeklyTarget.Call, sortable: true },
+        { name: 'weeklyTargetClosing', label: 'Weekly Target Closing', align: 'center', field: row => row.WeeklyTarget.Closing, sortable: true },
         { name: "action", align: "center", label: "Action" },
       ],
       telemarketerDataFilter: "",
-      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'weeklyTargetCall', 'weeklyTargetClosing', 'performance', 'action'],
+      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'weeklyTargetCall', 'weeklyTargetClosing', 'performanceCall', 'performanceClosing', 'action'],
       telemarketerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
@@ -91,9 +92,9 @@ export default {
       .then(function (response) {
         if (response.data) {
           vm.telemarketers = response.data.Telemarketers
+          console.log(vm.telemarketers[0].WeeklyTarget.Call)
         }
       })
-   
   },
 
   methods: {
