@@ -26,7 +26,7 @@ func (t *Token) Create(telemarketer entity.Telemarketer) (tokenString string) {
 		telemarketer,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Unix() + 604800,
-			Issuer:    "go-chat",
+			Issuer:    "fsn",
 		},
 	}
 

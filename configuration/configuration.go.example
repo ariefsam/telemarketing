@@ -1,7 +1,0 @@
-package configuration
-
-var JWTSecret = []byte("secretCode")
-
-var FirebaseCredentialPath = "/go/src/github.com/ariefsam/telemarketing/configuration/firebase.json"
-
-var Admins = []string{"ariefhidayatulloh@gmail.com", "arief@fsn.co.id"}

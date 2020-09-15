@@ -14,8 +14,15 @@ func init() {
 }
 
 var FirebaseAccountPath string
+var EventSourceDB string
 
 func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, err error) {
+	if EventSourceDB == "" {
+		EventSourceDB = "telemarketing"
+	}
+	if FirebaseAccountPath == "" {
+		FirebaseAccountPath = "firebase.json"
+	}
 	ctx = context.Background()
 	sa := option.WithCredentialsFile(FirebaseAccountPath)
 	app, err := firebase.NewApp(ctx, nil, sa)
@@ -23,6 +30,6 @@ func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, e
 		log.Fatalln(err)
 	}
 	client, err := app.Firestore(ctx)
-	docRef = client.Collection("event-source").Doc("telemarketing")
+	docRef = client.Collection("event-source").Doc(EventSourceDB)
 	return
 }

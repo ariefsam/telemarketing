@@ -4,6 +4,7 @@ import (
 	"github.com/ariefsam/telemarketing/ioc_eventsource"
 	"github.com/ariefsam/telemarketing/restapi"
 	"github.com/ariefsam/telemarketing/usecase_eventsource"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
