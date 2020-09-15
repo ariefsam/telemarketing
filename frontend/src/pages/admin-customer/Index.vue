@@ -118,6 +118,8 @@ export default {
           vm.customers = response.data.Customers
           if (vm.isTelemarketersReady){
             vm.generateTelemarketers()
+          } else {
+            setTimeout(function(){ vm.generateTelemarketers() }, 1000);
           }
         }
       })
