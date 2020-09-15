@@ -87,6 +87,16 @@ func (p *Projection) ProcessEvent(event Event) {
 			log.Println(err)
 		}
 	}
+
+	if event.Name == "SaveCustomer" {
+		var data entity.Customer
+		mapstructure.Decode(event.Data, &data)
+		err := usecase.SaveCustomer(data)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 	if event.Name == "CreateTelemarketer" {
 		var data entity.Telemarketer
 		mapstructure.Decode(event.Data, &data)

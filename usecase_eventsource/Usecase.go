@@ -74,6 +74,11 @@ func (u *UsecaseEvent) SaveTelemarketer(telemarketer entity.Telemarketer) (err e
 	return
 }
 
+func (u *UsecaseEvent) SaveCustomer(customer entity.Customer) (err error) {
+	err = save("SaveCustomer", customer)
+	return
+}
+
 /*
 AssignCustomer(telemarketerEmail string) (customer entity.Customer, err error)
 	GetCallLog(filter entity.FilterCallLog, limit int) (callLogs []entity.CallLog, err error)
