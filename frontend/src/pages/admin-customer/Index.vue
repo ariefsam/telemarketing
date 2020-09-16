@@ -29,11 +29,20 @@
           </div>
           <div class="col-md-4">
             <div class="field-name q-mb-xs">Telemarketer</div>
-            <q-input filled v-model="telemarketerName" label="Telemarketer name (Case sensitive)" @keydown.enter.prevent="filter">
+            <q-select
+              use-input
+              input-debounce="0"
+              filled
+              v-model="telemarketerName"
+              :options="telemarketerNameOptions"
+              label="Telemarketer Name"
+              @input="filter"
+              @filter="filterTelemarketerNameFn"
+            >
               <template v-if="telemarketerName" v-slot:append>
-                <q-icon name="cancel" @click="resetFilterTelemarketerName" class="cursor-pointer" />
+                <q-icon name="cancel" @click.stop="resetFilterTelemarketerName" class="cursor-pointer" />
               </template>
-            </q-input>
+            </q-select>
           </div>
         </q-card-section>
       </q-card>
@@ -92,7 +101,10 @@ export default {
         'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
       ],
       response: "",
+      
       telemarketerName: "",
+      telemarketerNameOptionsStr: [],
+      telemarketerNameOptions: this.telemarketerNameOptionsStr,
     }
   },
 
@@ -107,6 +119,7 @@ export default {
       .then(function (response) {
         if (response.data) {
           vm.telemarketers = response.data.Telemarketers
+          vm.telemarketerNameOptionsStr = vm.telemarketers.filter(x => x.IsAdmin == false).map(x => x.Name)
           vm.isTelemarketersReady = true
         }
       })
@@ -184,6 +197,21 @@ export default {
     resetFilterTelemarketerName(){
       this.telemarketerName = ""
       this.filter()
+    },
+    filterTelemarketerNameFn(val, update) {
+      var vm = this
+      if (val === "") {
+        update(() => {
+          vm.telemarketerNameOptions = vm.telemarketerNameOptionsStr;
+        });
+        return;
+      }
+      update(() => {
+        const needle = val.toLowerCase();
+        vm.telemarketerNameOptions = vm.telemarketerNameOptionsStr.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1
+        );
+      });
     },
     importCustomer() {
       var vm=this;
