@@ -241,10 +241,40 @@ export default {
     },
     onRowClick(evt, row) {
       var vm = this;
-      // console.log("clicked on", row.PhoneNumber);
-      this.$router.push({
-        name: "customer-detail",
-        params: { phoneNumber: row.PhoneNumber },
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+        FilterCustomer: {
+          PhoneNumber: row.PhoneNumber,
+        },
+        Limit: 10000,
+      };
+      var isThisCustomerClosed = false
+      this.$axios.post("/api/customer", data_submit).then(function (response) {
+        if (response.data) {
+          isThisCustomerClosed = response.data.Customers[0].IsClosing;
+          if (isThisCustomerClosed){
+            vm.$q
+              .dialog({
+                title: "Info",
+                message: "Customer : "+row.Name+" ("+row.PhoneNumber+") is already Closed",
+                persistent: false,
+              })
+              .onOk(() => {
+                // console.log('>>>> second OK catcher')
+              })
+              .onCancel(() => {
+                // console.log('>>>> Cancel')
+              })
+              .onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+              });
+          }else {
+            vm.$router.push({
+              name: "customer-detail",
+              params: { phoneNumber: row.PhoneNumber },
+            });
+          }
+        }
       });
     },
     filter() {
