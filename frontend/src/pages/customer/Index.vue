@@ -168,6 +168,7 @@ export default {
         })
         .onOk(data => {
           customer.Name = data
+          customer.Status = "Closing"
           var data_submit = {
             Token: vm.$authService.getToken(),
             Customer: customer
