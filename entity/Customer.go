@@ -9,6 +9,7 @@ type Customer struct {
 	TelemarketerID   string
 	TimestampCreated int64
 	TimestampUpdated int64
+	ClosingTimestamp int64
 	DataSource       string
 	CreatedBy        string
 }
