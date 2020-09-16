@@ -131,7 +131,11 @@ export default {
       };
       this.$axios.post("/api/customer", data_submit).then(function (response) {
         if (response.data) {
-          vm.customers = response.data.Customers;
+          if (response.data.Customers != null){
+            vm.customers = response.data.Customers;
+          } else {
+            vm.customers = []
+          }
         }
       });
     },

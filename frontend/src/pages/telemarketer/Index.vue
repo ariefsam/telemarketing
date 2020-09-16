@@ -92,7 +92,6 @@ export default {
       .then(function (response) {
         if (response.data) {
           vm.telemarketers = response.data.Telemarketers
-          console.log(vm.telemarketers[0].WeeklyTarget.Call)
         }
       })
   },
