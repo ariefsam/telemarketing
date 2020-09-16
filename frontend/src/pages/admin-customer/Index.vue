@@ -29,7 +29,7 @@
           </div>
           <div class="col-md-4">
             <div class="field-name q-mb-xs">Telemarketer</div>
-            <q-input filled v-model="telemarketerName" label="Telemarketer Name" @keydown.enter.prevent="filter">
+            <q-input filled v-model="telemarketerName" label="Telemarketer name (Case sensitive)" @keydown.enter.prevent="filter">
               <template v-if="telemarketerName" v-slot:append>
                 <q-icon name="cancel" @click="resetFilterTelemarketerName" class="cursor-pointer" />
               </template>
@@ -145,9 +145,13 @@ export default {
       });
     },
     filter() {
-      var vm=this;
+      var vm = this;
       var index = vm.telemarketers.findIndex(x => x.Name === vm.telemarketerName);  
-      var telemarketerID = undefined
+      if (vm.telemarketerName != "") {
+        var telemarketerID = "telemarketerID"
+      } else {
+        var telemarketerID = null
+      }
       if (index >= 0){
         telemarketerID = vm.telemarketers[index].ID
       }
