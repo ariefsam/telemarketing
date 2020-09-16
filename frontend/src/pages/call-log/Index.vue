@@ -405,24 +405,28 @@ export default {
       this.filter();
     },
     inputStartDate() {
+      this.filterTimestamp = "";
       if(this.start_date == ""){
         this.start_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
       }
       this.filter();
     },
     inputEndDate() {
+      this.filterTimestamp = "";
       if(this.end_date == ""){
         this.end_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
       }
       this.filter();
     },
     inputStartTime() {
+      this.filterTimestamp = "";
       if(this.start_time == ""){
         this.start_time = "00:00"
       }
       this.filter();
     },
     inputEndTime() {
+      this.filterTimestamp = "";
       if(this.end_time == ""){
         this.end_time = "23:59"
       }
