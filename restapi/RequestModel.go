@@ -11,4 +11,5 @@ type RequestModel struct {
 	Telemarketer       entity.Telemarketer
 	FilterTelemarketer entity.FilterTelemarketer
 	FilterCallLog      entity.FilterCallLog
+	Customer           *entity.Customer
 }
