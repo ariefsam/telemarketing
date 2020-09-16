@@ -145,7 +145,7 @@ export default {
         if (response.data) {
           if (response.data.Customers != null){
             vm.customers = response.data.Customers;
-            console.log(vm.customers[0])
+            vm.removeClosedCustomer()
           } else {
             vm.customers = []
           }
@@ -168,16 +168,17 @@ export default {
         })
         .onOk(data => {
           customer.Name = data
-          customer.Status = "Closing"
+          customer.IsClosing = true
           var data_submit = {
             Token: vm.$authService.getToken(),
             Customer: customer
           };
+          console.log(customer.IsClosing)
           this.$axios
             .post("/api/customer/save", data_submit)
             .then(function (response) {
               if (response.data) {
-                console.log("Success")
+                vm.removeClosedCustomer()
               }
             })
             .catch(function (error) {
@@ -228,16 +229,21 @@ export default {
         if (response.data) {
           if (response.data.Customers) {
             vm.customers = response.data.Customers;
+            vm.removeClosedCustomer()
           } else {
             vm.customers = [];
           }
         }
       });
-      console.log(data_submit);
+      // console.log(data_submit);
     },
     resetFilterStatus(){
-      this.response = ""
+      this.response = null
       this.filter()
+    },
+    removeClosedCustomer() {
+      var notClosedCustomer = this.customers.filter(x => x.IsClosing == false);
+      this.customers = notClosedCustomer
     },
   },
 };

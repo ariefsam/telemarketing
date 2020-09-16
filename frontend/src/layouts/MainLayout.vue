@@ -105,12 +105,12 @@ export default {
         separator: false,
         link: { name: "call-log" },
       });
-      this.menuList.push({
-        icon: "fas fa-chart-bar",
-        label: "Report",
-        separator: false,
-        link: { name: "report" },
-      });
+      // this.menuList.push({
+      //   icon: "fas fa-chart-bar",
+      //   label: "Report",
+      //   separator: false,
+      //   link: { name: "report" },
+      // });
     }
     if (this.user.isAdmin) {
       this.menuList.push(
