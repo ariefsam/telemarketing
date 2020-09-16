@@ -2,6 +2,7 @@ package restapi
 
 import (
 	"net/http"
+	"time"
 )
 
 func (api *RestAPI) CreateTelemarketer(w http.ResponseWriter, r *http.Request) {
@@ -21,6 +22,7 @@ func (api *RestAPI) CreateTelemarketer(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"Status": "ok",
 	}
+	time.Sleep(300 * time.Millisecond)
 	JSONView(w, response, http.StatusOK)
 	return
 

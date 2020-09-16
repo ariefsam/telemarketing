@@ -4,6 +4,8 @@ import (
 	"errors"
 	"net/http"
 
+	"time"
+
 	"github.com/ariefsam/telemarketing/entity"
 )
 
@@ -41,7 +43,7 @@ func (api *RestAPI) AssignCustomer(w http.ResponseWriter, r *http.Request) {
 		JSONView(w, response, http.StatusBadGateway)
 		return
 	}
-
+	time.Sleep(300 * time.Millisecond)
 	response["Customer"] = customer
 	JSONView(w, response, http.StatusOK)
 }

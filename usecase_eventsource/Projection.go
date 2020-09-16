@@ -30,7 +30,7 @@ func (p *Projection) FirestoreProjection() {
 	if err != nil {
 		return
 	}
-	limit := 10000
+	limit := 9000000
 
 	for {
 		lastTimeTemp, _ := gore.NewCommand("Get", "event-from-server-last-time").Run(conn)
