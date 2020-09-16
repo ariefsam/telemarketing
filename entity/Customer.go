@@ -5,6 +5,7 @@ type Customer struct {
 	Name             string
 	PhoneNumber      string
 	Status           string
+	IsClosing        bool
 	TelemarketerID   string
 	TimestampCreated int64
 	TimestampUpdated int64
