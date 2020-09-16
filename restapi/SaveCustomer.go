@@ -26,6 +26,7 @@ func (api *RestAPI) SaveCustomer(w http.ResponseWriter, r *http.Request) {
 	response := map[string]interface{}{
 		"Status": "ok",
 	}
+
 	JSONView(w, response, http.StatusOK)
 	return
 
