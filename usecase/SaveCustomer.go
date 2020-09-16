@@ -3,11 +3,7 @@ package usecase
 import "github.com/ariefsam/telemarketing/entity"
 
 func (u *Usecase) SaveCustomer(customer entity.Customer) (err error) {
-	var checkCurrentCustomer bool
 	var currentCustomer entity.Customer
-	if customer.IsClosing == true {
-		checkCurrentCustomer = true
-	}
 
 	if checkCurrentCustomer {
 		filter := entity.FilterCustomer{
@@ -27,6 +23,12 @@ func (u *Usecase) SaveCustomer(customer entity.Customer) (err error) {
 			customer.ClosingTimestamp = u.Timer.CurrentTimestamp()
 		}
 	}
+
+	if customer.Status != currentCustomer.Status {
+		customer.LastCallTimestamp = u.Timer.CurrentTimestamp()
+	}
+	customer.TimestampUpdated = u.Timer.CurrentTimestamp()
+
 	err = u.CustomerRepository.Save(customer)
 	return
 }
