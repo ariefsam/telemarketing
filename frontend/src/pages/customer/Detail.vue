@@ -231,9 +231,9 @@ export default {
     },
     onSubmit() {
       var vm = this;
-      console.log(this.customer);
-      console.log(this.additionalInfo);
-      console.log(this.response);
+      // console.log(this.customer);
+      // console.log(this.additionalInfo);
+      // console.log(this.response);
       if (this.response == "") {
         this.alert = true;
       } else {
