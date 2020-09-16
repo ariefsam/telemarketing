@@ -97,12 +97,12 @@ export default {
       isTelemarketersReady: false, 
 
       // filter model
+      response: null,
       responseOptions: [
         'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
       ],
-      response: "",
       
-      telemarketerName: "",
+      telemarketerName: null,
       telemarketerNameOptionsStr: [],
       telemarketerNameOptions: this.telemarketerNameOptionsStr,
     }
@@ -143,7 +143,7 @@ export default {
       var vm = this
       this.customers.forEach(function(data) {
         var index = vm.telemarketers.findIndex(x => x.ID === data.TelemarketerID);
-        var telemarketerName = ''
+        var telemarketerName = null
         if (index >= 0){
           telemarketerName = vm.telemarketers[index].Name
         }
@@ -160,10 +160,10 @@ export default {
     filter() {
       var vm = this;
       var index = vm.telemarketers.findIndex(x => x.Name === vm.telemarketerName);  
-      if (vm.telemarketerName != "") {
-        var telemarketerID = "telemarketerID"
-      } else {
+      if (vm.telemarketerName == null) {
         var telemarketerID = null
+      } else {
+        var telemarketerID = "telemarketerID"
       }
       if (index >= 0){
         telemarketerID = vm.telemarketers[index].ID
@@ -191,11 +191,11 @@ export default {
       // console.log(data_submit)
     },
     resetFilterStatus(){
-      this.response = ""
+      this.response = null
       this.filter()
     },
     resetFilterTelemarketerName(){
-      this.telemarketerName = ""
+      this.telemarketerName = null
       this.filter()
     },
     filterTelemarketerNameFn(val, update) {
