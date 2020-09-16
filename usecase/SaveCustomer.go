@@ -5,17 +5,15 @@ import "github.com/ariefsam/telemarketing/entity"
 func (u *Usecase) SaveCustomer(customer entity.Customer) (err error) {
 	var currentCustomer entity.Customer
 
-	if checkCurrentCustomer {
-		filter := entity.FilterCustomer{
-			ID: &customer.ID,
-		}
-		temp, err := u.CustomerRepository.Get(filter, 1)
-		if err != nil {
-			return err
-		}
-		if len(temp) == 1 {
-			currentCustomer = temp[0]
-		}
+	filter := entity.FilterCustomer{
+		ID: &customer.ID,
+	}
+	temp, err := u.CustomerRepository.Get(filter, 1)
+	if err != nil {
+		return err
+	}
+	if len(temp) == 1 {
+		currentCustomer = temp[0]
 	}
 
 	if customer.IsClosing {
