@@ -130,12 +130,12 @@
               <div>Total Tidak Terdaftar</div>
             </div>
             <div class="column">
-              <div class="text-bold">0</div>
-              <div class="text-bold">0</div>
-              <div class="text-bold">0</div>
-              <div class="text-bold">0</div>
-              <div class="text-bold">0</div>
-              <div class="text-bold">0</div>
+              <div class="text-bold">{{totalTertarik}}</div>
+              <div class="text-bold">{{totalHubungiKembali}}</div>
+              <div class="text-bold">{{totalTidakTertarik}}</div>
+              <div class="text-bold">{{totalTidakAktif}}</div>
+              <div class="text-bold">{{totalTidakMenjawab}}</div>
+              <div class="text-bold">{{totalTidakTerdaftar}}</div>
             </div>
           </div>
         </template>
@@ -204,6 +204,12 @@ export default {
         "Tidak Terdaftar",
       ],
       response: "All",
+      totalTertarik: 0,
+      totalHubungiKembali: 0,
+      totalTidakTertarik: 0,
+      totalTidakAktif: 0,
+      totalTidakMenjawab: 0,
+      totalTidakTerdaftar: 0,
     };
   },
 
@@ -225,8 +231,13 @@ export default {
         dataModel.Date = Timestamp;
 
         vm.$set(vm.data, key, dataModel);
-        console.log(dataModel);
       });
+      vm.totalTertarik = vm.data.filter(x => x.Status == "Tertarik").length
+      vm.totalHubungiKembali = vm.data.filter(x => x.Status == "Hubungi Kembali").length
+      vm.totalTidakTertarik = vm.data.filter(x => x.Status == "Tidak Tertarik").length
+      vm.totalTidakAktif = vm.data.filter(x => x.Status == "Tidak Aktif").length
+      vm.totalTidakMenjawab = vm.data.filter(x => x.Status == "Tidak Menjawab").length
+      vm.totalTidakTerdaftar = vm.data.filter(x => x.Status == "Tidak Terdaftar").length
     },
     onRowClick(evt, row) {
       var vm = this;
@@ -242,11 +253,6 @@ export default {
 
       var start_datetime = this.start_date + " " + this.start_time;
       var end_datetime = this.end_date + " " + this.end_time;
-      if (this.is_private) {
-        var list_of_audience = this.invited_audiences
-          .split("\n")
-          .filter((v) => v != "");
-      }
 
       var startMoment = moment.tz(
         start_datetime,
@@ -280,6 +286,12 @@ export default {
               vm.assignDataFromAPI(response.data.CallLogs);
             } else {
               vm.data = [];
+              vm.totalTertarik = 0
+              vm.totalHubungiKembali = 0
+              vm.totalTidakTertarik = 0
+              vm.totalTidakAktif = 0
+              vm.totalTidakMenjawab = 0
+              vm.totalTidakTerdaftar = 0
             }
           }
         });
