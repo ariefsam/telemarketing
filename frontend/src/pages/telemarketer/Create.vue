@@ -30,10 +30,10 @@
         <div class="q-mb-sm">
           <q-toggle v-model="isAdmin" checked-icon="check" color="green" unchecked-icon="clear" />Admin
         </div>
-        <div class="q-mb-sm">
+        <div class="q-mb-sm" v-if="!isAdmin">
           Weekly Target
         </div>
-        <div class="row q-col-gutter-sm">
+        <div class="row q-col-gutter-sm" v-if="!isAdmin">
           <q-input
             color="grey-8"
             v-model.number="callTarget"
@@ -80,6 +80,10 @@ export default {
   methods: {
     onSubmit() {
       var vm = this;
+      if (vm.isAdmin) {
+        vm.callTarget =  null
+        vm.closingTarget = null
+      }
       var data_submit = {
         Token: vm.$authService.getToken(),
         Telemarketer: {
@@ -96,8 +100,9 @@ export default {
         .post("/api/telemarketer/create", data_submit)
         .then(function (response) {
           if (response.data) {
-            vm.$router.push({
+            vm.$router.replace({
               name: "telemarketer",
+              force: true
             });
           }
         })

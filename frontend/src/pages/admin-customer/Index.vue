@@ -140,7 +140,7 @@ export default {
     onRowClick(evt, row) {
       console.log("clicked on", row.PhoneNumber);
       this.$router.push({
-        name: "customer-detail",
+        name: "admin-customer-detail",
         params: { phoneNumber: row.PhoneNumber },
       });
     },

@@ -11,7 +11,7 @@
       <q-form @submit="onSubmit" class="col-md-6">
         <q-input
           color="grey-8"
-          v-model="name"
+          v-model="telemarketer.Name"
           filled
           label="Name *"
           type="text"
@@ -20,7 +20,7 @@
         />
         <q-input
           color="grey-8"
-          v-model="email"
+          v-model="telemarketer.Email"
           filled
           label="Email Address *"
           type="email"
@@ -28,12 +28,12 @@
           :rules="[val => !!val || 'Field is required']"
         />
         <div class="q-mb-sm">
-          <q-toggle v-model="isAdmin" checked-icon="check" color="green" unchecked-icon="clear" />Admin
+          <q-toggle v-model="telemarketer.IsAdmin" checked-icon="check" color="green" unchecked-icon="clear" />Admin
         </div>
-        <div class="q-mb-sm">
+        <div class="q-mb-sm" v-if="!telemarketer.IsAdmin">
           Weekly Target
         </div>
-        <div class="row q-col-gutter-sm">
+        <div class="row q-col-gutter-sm" v-if="!telemarketer.IsAdmin">
           <q-input
             color="grey-8"
             v-model.number="callTarget"
@@ -69,54 +69,63 @@ export default {
 
   data() {
     return {
-      name: "",
-      email: "",
-      isAdmin: false,
+      telemarketer: {},
       callTarget: null,
       closingTarget: null,
     };
   },
 
   mounted(){
-    // this.name = "Agung"
-    // this.email = "agung@fsn.co.id"
-    // this.isAdmin = true
-    // this.callTarget = 10
-    // this.closingTarget = 10
+    var vm=this;
+    var data_submit = {
+      Token: vm.$authService.getToken(),
+      FilterTelemarketer: {
+        ID: vm.$route.params.id,
+      },
+      Limit: 10000,
+    };
+    this.$axios
+      .post("/api/telemarketer/get", data_submit)
+      .then(function (response) {
+        if (response.data) {
+          vm.telemarketer = response.data.Telemarketers[0]
+          vm.callTarget = vm.telemarketer.WeeklyTarget.Call
+          vm.closingTarget = vm.telemarketer.WeeklyTarget.Closing
+        }
+      })
   },
 
   methods: {
     onSubmit() {
       var vm = this;
+      if (vm.telemarketer.IsAdmin){
+        vm.telemarketer.WeeklyTarget.Call = null
+        vm.telemarketer.WeeklyTarget.Closing = null
+      } else {
+        vm.telemarketer.WeeklyTarget.Call = vm.callTarget
+        vm.telemarketer.WeeklyTarget.Closing = vm.closingTarget
+      }
       var data_submit = {
         Token: vm.$authService.getToken(),
-        Telemarketer: {
-          Name: vm.name,
-          Email: vm.email,
-          IsAdmin: vm.isAdmin,
-          WeeklyTarget: {
-            Call: vm.callTarget,
-            Closing: vm.closingTarget,
-          },
-        },
+        Telemarketer: vm.telemarketer,
       };
-      // this.$axios
-      //   .post("/api/telemarketer/create", data_submit)
-      //   .then(function (response) {
-      //     if (response.data) {
-      //       vm.$router.push({
-      //         name: "telemarketer",
-      //       });
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     vm.$q.dialog({
-      //       title: "Error Edit Telemarketer",
-      //       message: error.response.data.Error,
-      //       cancel: true,
-      //       persistent: true,
-      //     });
-      //   });
+      this.$axios
+        .post("/api/telemarketer/save", data_submit)
+        .then(function (response) {
+          if (response.data) {
+            vm.$router.replace({
+              name: "telemarketer",
+            });
+          }
+        })
+        .catch(function (error) {
+          vm.$q.dialog({
+            title: "Error Edit Telemarketer",
+            message: error.response.data.Error,
+            cancel: true,
+            persistent: true,
+          });
+        });
       console.log(data_submit);
     },
     backToIndex() {
