@@ -139,15 +139,6 @@
             </div>
           </div>
         </template>
-        <q-td :style="{width: '170px'}" slot="body-cell-action" slot-scope="props" :props="props">
-          <q-btn
-            color="primary"
-            icon="book_onlines"
-            class="action-btn q-mx-xs"
-            @click.stop="closing(props.row.PhoneNumber)"
-            label="Closing"
-          ></q-btn>
-        </q-td>
       </q-table>
     </div>
   </q-page>
@@ -196,10 +187,9 @@ export default {
           field: "Status",
           sortable: true,
         },
-        { name: "action", align: "center", label: "ACTION" },
       ],
       dataFilter: "",
-      dataVisible: ["date", "name", "phoneNumber", "status", "action"],
+      dataVisible: ["date", "name", "phoneNumber", "status"],
       dataPagination: {
         rowsPerPage: 5, // current rows per page being displayed
       },
@@ -224,35 +214,6 @@ export default {
   },
 
   methods: {
-    closing(phoneNumber) {
-      var vm = this;
-      vm.$q
-        .dialog({
-          title: "Closing Confirmation",
-          message: "Yakin untuk closing?",
-          cancel: true,
-          persistent: true,
-        })
-        .onOk(() => {
-          var data_submit = {
-            Token: vm.$authService.getToken(),
-            PhoneNumber: phoneNumber,
-            Status: "Closing",
-          };
-          vm.$restapi.callCustomer(data_submit,()=>{
-
-          });
-        })
-        .onOk(() => {
-          // console.log('>>>> second OK catcher')
-        })
-        .onCancel(() => {
-          // console.log('>>>> Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        });
-    },
     assignDataFromAPI(dataResponse) {
       var vm = this;
       var data = dataResponse;

@@ -26,7 +26,11 @@
               :options="options"
               label="Please select"
               @input="filter"
-            />
+            >
+              <template v-if="response" v-slot:append>
+                <q-icon name="cancel" @click.stop="resetFilterStatus" class="cursor-pointer" />
+              </template>
+            </q-select>
             <div class="col-md-4">
               <br />
               <q-btn @click="assignCustomer" label="Assign New Customer To Me"></q-btn>
@@ -64,6 +68,14 @@
             <span class="text-bold" style="font-size: 14px">{{customers.length}}</span>
           </div>
         </template>
+        <q-td :style="{width: '170px'}" slot="body-cell-action" slot-scope="props" :props="props">
+          <q-btn
+            color="primary"
+            icon="book_onlines"
+            @click.stop="closing(props.row)"
+            label="Closing"
+          ></q-btn>
+        </q-td>
       </q-table>
     </div>
   </q-page>
@@ -98,15 +110,15 @@ export default {
           field: "Status",
           sortable: true,
         },
+        { name: "action", align: "center", label: "ACTION" },
       ],
       customerDataFilter: "",
-      customerDataVisible: ["name", "phoneNumber", "status"],
+      customerDataVisible: ["name", "phoneNumber", "status", "action"],
       customerDataPagination: {
         rowsPerPage: 5, // current rows per page being displayed
       },
       // filter model
       options: [
-        "No Status",
         "Tertarik",
         "Hubungi Kembali",
         "Tidak Tertarik",
@@ -131,9 +143,55 @@ export default {
       };
       this.$axios.post("/api/customer", data_submit).then(function (response) {
         if (response.data) {
-          vm.customers = response.data.Customers;
+          if (response.data.Customers != null){
+            vm.customers = response.data.Customers;
+            console.log(vm.customers[0])
+          } else {
+            vm.customers = []
+          }
         }
       });
+    },
+    closing(customer) {
+      var vm = this;
+      vm.$q
+        .dialog({
+          title: "Closing Confirmation | " + customer.PhoneNumber,
+          message: "Customer Name",
+          prompt: {
+            model: customer.Name,
+            isValid: val => val.length > 3,
+            type: 'text' // optional
+          },
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(data => {
+          customer.Name = data
+          var data_submit = {
+            Token: vm.$authService.getToken(),
+            Customer: customer
+          };
+          this.$axios
+            .post("/api/customer/save", data_submit)
+            .then(function (response) {
+              if (response.data) {
+                console.log("Success")
+              }
+            })
+            .catch(function (error) {
+              alert("Closing Failed")
+            });
+        })
+        .onOk(() => {
+          // console.log('>>>> second OK catcher')
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
     },
     assignCustomer() {
       var vm=this;
@@ -157,9 +215,6 @@ export default {
       });
     },
     filter() {
-      if (this.response == "No Status") {
-        this.response = "";
-      }
       var vm = this;
       var data_submit = {
         Token: vm.$authService.getToken(),
@@ -178,6 +233,10 @@ export default {
         }
       });
       console.log(data_submit);
+    },
+    resetFilterStatus(){
+      this.response = ""
+      this.filter()
     },
   },
 };
