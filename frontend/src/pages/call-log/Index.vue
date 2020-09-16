@@ -28,20 +28,35 @@
               @input="filter"
             />
           </div>
+          <div class="col-md-6">
+            <div class="field-name q-mb-xs">Timestamp</div>
+            <q-select
+              filled
+              v-model="filterTimestamp"
+              :options="filterTimestampOptions"
+              label="Please select"
+              @input="filter"
+            >
+              <template v-if="filterTimestamp" v-slot:append>
+                <q-icon name="cancel" @click.stop="clearFilterTimestamp" class="cursor-pointer" />
+              </template>
+            </q-select>
+          </div>
           <div class="col-md-12">
-          <div class="field-name q-mb-xs">Timestamp</div>
+            <div class="field-name q-mb-xs">Custom Timestamp</div>
             <div class="row">
               <q-input
                 filled
                 color="grey-8"
                 v-model="start_date"
-                label="Start Date *"
-                class="col-sm-6 col-xs-12 q-pr-sm q-mb-sm"
+                label="Start Date"
+                class="col-sm-6 col-xs-12 q-pr-xs q-mb-sm"
+                @keydown.enter.prevent="inputStartDate"
               >
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-date v-model="start_date" mask="DD-MM-YYYY" />
+                      <q-date v-model="start_date" mask="DD-MM-YYYY" @input="inputStartDate"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -49,14 +64,15 @@
               <q-input
                 filled
                 color="grey-8"
-                v-model="start_time"
-                label="Start Time *"
-                class="col-sm-6 col-xs-12 q-pl-sm q-mb-sm"
+                v-model="end_date"
+                label="End Date"
+                class="col-sm-6 col-xs-12 q-pl-xs q-mb-sm"
+                @keydown.enter.prevent="inputEndDate"
               >
                 <template v-slot:append>
-                  <q-icon name="access_time" class="cursor-pointer">
+                  <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-time v-model="start_time" mask="HH:mm" format24h />
+                      <q-date v-model="end_date" mask="DD-MM-YYYY" @input="inputEndDate"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -66,14 +82,15 @@
               <q-input
                 filled
                 color="grey-8"
-                v-model="end_date"
-                label="End Date *"
-                class="col-sm-6 col-xs-12 q-pr-sm"
+                v-model="start_time"
+                label="Start Time"
+                class="col-sm-6 col-xs-12 q-pr-xs"
+                @keydown.enter.prevent="inputStartTime"
               >
                 <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
+                  <q-icon name="access_time" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-date v-model="end_date" mask="DD-MM-YYYY" />
+                      <q-time v-model="start_time" mask="HH:mm" format24h @input="inputStartTime"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -82,13 +99,14 @@
                 filled
                 color="grey-8"
                 v-model="end_time"
-                label="End Time *"
-                class="col-sm-6 col-xs-12 q-pl-sm"
+                label="End Time"
+                class="col-sm-6 col-xs-12 q-pl-xs"
+                @keydown.enter.prevent="inputEndTime"
               >
                 <template v-slot:append>
                   <q-icon name="access_time" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-time v-model="end_time" mask="HH:mm" format24h />
+                      <q-time v-model="end_time" mask="HH:mm" format24h @input="inputEndTime"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -210,13 +228,23 @@ export default {
       totalTidakAktif: 0,
       totalTidakMenjawab: 0,
       totalTidakTerdaftar: 0,
+      filterTimestamp: "",
+      filterTimestampOptions: [
+        "Today",
+        "Yesterday",
+        "Last 7 days",
+        "Last 15 days",
+        "Last 30 days",
+        "Last 60 days",
+        "Last 90 days",
+      ],
     };
   },
 
   mounted() {
-    this.filter();
     this.start_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
     this.end_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+    this.filter();
   },
 
   methods: {
@@ -277,30 +305,77 @@ export default {
         }
       });
     },
+    optionsStartdate (date) {
+      // return moment(String(date)).format('DD-MM-YYYY') <= this.end_date
+    },
+    optionsEnddate (date) {
+      // return moment(String(date)).format('DD-MM-YYYY') >= this.start_date
+    },
+    getFromToTimestamp(filterTimestamp) {
+      console.log(filterTimestamp)
+      var StartEndDate = {
+        from: "",
+        to: ""
+      }
+      if (this.filterTimestamp == "Today") {
+        StartEndDate.from = moment().startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (this.filterTimestamp == "Yesterday") {
+        StartEndDate.from = moment().subtract(1, "days").startOf("day");
+        StartEndDate.to = moment().subtract(1, "days").endOf("day");
+      } else if (this.filterTimestamp == "Last 7 days") {
+        StartEndDate.from = moment().subtract(7, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (this.filterTimestamp == "Last 15 days") {
+        StartEndDate.from = moment().subtract(15, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (this.filterTimestamp == "Last 30 days") {
+        StartEndDate.from = moment().subtract(30, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (this.filterTimestamp == "Last 60 days") {
+        StartEndDate.from = moment().subtract(60, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (this.filterTimestamp == "Last 90 days") {
+        StartEndDate.from = moment().subtract(90, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      }
+      // console.log(StartEndDate.from.format("DD-MM-YYYY HH:mm"))
+      // console.log(StartEndDate.to.format("DD-MM-YYYY HH:mm"))
+      return StartEndDate
+    },
     filter() {
       var vm = this;
       vm.data = [];
+      vm.totalTertarik = 0
+      vm.totalHubungiKembali = 0
+      vm.totalTidakTertarik = 0
+      vm.totalTidakAktif = 0
+      vm.totalTidakMenjawab = 0
+      vm.totalTidakTerdaftar = 0
 
-      var start_datetime = this.start_date + " " + this.start_time;
-      var end_datetime = this.end_date + " " + this.end_time;
-
-      var startMoment = moment.tz(
-        start_datetime,
-        "DD-MM-YYYY HH:mm",
-        "Asia/Jakarta"
-      );
-      var endMoment = moment.tz(
-        end_datetime,
-        "DD-MM-YYYY HH:mm",
-        "Asia/Jakarta"
-      );
-
+      var fromDateTime = ""
+      var toDateTime = ""
+      if (this.filterTimestamp) {
+        var StartEndDate = this.getFromToTimestamp(this.filterTimestamp)
+        fromDateTime = StartEndDate.from
+        toDateTime = StartEndDate.to
+        this.start_date = fromDateTime.format("DD-MM-YYYY")
+        this.end_date = toDateTime.format("DD-MM-YYYY")
+        this.start_time = "00:00"
+        this.end_time = "23:59"
+      } else {
+        var start_datetime = this.start_date + " " + this.start_time;
+        var end_datetime = this.end_date + " " + this.end_time;
+        fromDateTime = moment.tz(start_datetime, "DD-MM-YYYY HH:mm", "Asia/Jakarta");
+        toDateTime = moment.tz(end_datetime, "DD-MM-YYYY HH:mm", "Asia/Jakarta");
+      }
+      
       var data_submit = {
         Token: vm.$authService.getToken(),
         FilterCallLog: {
           Status: vm.response,
-          TimestampStart: startMoment.unix() * 1000000000,
-          TimestampEnd: endMoment.unix() * 1000000000,
+          TimestampStart: fromDateTime.unix() * 1000000000,
+          TimestampEnd: toDateTime.unix() * 1000000000,
         },
         Limit: 10000,
       };
@@ -316,16 +391,42 @@ export default {
               vm.assignDataFromAPI(response.data.CallLogs);
             } else {
               vm.data = [];
-              vm.totalTertarik = 0
-              vm.totalHubungiKembali = 0
-              vm.totalTidakTertarik = 0
-              vm.totalTidakAktif = 0
-              vm.totalTidakMenjawab = 0
-              vm.totalTidakTerdaftar = 0
             }
           }
         });
       // console.log(data_submit);
+    },
+    clearFilterTimestamp() {
+      this.filterTimestamp = "";
+      this.start_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+      this.end_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+      this.start_time = "00:00"
+      this.end_time = "23:59"
+      this.filter();
+    },
+    inputStartDate() {
+      if(this.start_date == ""){
+        this.start_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+      }
+      this.filter();
+    },
+    inputEndDate() {
+      if(this.end_date == ""){
+        this.end_date = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+      }
+      this.filter();
+    },
+    inputStartTime() {
+      if(this.start_time == ""){
+        this.start_time = "00:00"
+      }
+      this.filter();
+    },
+    inputEndTime() {
+      if(this.end_time == ""){
+        this.end_time = "23:59"
+      }
+      this.filter();
     },
   },
 };
