@@ -1,6 +1,10 @@
 package usecase
 
-import "github.com/ariefsam/telemarketing/entity"
+import (
+	"log"
+
+	"github.com/ariefsam/telemarketing/entity"
+)
 
 func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, timestamp int64) (err error) {
 	customer.Status = status
@@ -15,8 +19,9 @@ func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Custome
 	}
 	err = u.CallLogRepository.Save(callLog)
 	if err != nil {
-		u.CustomerRepository.Save(customer)
+		log.Println(err)
 	}
+	u.CustomerRepository.Save(customer)
 	return
 }
 

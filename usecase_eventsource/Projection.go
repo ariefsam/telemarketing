@@ -30,7 +30,6 @@ func (p *Projection) FirestoreProjection() {
 	if err != nil {
 		return
 	}
-	limit := 9000000
 
 	for {
 		lastTimeTemp, _ := gore.NewCommand("Get", "event-from-server-last-time").Run(conn)
@@ -38,7 +37,7 @@ func (p *Projection) FirestoreProjection() {
 
 		log.Println("Get event from lasttime:", lastTime)
 		query := docRef.Collection("Event").Where("Timestamp", ">", lastTime).OrderBy("Timestamp", firestore.Asc)
-		iter := query.Limit(limit).Snapshots(ctx)
+		iter := query.Snapshots(ctx)
 
 		for {
 			dsnap, err := iter.Next()
