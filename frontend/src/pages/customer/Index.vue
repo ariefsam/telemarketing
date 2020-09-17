@@ -2,15 +2,16 @@
   <q-page class="page-index">
     <div class="row justify-between">
       <div class="title">Customer</div>
-      <!--<div>
+      <div>
         <q-btn
           color="light-green-9"
           text-color="white"
           icon="add"
-          label="Request"
+          label="Assign New Customer To Me"
           class="q-pr-sm"
+          @click="assignCustomer"
         />
-      </div>-->
+      </div>
     </div>
     <div class="table-filter">
       <q-card class="q-pa-md">
@@ -31,10 +32,6 @@
                 <q-icon name="cancel" @click.stop="resetFilterStatus" class="cursor-pointer" />
               </template>
             </q-select>
-            <div class="col-md-4">
-              <br />
-              <q-btn @click="assignCustomer" label="Assign New Customer To Me"></q-btn>
-            </div>
           </div>
         </q-card-section>
       </q-card>

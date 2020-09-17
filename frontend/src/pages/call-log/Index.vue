@@ -2,15 +2,6 @@
   <q-page class="page-index">
     <div class="row justify-between">
       <div class="title">Call Log</div>
-      <!--<div>
-        <q-btn
-          color="light-green-9"
-          text-color="white"
-          icon="add"
-          label="Request"
-          class="q-pr-sm"
-        />
-      </div>-->
     </div>
     <div class="table-filter">
       <q-card class="q-pa-md">
