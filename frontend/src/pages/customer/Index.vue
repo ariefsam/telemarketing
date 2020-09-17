@@ -75,6 +75,56 @@
         </q-td>
       </q-table>
     </div>
+    <q-dialog v-model="closingPrompt" persistent>
+      <q-card style="min-width: 350px">
+        <q-form @submit="onClosingSubmit">
+          <q-card-section>
+            <div class="text-h6">Closing Confirmation | {{closingPhoneNumber}}</div>
+          </q-card-section>
+
+          <q-card-section class="content">
+            <div class="q-mb-xs">
+              <div class="field-name q-mb-xs">
+                Name
+                <span style="color: red; font-weight: normal">*</span>
+              </div>
+              <q-input
+                filled
+                v-model="closingName"
+                dense
+                :rules="[val => !!val || 'Field is required']"
+                @focus="focusInput"
+              />
+            </div>
+            <div class="q-mb-xs">
+              <div class="field-name q-mb-xs">
+                Buying Amount
+                <span style="color: red; font-weight: normal">*</span>
+              </div>
+              <q-input
+                filled
+                v-model="closingBuyAmount"
+                dense
+                :rules="[val => !!val || 'Field is required']"
+                @focus="focusInput"
+              >
+                <template v-slot:prepend>
+                  <div style="font-size: 14px">Rp. </div>
+                </template>
+              </q-input>
+            </div>
+            <div v-if="closingFailed" class="text-center" style="font-size: 12px; color: #C10015">
+              Closing Failed
+            </div>
+          </q-card-section>
+
+          <q-card-actions align="right" class="text-primary">
+            <q-btn flat label="Cancel" @click="resetClosingPrompt" class="q-px-md"/>
+            <q-btn flat label="Ok" type="submit" class="q-px-md"/>
+          </q-card-actions>
+        </q-form>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -124,11 +174,25 @@ export default {
         "Tidak Terdaftar",
       ],
       response: "",
+
+      closingPrompt: false,
+      closingCustomer: {},
+      closingPhoneNumber: "",
+      closingName: "",
+      closingBuyAmount: "",
+      closingFailed: false,
     };
   },
 
   mounted() {
     this.loadCustomer()
+  },
+
+  watch: {
+    closingBuyAmount: function(newValue) {
+      const result = newValue.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      this.$nextTick(() => { this.closingBuyAmount = result });
+    }
   },
 
   methods: {
@@ -150,47 +214,57 @@ export default {
       });
     },
     closing(customer) {
-      var vm = this;
-      vm.$q
-        .dialog({
-          title: "Closing Confirmation | " + customer.PhoneNumber,
-          message: "Customer Name",
-          prompt: {
-            model: customer.Name,
-            isValid: val => val.length > 3,
-            type: 'text' // optional
-          },
-          cancel: true,
-          persistent: true,
+      this.closingPrompt = true
+      this.closingCustomer = customer
+      this.closingPhoneNumber = customer.PhoneNumber
+      this.closingName = customer.Name
+    },
+    onClosingSubmit(){
+      var vm = this
+      var copyClosingCustomer = this.deepCopyObj(this.closingCustomer)
+      copyClosingCustomer.Name = this.closingName
+      copyClosingCustomer.BuyAmount = this.closingBuyAmount.replace(/\./g,'')
+      copyClosingCustomer.IsClosing = true
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+        Customer: copyClosingCustomer
+      };
+      this.$axios
+        .post("/api/customer/save", data_submit)
+        .then(function (response) {
+          if (response.data) {
+            vm.closingPrompt = false
+            vm.closingPhoneNumber = ""
+            vm.closingName = ""
+            vm.closingBuyAmount = ""
+            vm.closingCustomer.IsClosing = true
+            vm.removeClosedCustomer()
+            vm.closingCustomer = {}
+          }
         })
-        .onOk(data => {
-          customer.Name = data
-          customer.IsClosing = true
-          var data_submit = {
-            Token: vm.$authService.getToken(),
-            Customer: customer
-          };
-          console.log(customer.IsClosing)
-          this.$axios
-            .post("/api/customer/save", data_submit)
-            .then(function (response) {
-              if (response.data) {
-                vm.removeClosedCustomer()
-              }
-            })
-            .catch(function (error) {
-              alert("Closing Failed")
-            });
-        })
-        .onOk(() => {
-          // console.log('>>>> second OK catcher')
-        })
-        .onCancel(() => {
-          // console.log('>>>> Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
+        .catch(function (error) {
+          vm.closingFailed = true
         });
+    },
+    deepCopyObj(src){
+      let target = {};
+      for (let prop in src) {
+          if (src.hasOwnProperty(prop)) {
+              target[prop] = src[prop]; //iteratively copies over values, not references
+          }
+      }
+      return target;
+    },
+    resetClosingPrompt() {
+      this.closingPrompt = false
+      this.closingCustomer = {}
+      this.closingPhoneNumber = ""
+      this.closingName = ""
+      this.closingBuyAmount = ""
+      this.closingFailed = false
+    },
+    focusInput() {
+      this.closingFailed = false  
     },
     assignCustomer() {
       var vm=this;
