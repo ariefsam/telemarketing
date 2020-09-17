@@ -11,10 +11,11 @@ import (
 type Telemarketer struct{}
 
 func (t *Telemarketer) Save(telemarketer entity.Telemarketer) (err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 	if telemarketer.Email == "" {
 		err = errors.New("Cannot save telemarketer because email is empty, " + telemarketer.Name)
 		return
@@ -30,10 +31,11 @@ func (t *Telemarketer) Save(telemarketer entity.Telemarketer) (err error) {
 }
 
 func (t *Telemarketer) Get(filter entity.FilterTelemarketer, limit int) (telemarketers []entity.Telemarketer, err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 
 	var dsnap *firestore.DocumentSnapshot
 
@@ -72,10 +74,11 @@ func (t *Telemarketer) Get(filter entity.FilterTelemarketer, limit int) (telemar
 
 func (c *Telemarketer) Delete(email string) (err error) {
 	id := email
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 	_, err = docRef.Collection("telemarketer").Doc(id).Delete(ctx)
 	return
 }

@@ -12,10 +12,11 @@ import (
 type CallLog struct{}
 
 func (c *CallLog) Save(callLog entity.CallLog) (err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 	dataInsert := map[string]interface{}{}
 	mapstructure.Decode(callLog, &dataInsert)
 	id := b64.NewInt64(callLog.Timestamp).String()
@@ -28,10 +29,11 @@ func (c *CallLog) Save(callLog entity.CallLog) (err error) {
 }
 
 func (c *CallLog) Get(filter entity.FilterCallLog, limit int) (callLogs []entity.CallLog, err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 
 	var dsnap *firestore.DocumentSnapshot
 	fWhere := []filterWhere{}
@@ -112,10 +114,11 @@ func (c *CallLog) Get(filter entity.FilterCallLog, limit int) (callLogs []entity
 
 func (c *CallLog) Delete(timestamp int64) (err error) {
 	id := b64.NewInt64(timestamp).String()
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 	_, err = docRef.Collection("callLog").Doc(id).Delete(ctx)
 	return
 }

@@ -16,7 +16,7 @@ func init() {
 var FirebaseAccountPath string
 var ProjectionDB string
 
-func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, err error) {
+func getFirestoreClient() (ctx context.Context, client *firestore.Client, docRef *firestore.DocumentRef, err error) {
 	if ProjectionDB == "" {
 		ProjectionDB = "telemarketing"
 	}
@@ -27,9 +27,10 @@ func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, e
 	sa := option.WithCredentialsFile(FirebaseAccountPath)
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return
 	}
-	client, err := app.Firestore(ctx)
+	client, err = app.Firestore(ctx)
 	docRef = client.Collection("db").Doc(ProjectionDB)
 	return
 }
