@@ -169,6 +169,30 @@
         </q-card>
       </q-form>
     </div>
+    <div class="table-container">
+      <q-table
+        :data="callHistory"
+        :columns="callHistoryColumns"
+        row-key="Timestamp"
+        :filter="callHistoryFilter"
+        :visible-columns="callHistoryVisible"
+        :pagination.sync="callHistoryPagination"
+      >
+        <template v-slot:top-right>
+          <q-input color="grey-8" dense debounce="300" v-model="callHistoryFilter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+        <template v-slot:top-left>
+          <div class="q-mb-sm">
+            <span class="q-pr-sm">Total Call History</span>
+            <span class="text-bold" style="font-size: 14px">{{callHistory.length}}</span>
+          </div>
+        </template>
+      </q-table>
+    </div>
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
@@ -181,8 +205,9 @@
   </q-page>
 </template>
 
-
 <script>
+import { date } from "quasar";
+
 export default {
   name: "CustomerDetail",
 
@@ -200,6 +225,43 @@ export default {
       tidakAktif: false,
       tidakMenjawab: false,
       tidakTerdaftar: false,
+
+      callHistory: [],
+      callHistoryColumns: [
+        {
+          name: "date",
+          label: "DATE",
+          align: "left",
+          field: "Date",
+          sortable: true,
+        },
+        {
+          name: "name",
+          label: "NAME",
+          align: "left",
+          field: "Name",
+          sortable: true,
+        },
+        {
+          name: "phoneNumber",
+          label: "PHONE NUMBER",
+          align: "center",
+          field: "PhoneNumber",
+          sortable: true,
+        },
+        {
+          name: "status",
+          label: "STATUS",
+          align: "center",
+          field: "Status",
+          sortable: true,
+        },
+      ],
+      callHistoryFilter: "",
+      callHistoryVisible: ["date", "name", "phoneNumber", "status"],
+      callHistoryPagination: {
+        rowsPerPage: 5, // current rows per page being displayed
+      },
     };
   },
 
@@ -219,9 +281,41 @@ export default {
     });
     // Assign Status if there's a value in it
     this.assignStatus(this.customer.Status);
+
+    var data_submit = {
+      Token: vm.$authService.getToken(),
+      FilterCallLog: {
+        PhoneNumber: vm.customerPhoneNumber,
+      },
+      Limit: 10000,
+    };
+    this.$axios
+      .post("/api/call-log/get", data_submit)
+      .then(function (response) {
+        if (response.data) {
+          if (response.data.CallLogs) {
+            vm.assignDataFromAPI(response.data.CallLogs);
+          } else {
+            vm.callHistory = [];
+          }
+        }
+      });
   },
 
   methods: {
+    assignDataFromAPI(dataResponse) {
+      var vm = this;
+      var data = dataResponse;
+      Object.keys(data).forEach((key) => {
+        var Timestamp = new Date(data[key].Timestamp / 1000000);
+        Timestamp = date.formatDate(Timestamp, "DD-MM-YYYY HH:mm:ss Z");
+
+        var dataModel = data[key];
+        dataModel.Date = Timestamp;
+
+        vm.$set(vm.callHistory, key, dataModel);
+      });
+    },
     backToIndex() {
       this.$router.replace({ name: "customer" });
     },
