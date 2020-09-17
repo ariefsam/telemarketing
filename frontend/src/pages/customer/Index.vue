@@ -190,8 +190,9 @@ export default {
 
   watch: {
     closingBuyAmount: function(newValue) {
+      var vm = this
       const result = newValue.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      this.$nextTick(() => { this.closingBuyAmount = result });
+      this.$nextTick(() => { vm.closingBuyAmount = result });
     }
   },
 

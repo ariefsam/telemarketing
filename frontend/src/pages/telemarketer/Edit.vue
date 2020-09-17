@@ -30,28 +30,100 @@
         <div class="q-mb-sm">
           <q-toggle v-model="telemarketer.IsAdmin" checked-icon="check" color="green" unchecked-icon="clear" />Admin
         </div>
-        <div class="q-mb-sm" v-if="!telemarketer.IsAdmin">
-          Weekly Target
-        </div>
-        <div class="row q-col-gutter-sm" v-if="!telemarketer.IsAdmin">
-          <q-input
-            color="grey-8"
-            v-model.number="callTarget"
-            filled
-            label="Call Target *"
-            type="number"
-            class="field col-md-6"
-            :rules="[val => !!val || 'Field is required']"
-          />
-          <q-input
-            color="grey-8"
-            v-model.number="closingTarget"
-            filled
-            label="Closing Target *"
-            type="number"
-            class="field col-md-6"
-            :rules="[val => !!val || 'Field is required']"
-          />
+        <div v-if="!telemarketer.IsAdmin">
+          <div class="q-mb-sm">
+            Daily Target
+          </div>
+          <div class="row q-col-gutter-sm">
+            <q-input
+              color="grey-8"
+              v-model.number="telemarketer.Target.Daily.Call"
+              filled
+              label="Call *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model.number="telemarketer.Target.Daily.Closing"
+              filled
+              label="Closing *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model="telemarketer.Target.Daily.BuyAmount"
+              filled
+              label="Buying Amount (Rp.) *"
+              class="field col-md-6"
+              :rules="[val => !!val || 'Field is required']"
+            />
+          </div>
+          <div class="q-mb-sm">
+            Weekly Target
+          </div>
+          <div class="row q-col-gutter-sm">
+            <q-input
+              color="grey-8"
+              v-model.number="telemarketer.Target.Weekly.Call"
+              filled
+              label="Call *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model.number="telemarketer.Target.Weekly.Closing"
+              filled
+              label="Closing *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model="telemarketer.Target.Weekly.BuyAmount"
+              filled
+              label="Buying Amount (Rp.) *"
+              class="field col-md-6"
+              :rules="[val => !!val || 'Field is required']"
+            />
+          </div>
+          <div class="q-mb-sm">
+            Monthly Target
+          </div>
+          <div class="row q-col-gutter-sm">
+            <q-input
+              color="grey-8"
+              v-model.number="telemarketer.Target.Monthly.Call"
+              filled
+              label="Call *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model.number="telemarketer.Target.Monthly.Closing"
+              filled
+              label="Closing *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model="telemarketer.Target.Monthly.BuyAmount"
+              filled
+              label="Buying Amount (Rp.) *"
+              class="field col-md-6"
+              :rules="[val => !!val || 'Field is required']"
+            />
+          </div>
         </div>
         <div class="q-mt-sm">
           <q-btn label="Submit" type="submit" color="primary" />
@@ -69,9 +141,25 @@ export default {
 
   data() {
     return {
-      telemarketer: {},
-      callTarget: null,
-      closingTarget: null,
+      telemarketer: {
+        Target: {
+          Daily: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+          Weekly: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+          Monthly: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+        }
+      },
     };
   },
 
@@ -89,22 +177,54 @@ export default {
       .then(function (response) {
         if (response.data) {
           vm.telemarketer = response.data.Telemarketers[0]
-          vm.callTarget = vm.telemarketer.WeeklyTarget.Call
-          vm.closingTarget = vm.telemarketer.WeeklyTarget.Closing
         }
       })
+  },
+
+  watch: {
+    telemarketer: {
+      handler(val){
+        var vm = this
+        const resultDaily = val.Target.Daily.BuyAmount.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        const resultWeekly = val.Target.Weekly.BuyAmount.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        const resultMonthly = val.Target.Monthly.BuyAmount.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        this.$nextTick(() => { 
+          vm.telemarketer.Target.Daily.BuyAmount = resultDaily 
+          vm.telemarketer.Target.Weekly.BuyAmount = resultWeekly 
+          vm.telemarketer.Target.Monthly.BuyAmount = resultMonthly 
+        });
+      },
+      deep: true
+    }
   },
 
   methods: {
     onSubmit() {
       var vm = this;
-      if (vm.telemarketer.IsAdmin){
-        vm.telemarketer.WeeklyTarget.Call = null
-        vm.telemarketer.WeeklyTarget.Closing = null
+      if (vm.telemarketer.IsAdmin) {
+        vm.telemarketer.Target = {
+          Daily: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+          Weekly: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+          Monthly: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+        }
       } else {
-        vm.telemarketer.WeeklyTarget.Call = vm.callTarget
-        vm.telemarketer.WeeklyTarget.Closing = vm.closingTarget
+        vm.telemarketer.Target.Daily.BuyAmount = vm.telemarketer.Target.Daily.BuyAmount.replace(/\./g,'')
+        vm.telemarketer.Target.Weekly.BuyAmount = vm.telemarketer.Target.Weekly.BuyAmount.replace(/\./g,'')
+        vm.telemarketer.Target.Monthly.BuyAmount = vm.telemarketer.Target.Monthly.BuyAmount.replace(/\./g,'')
       }
+
       var data_submit = {
         Token: vm.$authService.getToken(),
         Telemarketer: vm.telemarketer,

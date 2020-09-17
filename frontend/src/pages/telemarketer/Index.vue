@@ -24,11 +24,26 @@
         @row-click="onRowClick"
       >
         <template v-slot:top-right>
-          <q-input color="grey-8" dense debounce="300" v-model="telemarketerDataFilter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+          <div class="column">
+            <q-input color="grey-8" dense debounce="300" v-model="telemarketerDataFilter" placeholder="Search" class="q-mb-sm">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+            <q-select
+              filled
+              v-model="telemarketerDataVisible"
+              multiple
+              outlined
+              dense
+              :options="telemarketerDataColumns"
+              :display-value="$q.lang.table.columns"
+              emit-value
+              map-options
+              option-value="name"
+              style="min-width: 240px"
+            />
+          </div>
         </template>
         <template v-slot:top-left>
           <div>
@@ -67,14 +82,31 @@ export default {
         { name: 'name', label: 'Name', align: 'left', field: 'Name', sortable: true },
         { name: 'email', label: 'Email', align: 'left', field: 'Email', sortable: true },
         { name: 'isAdmin', label: 'Admin', align: 'center', field: 'IsAdmin', sortable: true },
-        { name: 'performanceCall', label: 'Performance Call', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Call, sortable: true },
-        { name: 'performanceClosing', label: 'Performance Closing', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Closing, sortable: true },
-        { name: 'weeklyTargetCall', label: 'Weekly Target Call', align: 'center', field: row => row.IsAdmin? "" : row.WeeklyTarget.Call, sortable: true },
-        { name: 'weeklyTargetClosing', label: 'Weekly Target Closing', align: 'center', field: row => row.IsAdmin? "" : row.WeeklyTarget.Closing, sortable: true },
+
+        { name: 'dailyTargetCall', label: 'Daily Target Call', align: 'center', field: row => row.IsAdmin? "" : row.Target.Daily.Call, sortable: true },
+        { name: 'dailyTargetClosing', label: 'Daily Target Closing', align: 'center', field: row => row.IsAdmin? "" : row.Target.Daily.Closing, sortable: true },
+        { name: 'dailyTargetBuyAmount', label: 'Daily Target Buying Amount', align: 'center', field: row => row.IsAdmin? "" : row.Target.Daily.BuyAmount, sortable: true, format: (val, row) => row.IsAdmin? `` : `Rp. ${this.moneyFormat(val)}` },
+        { name: 'weeklyTargetCall', label: 'Weekly Target Call', align: 'center', field: row => row.IsAdmin? "" : row.Target.Weekly.Call, sortable: true },
+        { name: 'weeklyTargetClosing', label: 'Weekly Target Closing', align: 'center', field: row => row.IsAdmin? "" : row.Target.Weekly.Closing, sortable: true },
+        { name: 'weeklyTargetBuyAmount', label: 'Weekly Target Buying Amount', align: 'center', field: row => row.IsAdmin? "" : row.Target.Weekly.BuyAmount, sortable: true, format: (val, row) => row.IsAdmin? `` : `Rp. ${this.moneyFormat(val)}` },
+        { name: 'monthlyTargetCall', label: 'Monthly Target Call', align: 'center', field: row => row.IsAdmin? "" : row.Target.Monthly.Call, sortable: true },
+        { name: 'monthlyTargetClosing', label: 'Monthly Target Closing', align: 'center', field: row => row.IsAdmin? "" : row.Target.Monthly.Closing, sortable: true },
+        { name: 'monthlyTargetBuyAmount', label: 'Monthly Target Buying Amount', align: 'center', field: row => row.IsAdmin? "" : row.Target.Monthly.BuyAmount, sortable: true, format: (val, row) => row.IsAdmin? `` : `Rp. ${this.moneyFormat(val)}` },
+        
+        { name: 'dailyPerformanceCall', label: 'Daily Performance Call', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Daily.Call, sortable: true },
+        { name: 'dailyPerformanceClosing', label: 'Daily Performance Closing', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Daily.Closing, sortable: true },
+        { name: 'dailyPerformanceBuyAmount', label: 'Daily Performance Buying Amount', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Daily.BuyAmount, sortable: true, format: (val, row) => row.IsAdmin? `` : `Rp. ${this.moneyFormat(val)}` },
+        { name: 'weeklyPerformanceCall', label: 'Weekly Performance Call', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Weekly.Call, sortable: true },
+        { name: 'weeklyPerformanceClosing', label: 'Weekly Performance Closing', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Weekly.Closing, sortable: true },
+        { name: 'weeklyPerformanceBuyAmount', label: 'Weekly Performance Buying Amount', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Weekly.BuyAmount, sortable: true, format: (val, row) => row.IsAdmin? `` : `Rp. ${this.moneyFormat(val)}` },
+        { name: 'monthlyPerformanceCall', label: 'Monthly Performance Call', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Monthly.Call, sortable: true },
+        { name: 'monthlyPerformanceClosing', label: 'Monthly Performance Closing', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Monthly.Closing, sortable: true },
+        { name: 'monthlyPerformanceBuyAmount', label: 'Monthly Performance Buying Amount', align: 'center', field: row => row.IsAdmin? "" : row.Performance.Monthly.BuyAmount, sortable: true, format: (val, row) => row.IsAdmin? `` : `Rp. ${this.moneyFormat(val)}` },
+
         { name: "action", align: "center", label: "Action" },
       ],
       telemarketerDataFilter: "",
-      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'weeklyTargetCall', 'weeklyTargetClosing', 'performanceCall', 'performanceClosing', 'action'],
+      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'dailyTargetCall', 'dailyTargetClosing', 'dailyTargetBuyAmount', 'dailyPerformanceCall', 'dailyPerformanceClosing', 'dailyPerformanceBuyAmount', 'action'],
       telemarketerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },
@@ -97,6 +129,10 @@ export default {
   },
 
   methods: {
+    moneyFormat(value){
+      const result = value.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      return result
+    },
     onRowClick(evt, row) {
       console.log("clicked on", row.Email);
     },

@@ -8,7 +8,7 @@
       <div class="title">Create Telemarketer</div>
     </div>
     <div class="row">
-      <q-form @submit="onSubmit" class="col-md-6">
+      <q-form @submit="onSubmit" class="col-md-8">
         <q-input
           color="grey-8"
           v-model="name"
@@ -30,28 +30,100 @@
         <div class="q-mb-sm">
           <q-toggle v-model="isAdmin" checked-icon="check" color="green" unchecked-icon="clear" />Admin
         </div>
-        <div class="q-mb-sm" v-if="!isAdmin">
-          Weekly Target
-        </div>
-        <div class="row q-col-gutter-sm" v-if="!isAdmin">
-          <q-input
-            color="grey-8"
-            v-model.number="callTarget"
-            filled
-            label="Call Target *"
-            type="number"
-            class="field col-md-6"
-            :rules="[val => !!val || 'Field is required']"
-          />
-          <q-input
-            color="grey-8"
-            v-model.number="closingTarget"
-            filled
-            label="Closing Target *"
-            type="number"
-            class="field col-md-6"
-            :rules="[val => !!val || 'Field is required']"
-          />
+        <div v-if="!isAdmin">
+          <div class="q-mb-sm">
+            Daily Target
+          </div>
+          <div class="row q-col-gutter-sm">
+            <q-input
+              color="grey-8"
+              v-model.number="target.Daily.Call"
+              filled
+              label="Call *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model.number="target.Daily.Closing"
+              filled
+              label="Closing *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model="target.Daily.BuyAmount"
+              filled
+              label="Buying Amount (Rp.) *"
+              class="field col-md-6"
+              :rules="[val => !!val || 'Field is required']"
+            />
+          </div>
+          <div class="q-mb-sm">
+            Weekly Target
+          </div>
+          <div class="row q-col-gutter-sm">
+            <q-input
+              color="grey-8"
+              v-model.number="target.Weekly.Call"
+              filled
+              label="Call *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model.number="target.Weekly.Closing"
+              filled
+              label="Closing *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model="target.Weekly.BuyAmount"
+              filled
+              label="Buying Amount (Rp.) *"
+              class="field col-md-6"
+              :rules="[val => !!val || 'Field is required']"
+            />
+          </div>
+          <div class="q-mb-sm">
+            Monthly Target
+          </div>
+          <div class="row q-col-gutter-sm">
+            <q-input
+              color="grey-8"
+              v-model.number="target.Monthly.Call"
+              filled
+              label="Call *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model.number="target.Monthly.Closing"
+              filled
+              label="Closing *"
+              type="number"
+              class="field col-md-3"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              color="grey-8"
+              v-model="target.Monthly.BuyAmount"
+              filled
+              label="Buying Amount (Rp.) *"
+              class="field col-md-6"
+              :rules="[val => !!val || 'Field is required']"
+            />
+          </div>
         </div>
         <div class="q-mt-sm">
           <q-btn label="Submit" type="submit" color="primary" />
@@ -72,28 +144,76 @@ export default {
       name: "",
       email: "",
       isAdmin: false,
-      callTarget: null,
-      closingTarget: null,
+      target: {
+        Daily: {
+          Call: "",
+          Closing: "",
+          BuyAmount: "",
+        },
+        Weekly: {
+          Call: "",
+          Closing: "",
+          BuyAmount: "",
+        },
+        Monthly: {
+          Call: "",
+          Closing: "",
+          BuyAmount: "",
+        },
+      },
     };
+  },
+
+  watch: {
+    target: {
+      handler(val){
+        const resultDaily = val.Daily.BuyAmount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        const resultWeekly = val.Weekly.BuyAmount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        const resultMonthly = val.Monthly.BuyAmount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        this.$nextTick(() => { 
+          this.target.Daily.BuyAmount = resultDaily 
+          this.target.Weekly.BuyAmount = resultWeekly 
+          this.target.Monthly.BuyAmount = resultMonthly 
+        });
+      },
+      deep: true
+    }
   },
 
   methods: {
     onSubmit() {
       var vm = this;
       if (vm.isAdmin) {
-        vm.callTarget =  null
-        vm.closingTarget = null
+        vm.target = {
+          Daily: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+          Weekly: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+          Monthly: {
+            Call: "",
+            Closing: "",
+            BuyAmount: "",
+          },
+        }
+      }else {
+        vm.target.Daily.BuyAmount = vm.target.Daily.BuyAmount.replace(/\./g,'')
+        vm.target.Weekly.BuyAmount = vm.target.Weekly.BuyAmount.replace(/\./g,'')
+        vm.target.Monthly.BuyAmount = vm.target.Monthly.BuyAmount.replace(/\./g,'')
       }
+      
       var data_submit = {
         Token: vm.$authService.getToken(),
         Telemarketer: {
           Name: vm.name,
           Email: vm.email,
           IsAdmin: vm.isAdmin,
-          WeeklyTarget: {
-            Call: vm.callTarget,
-            Closing: vm.closingTarget,
-          },
+          Target: vm.target
         },
       };
       this.$axios
