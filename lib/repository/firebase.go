@@ -27,7 +27,8 @@ func getFirestoreClient() (ctx context.Context, docRef *firestore.DocumentRef, e
 	sa := option.WithCredentialsFile(FirebaseAccountPath)
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return
 	}
 	client, err := app.Firestore(ctx)
 	docRef = client.Collection("db").Doc(ProjectionDB)
