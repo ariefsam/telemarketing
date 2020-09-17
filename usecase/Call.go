@@ -23,7 +23,9 @@ func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Custome
 	}
 	u.CustomerRepository.Save(customer)
 
-	telemarketer.Performance.Call += 1
+	telemarketer.Performance.Daily.Call += 1
+	telemarketer.Performance.Weekly.Call += 1
+	telemarketer.Performance.Monthly.Call += 1
 	u.TelemarketerRepository.Save(telemarketer)
 	return
 }
