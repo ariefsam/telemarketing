@@ -12,5 +12,6 @@ type Customer struct {
 	LastCallTimestamp int64
 	ClosingTimestamp  int64
 	DataSource        string
+	BuyAmount         int
 	CreatedBy         string
 }

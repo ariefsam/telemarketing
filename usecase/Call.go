@@ -22,6 +22,9 @@ func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Custome
 		log.Println(err)
 	}
 	u.CustomerRepository.Save(customer)
+
+	telemarketer.Performance.Call += 1
+	u.TelemarketerRepository.Save(telemarketer)
 	return
 }
 
