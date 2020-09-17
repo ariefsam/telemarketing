@@ -10,7 +10,7 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title>Tracker</q-toolbar-title>
+        <q-toolbar-title>Telemarketing</q-toolbar-title>
         <q-space />
         <!--here is account-->
         <div>
