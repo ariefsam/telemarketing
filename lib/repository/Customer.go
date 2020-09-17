@@ -11,10 +11,11 @@ import (
 type Customer struct{}
 
 func (c *Customer) Save(customer entity.Customer) (err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 	dataInsert := map[string]interface{}{}
 	mapstructure.Decode(customer, &dataInsert)
 
@@ -27,10 +28,11 @@ func (c *Customer) Save(customer entity.Customer) (err error) {
 }
 
 func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []entity.Customer, err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 
 	var dsnap *firestore.DocumentSnapshot
 
@@ -107,10 +109,11 @@ func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []ent
 }
 
 func (c *Customer) Delete(id string) (err error) {
-	ctx, docRef, err := getFirestoreClient()
+	ctx, client, docRef, err := getFirestoreClient()
 	if err != nil {
 		return
 	}
+	defer client.Close()
 	_, err = docRef.Collection("customer").Doc(id).Delete(ctx)
 	return
 }
