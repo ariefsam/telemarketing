@@ -67,6 +67,7 @@
         </template>
         <q-td :style="{width: '170px'}" slot="body-cell-action" slot-scope="props" :props="props">
           <q-btn
+            v-if="props.row.Status != ''"
             color="primary"
             icon="book_onlines"
             @click.stop="closing(props.row)"
