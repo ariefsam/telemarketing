@@ -5,7 +5,7 @@
       <div text-color="blue-grey" class="q-ml-sm text-bold" style="font-size:16px;">Back</div>
     </div>
     <div class="row">
-      <div class="title">Create Telemarketer</div>
+      <div class="title">Add Telemarketer</div>
     </div>
     <div class="row">
       <q-form @submit="onSubmit" class="col-md-8">

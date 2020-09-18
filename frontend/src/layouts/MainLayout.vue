@@ -10,7 +10,7 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title>Telemarketing</q-toolbar-title>
+        <q-toolbar-title @click="goToHome" style="cursor:pointer">Telemarketing</q-toolbar-title>
         <q-space />
         <!--here is account-->
         <div>
@@ -73,14 +73,7 @@ export default {
   data() {
     return {
       leftDrawerOpen: false,
-      menuList: [
-        {
-          icon: "dashboard",
-          label: "Dashboard",
-          separator: true,
-          link: { name: "dashboard" },
-        },
-      ],
+      menuList: [],
       user: {},
     };
   },
@@ -93,18 +86,26 @@ export default {
       isAdmin: user.IsAdmin,
     };
     if (!this.user.isAdmin) {
-      this.menuList.push({
-        icon: "fas fa-user",
-        label: "Customer",
-        separator: false,
-        link: { name: "customer" },
-      });
-      this.menuList.push({
-        icon: "fas fa-address-book",
-        label: "Call Log",
-        separator: false,
-        link: { name: "call-log" },
-      });
+      this.menuList.push(
+        {
+          icon: "dashboard",
+          label: "Dashboard",
+          separator: true,
+          link: { name: "telemarketer-dashboard" },
+        },
+        {
+          icon: "fas fa-user",
+          label: "Customer",
+          separator: false,
+          link: { name: "customer" },
+        },
+        {
+          icon: "fas fa-address-book",
+          label: "Call Log",
+          separator: false,
+          link: { name: "call-log" },
+        }
+      );
       // this.menuList.push({
       //   icon: "fas fa-chart-bar",
       //   label: "Report",
@@ -114,6 +115,12 @@ export default {
     }
     if (this.user.isAdmin) {
       this.menuList.push(
+        {
+          icon: "dashboard",
+          label: "Dashboard",
+          separator: true,
+          link: { name: "admin-dashboard" },
+        },
         {
           icon: "fas fa-headset",
           label: "Telemarketer",
@@ -139,6 +146,9 @@ export default {
     onImageLoadFailure(event) {
       event.target.src = require("assets/default.jpg");
     },
+    goToHome() {
+      this.$router.replace({ name: "dashboard" });
+    }
   },
 };
 </script>

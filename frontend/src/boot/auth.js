@@ -97,11 +97,15 @@ export default ({ Vue, router }) => {
     if (requiresAuth && !isTokenValid) {
       next('/login');
     } else {
-      // if user go to /login but he's/she's still autenticated then go to /
-      if (to.path == '/login' && isTokenValid) {
+      // if user go to login but he's/she's still autenticated then go to /
+      if (to.name == 'login' && isTokenValid) {
         next('/')
       } else {
-        next()
+        if (to.name == 'root') {
+          next('/dashboard')
+        } else {
+          next()
+        }
       }
     }
   });

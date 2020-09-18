@@ -231,7 +231,7 @@ export default {
         Customer: copyClosingCustomer
       };
       this.$axios
-        .post("/api/customer/save", data_submit)
+        .post("/api/customer/closing", data_submit)
         .then(function (response) {
           if (response.data) {
             vm.closingPrompt = false

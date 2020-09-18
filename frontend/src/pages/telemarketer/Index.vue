@@ -106,7 +106,7 @@ export default {
         { name: "action", align: "center", label: "Action" },
       ],
       telemarketerDataFilter: "",
-      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'dailyTargetCall', 'dailyTargetClosing', 'dailyTargetBuyAmount', 'dailyPerformanceCall', 'dailyPerformanceClosing', 'dailyPerformanceBuyAmount', 'action'],
+      telemarketerDataVisible: ['name', 'email', 'isAdmin', 'monthlyPerformanceCall', 'monthlyPerformanceClosing', 'monthlyPerformanceBuyAmount', 'action'],
       telemarketerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },

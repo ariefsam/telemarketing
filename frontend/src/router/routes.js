@@ -4,8 +4,10 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: '', name: 'root', component: () => import('pages/Index.vue') },
       { path: '/dashboard', name: 'dashboard', component: () => import('pages/Dashboard.vue') },
+      { path: '/admin-dashboard', name: 'admin-dashboard', component: () => import('pages/dashboard/Admin.vue') },
+      { path: '/telemarketer-dashboard', name: 'telemarketer-dashboard', component: () => import('pages/dashboard/Telemarketer.vue') },
       { path: '/customer', name: 'customer', component: () => import('pages/customer/Index.vue') },
       { path: '/customer/:phoneNumber', name: 'customer-detail', component: () => import('pages/customer/Detail.vue') },
       { path: '/call-log', name: 'call-log', component: () => import('pages/call-log/Index.vue') },
