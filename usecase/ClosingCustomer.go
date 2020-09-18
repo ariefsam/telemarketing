@@ -1,8 +1,26 @@
 package usecase
 
-import "github.com/ariefsam/telemarketing/entity"
+import (
+	"log"
+
+	"github.com/ariefsam/telemarketing/entity"
+)
 
 func (u *Usecase) ClosingCustomer(customer entity.Customer) (err error) {
+
+	err = u.ValidateClosingCustomer(customer)
+	if err != nil {
+		return
+	}
+	customer.ClosingTimestamp = u.Timer.CurrentTimestamp()
+	customer.IsClosing = true
+	customer.TimestampUpdated = u.Timer.CurrentTimestamp()
+
+	err = u.CustomerRepository.Save(customer)
+	return
+}
+
+func (u *Usecase) ValidateClosingCustomer(customer entity.Customer) (err error) {
 	var currentCustomer entity.Customer
 
 	filter := entity.FilterCustomer{
@@ -16,17 +34,9 @@ func (u *Usecase) ClosingCustomer(customer entity.Customer) (err error) {
 		currentCustomer = temp[0]
 	}
 
-	if customer.IsClosing {
-		if !currentCustomer.IsClosing {
-			customer.ClosingTimestamp = u.Timer.CurrentTimestamp()
-		}
+	if currentCustomer.IsClosing {
+		log.Println("customer ", customer.ID, " ", customer.Name, " already closed")
+		return
 	}
-
-	if customer.Status != currentCustomer.Status {
-		customer.LastCallTimestamp = u.Timer.CurrentTimestamp()
-	}
-	customer.TimestampUpdated = u.Timer.CurrentTimestamp()
-
-	err = u.CustomerRepository.Save(customer)
 	return
 }

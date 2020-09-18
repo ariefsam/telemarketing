@@ -75,6 +75,10 @@ func (u *UsecaseEvent) SaveTelemarketer(telemarketer entity.Telemarketer) (err e
 }
 
 func (u *UsecaseEvent) ClosingCustomer(customer entity.Customer) (err error) {
+	err = u.Usecase.ValidateClosingCustomer(customer)
+	if err != nil {
+		return
+	}
 	err = save("ClosingCustomer", customer)
 	return
 }

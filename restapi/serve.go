@@ -49,6 +49,7 @@ func Serve(usecase usecaseinterface.Usecase) {
 	r.HandleFunc("/api/telemarketer/save", api.SaveTelemarketer).Methods("POST")
 	r.HandleFunc("/api/telemarketer/create", api.CreateTelemarketer).Methods("POST")
 	r.HandleFunc("/api/telemarketer/get", api.GetTelemarketer).Methods("POST")
+	r.HandleFunc("/api/me", api.Me).Methods("POST")
 	r.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
 		resp := map[string]string{
 			"Status": "Ok",
