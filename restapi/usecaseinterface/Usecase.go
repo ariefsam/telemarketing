@@ -8,7 +8,7 @@ type Usecase interface {
 	GetCallLog(filter entity.FilterCallLog, limit int) (callLogs []entity.CallLog, err error)
 	GetCustomer(filter entity.FilterCustomer, limit int) (customers []entity.Customer, err error)
 	SaveCallLog(callLog entity.CallLog) (err error)
-	SaveCustomer(customer entity.Customer) (err error)
+	ClosingCustomer(customer entity.Customer) (err error)
 	CreateCustomer(customer entity.Customer) (err error)
 	Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, currentTimestamp int64) (err error)
 	ParseToken(token string) (isValid bool, telemarketer entity.Telemarketer)

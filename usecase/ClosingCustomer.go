@@ -2,7 +2,7 @@ package usecase
 
 import "github.com/ariefsam/telemarketing/entity"
 
-func (u *Usecase) SaveCustomer(customer entity.Customer) (err error) {
+func (u *Usecase) ClosingCustomer(customer entity.Customer) (err error) {
 	var currentCustomer entity.Customer
 
 	filter := entity.FilterCustomer{

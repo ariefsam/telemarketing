@@ -74,8 +74,8 @@ func (u *UsecaseEvent) SaveTelemarketer(telemarketer entity.Telemarketer) (err e
 	return
 }
 
-func (u *UsecaseEvent) SaveCustomer(customer entity.Customer) (err error) {
-	err = save("SaveCustomer", customer)
+func (u *UsecaseEvent) ClosingCustomer(customer entity.Customer) (err error) {
+	err = save("ClosingCustomer", customer)
 	return
 }
 

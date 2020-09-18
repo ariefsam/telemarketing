@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (api *RestAPI) SaveCustomer(w http.ResponseWriter, r *http.Request) {
+func (api *RestAPI) ClosingCustomer(w http.ResponseWriter, r *http.Request) {
 	post := getPostModel(r)
 
 	_, err := api.authOrResponseError(post, w)
@@ -17,7 +17,7 @@ func (api *RestAPI) SaveCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	post.Telemarketer.ID = api.Usecase.GenerateID()
-	err = api.Usecase.SaveCustomer(*post.Customer)
+	err = api.Usecase.ClosingCustomer(*post.Customer)
 	if err != nil {
 		responseError(w, err, http.StatusBadGateway)
 		return
