@@ -57,7 +57,7 @@
               color="grey-8"
               v-model="telemarketer.Target.Daily.BuyAmount"
               filled
-              label="Buying Amount (Rp.) *"
+              label="Deposit Amount (Rp.) *"
               class="field col-md-6"
               :rules="[val => !!val || 'Field is required']"
             />
@@ -88,7 +88,7 @@
               color="grey-8"
               v-model="telemarketer.Target.Weekly.BuyAmount"
               filled
-              label="Buying Amount (Rp.) *"
+              label="Deposit Amount (Rp.) *"
               class="field col-md-6"
               :rules="[val => !!val || 'Field is required']"
             />
@@ -119,7 +119,7 @@
               color="grey-8"
               v-model="telemarketer.Target.Monthly.BuyAmount"
               filled
-              label="Buying Amount (Rp.) *"
+              label="Deposit Amount (Rp.) *"
               class="field col-md-6"
               :rules="[val => !!val || 'Field is required']"
             />
@@ -204,25 +204,25 @@ export default {
       if (vm.telemarketer.IsAdmin) {
         vm.telemarketer.Target = {
           Daily: {
-            Call: "",
-            Closing: "",
-            BuyAmount: "",
+            Call: 0,
+            Closing: 0,
+            BuyAmount: 0,
           },
           Weekly: {
-            Call: "",
-            Closing: "",
-            BuyAmount: "",
+            Call: 0,
+            Closing: 0,
+            BuyAmount: 0,
           },
           Monthly: {
-            Call: "",
-            Closing: "",
-            BuyAmount: "",
+            Call: 0,
+            Closing: 0,
+            BuyAmount: 0,
           },
         }
       } else {
-        vm.telemarketer.Target.Daily.BuyAmount = vm.telemarketer.Target.Daily.BuyAmount.replace(/\./g,'')
-        vm.telemarketer.Target.Weekly.BuyAmount = vm.telemarketer.Target.Weekly.BuyAmount.replace(/\./g,'')
-        vm.telemarketer.Target.Monthly.BuyAmount = vm.telemarketer.Target.Monthly.BuyAmount.replace(/\./g,'')
+        vm.telemarketer.Target.Daily.BuyAmount = parseInt(vm.telemarketer.Target.Daily.BuyAmount.replace(/\./g,''))
+        vm.telemarketer.Target.Weekly.BuyAmount = parseInt(vm.telemarketer.Target.Weekly.BuyAmount.replace(/\./g,''))
+        vm.telemarketer.Target.Monthly.BuyAmount = parseInt(vm.telemarketer.Target.Monthly.BuyAmount.replace(/\./g,''))
       }
 
       var data_submit = {

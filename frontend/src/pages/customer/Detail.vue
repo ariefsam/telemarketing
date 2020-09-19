@@ -317,7 +317,7 @@ export default {
       });
     },
     backToIndex() {
-      this.$router.replace({ name: "customer" });
+      this.$router.go(-1);
     },
     callBySkype() {
       // console.log("Call by Skype")

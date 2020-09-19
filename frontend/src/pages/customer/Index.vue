@@ -99,7 +99,7 @@
             </div>
             <div class="q-mb-xs">
               <div class="field-name q-mb-xs">
-                Buying Amount
+                Deposit Amount
                 <span style="color: red; font-weight: normal">*</span>
               </div>
               <q-input
@@ -225,7 +225,7 @@ export default {
       var vm = this
       var copyClosingCustomer = this.deepCopyObj(this.closingCustomer)
       copyClosingCustomer.Name = this.closingName
-      copyClosingCustomer.BuyAmount = this.closingBuyAmount.replace(/\./g,'')
+      copyClosingCustomer.BuyAmount = parseInt(this.closingBuyAmount.replace(/\./g,''))
       copyClosingCustomer.IsClosing = true
       var data_submit = {
         Token: vm.$authService.getToken(),

@@ -57,7 +57,7 @@
               color="grey-8"
               v-model="target.Daily.BuyAmount"
               filled
-              label="Buying Amount (Rp.) *"
+              label="Deposit Amount (Rp.) *"
               class="field col-md-6"
               :rules="[val => !!val || 'Field is required']"
             />
@@ -88,7 +88,7 @@
               color="grey-8"
               v-model="target.Weekly.BuyAmount"
               filled
-              label="Buying Amount (Rp.) *"
+              label="Deposit Amount (Rp.) *"
               class="field col-md-6"
               :rules="[val => !!val || 'Field is required']"
             />
@@ -119,7 +119,7 @@
               color="grey-8"
               v-model="target.Monthly.BuyAmount"
               filled
-              label="Buying Amount (Rp.) *"
+              label="Deposit Amount (Rp.) *"
               class="field col-md-6"
               :rules="[val => !!val || 'Field is required']"
             />
@@ -186,25 +186,25 @@ export default {
       if (vm.isAdmin) {
         vm.target = {
           Daily: {
-            Call: "",
-            Closing: "",
-            BuyAmount: "",
+            Call: 0,
+            Closing: 0,
+            BuyAmount: 0,
           },
           Weekly: {
-            Call: "",
-            Closing: "",
-            BuyAmount: "",
+            Call: 0,
+            Closing: 0,
+            BuyAmount: 0,
           },
           Monthly: {
-            Call: "",
-            Closing: "",
-            BuyAmount: "",
+            Call: 0,
+            Closing: 0,
+            BuyAmount: 0,
           },
         }
       }else {
-        vm.target.Daily.BuyAmount = vm.target.Daily.BuyAmount.replace(/\./g,'')
-        vm.target.Weekly.BuyAmount = vm.target.Weekly.BuyAmount.replace(/\./g,'')
-        vm.target.Monthly.BuyAmount = vm.target.Monthly.BuyAmount.replace(/\./g,'')
+        vm.target.Daily.BuyAmount = parseInt(vm.target.Daily.BuyAmount.replace(/\./g,''))
+        vm.target.Weekly.BuyAmount = parseInt(vm.target.Weekly.BuyAmount.replace(/\./g,''))
+        vm.target.Monthly.BuyAmount = parseInt(vm.target.Monthly.BuyAmount.replace(/\./g,''))
       }
       
       var data_submit = {

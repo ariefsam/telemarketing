@@ -146,7 +146,24 @@
 }
 
 .telemarketer-dashboard {
-  .title-summary {
-    font-size: 16px;
+  .section {
+    margin-bottom: 16px;
+    .title-section {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .title-summary {
+      font-size: 16px;
+    }
+    .rev-performance {
+      font-size: 38px;
+      font-weight: 500;
+      color: $grey-9;
+    }
+    .rev-target {
+      font-size: 14px;
+      color: $grey-7
+    }
   }
 }
