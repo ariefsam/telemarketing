@@ -22,6 +22,12 @@
               </div>
               <div class="telemarketer-chart">
                 <TelemarketerChart v-bind:teleChartData="teleChartData" v-if="teleChartData.label.length > 0"/>
+                <q-spinner-pie
+                  class="loading"
+                  color="primary"
+                  size="50px"
+                  v-if="telemarketerChartLoading"
+                />
               </div>
             </q-card-section>
           </q-card>
@@ -122,7 +128,7 @@ export default {
   data() {
     return {
       telemarketers: {},
-      selectedTeleTimestamp: "Daily",
+      selectedTeleTimestamp: "Monthly",
       teleTimestampOptions: ["Daily", "Weekly", "Monthly"],
       selectedTeleType: "Revenue",
       teleTypeOptions: ["Revenue", "Closing", "Call"],
@@ -136,7 +142,7 @@ export default {
       },
       colorList: [],
 
-      selectedTotalTeleTimestamp: "Daily",
+      selectedTotalTeleTimestamp: "Monthly",
       totalTeleTimestampOptions: ["Daily", "Weekly", "Monthly"],
       revenue: {
         performanceStr: "0",
@@ -155,6 +161,7 @@ export default {
         target: 0,
         progress: 0,
       },
+      telemarketerChartLoading: true,
     }
   },
 
@@ -282,6 +289,7 @@ export default {
         achievement: achievement, 
         type: vm.selectedTeleType,
       })
+      this.telemarketerChartLoading = false
     },
     removeAdminTele(telemarketers) {
       var vm = this
@@ -293,7 +301,9 @@ export default {
       });
       this.colorList = colorList
       this.processingTotalTeleData()
-      this.processingTeleData()
+      setTimeout(function(){
+        vm.processingTeleData();
+      }, 1000)
     },
     randomColor() {
       return Math.floor(Math.random() * 16777215).toString(16);

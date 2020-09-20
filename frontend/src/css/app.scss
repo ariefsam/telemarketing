@@ -195,6 +195,23 @@
   }
 }
 
+.telemarketer-chart {
+  position: relative;
+  padding: 10px 0;
+  height: 400px;
+  .loading {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
+.telemarketer-chart div{
+  height: 400px;
+}
+
 .call-log-chart-container {
   .call-log-chart {
     position: relative;
