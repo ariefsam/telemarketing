@@ -61,7 +61,7 @@
               </div>
               <div class="row justify-between rev-target">
                 <div>
-                  from target <span style="font-size:15px; font-weight: bold">Rp. {{revenue.targetStr}}</span>
+                  from total target <span style="font-size:15px; font-weight: bold">Rp. {{revenue.targetStr}}</span>
                 </div>
                 <div>
                   <span style="font-size:15px; font-weight: bold">{{(revenue.progress * 100).toFixed(0)}} %</span>
