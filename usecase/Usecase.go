@@ -1,6 +1,11 @@
 package usecase
 
-import "github.com/ariefsam/telemarketing/usecase/dependency"
+import (
+	"time"
+
+	"github.com/ariefsam/telemarketing/lib/repository"
+	"github.com/ariefsam/telemarketing/usecase/dependency"
+)
 
 type Usecase struct {
 	CustomerRepository     dependency.CustomerRepository
@@ -10,4 +15,11 @@ type Usecase struct {
 	TelemarketerRepository dependency.TelemarketerRepository
 	Timer                  dependency.Timer
 	IDGenerator            dependency.IDGenerator
+	ReportRepository       *repository.Report
+}
+
+var loc *time.Location
+
+func init() {
+	loc, _ = time.LoadLocation("Asia/Jakarta")
 }

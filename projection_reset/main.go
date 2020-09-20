@@ -23,6 +23,8 @@ func main() {
 	ProjectionDB = os.Getenv("projection_db")
 	FirebaseAccountPath = "../firebase.json"
 	conn, err := gore.Dial("localhost:6379") //Connect to redis server at localhost:6379
+	gore.NewCommand("SELECT", 15).Run(conn)
+	gore.NewCommand("FLUSHDB").Run(conn)
 	if err != nil {
 		return
 	}

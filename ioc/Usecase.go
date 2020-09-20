@@ -12,6 +12,7 @@ import (
 )
 
 func Usecase() (usecase usecase.Usecase) {
+	repository.InitRedis()
 	repository.FirebaseAccountPath = os.Getenv("firebase_credential_path")
 	repository.ProjectionDB = os.Getenv("projection_db")
 	usecase.CustomerRepository = &repository.Customer{}
@@ -23,5 +24,6 @@ func Usecase() (usecase usecase.Usecase) {
 	usecase.TelemarketerRepository = &repository.Telemarketer{}
 	usecase.Timer = &timer.Timer{}
 	usecase.IDGenerator = &idgenerator.IDGenerator{}
+	usecase.ReportRepository = &repository.Report{}
 	return
 }

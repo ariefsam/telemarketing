@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/ariefsam/telemarketing/entity"
+	"github.com/ariefsam/telemarketing/lib/timer"
 )
 
 func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Customer, status string, timestamp int64) (err error) {
@@ -27,6 +28,8 @@ func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Custome
 	telemarketer.Performance.Weekly.Call += 1
 	telemarketer.Performance.Monthly.Call += 1
 	u.TelemarketerRepository.Save(telemarketer)
+	myTime := timer.Unix(0, u.CurrentTimestamp())
+	u.ReportRepository.Increment(customer.TelemarketerID, "CALL", 1, myTime)
 	return
 }
 

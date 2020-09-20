@@ -25,6 +25,7 @@ func (p *Projection) FirestoreProjection() {
 	if err != nil {
 		return
 	}
+	gore.NewCommand("SELECT", 15).Run(conn)
 	defer conn.Close()
 	ctx, docRef, err := getFirestoreClient()
 	if err != nil {
