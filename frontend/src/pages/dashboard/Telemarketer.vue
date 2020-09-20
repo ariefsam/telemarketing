@@ -97,7 +97,7 @@
           </q-card>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-7">
         <div class="section">
           <div class="title-section text-center">Call Log</div>
           <q-card>
@@ -116,7 +116,7 @@
                   <q-spinner-pie
                     class="loading"
                     color="primary"
-                    size="30px"
+                    size="40px"
                     v-if="callLogChartLoading"
                   />
                 </div>
