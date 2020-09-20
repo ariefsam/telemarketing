@@ -167,3 +167,58 @@
     }
   }
 }
+
+.admin-dashboard {
+  .section {
+    margin-bottom: 16px;
+    .title-section {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .title-summary {
+      font-size: 16px;
+    }
+    .title-subsummary {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .rev-performance {
+      font-size: 38px;
+      font-weight: 500;
+      color: $grey-9;
+    }
+    .rev-target {
+      font-size: 14px;
+      color: $grey-7
+    }
+  }
+}
+
+.call-log-chart-container {
+  .call-log-chart {
+    position: relative;
+    .loading {
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+  .call-log-chart div{
+    width: 300px;
+    height: 300px;
+  }
+  .call-log-chart-legend{
+    .legend {
+      font-size: 14px; 
+      color: grey;
+      .legend-number {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+}

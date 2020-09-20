@@ -8,38 +8,93 @@
 
     data () {
       return {
-        chartData: {
-          labels: ["Babol",	"Cabanatuan",	"Daegu",	"Jerusalem"],
-          datasets: [{
-              borderWidth: 1,
-              borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)'                
-              ],
-              backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',                
-              ],
-              data: [1000,	500,	1500,	1000]
-            }]
-        },
+        chartData: {},
         options: {
           legend: {
-            display: true
+            display: false
           },
           responsive: true,
-          maintainAspectRatio: false
-        }
+          maintainAspectRatio: false,
+        },
       }
     },
+
     mounted () {
-      this.renderChart(this.chartData, this.options)
+      this.generateEmptyChart()    
+    },
+
+    methods: {
+      generateEmptyChart() {
+        this.chartData = {
+          labels: ["Tertarik",	"Hubungi Kembali",	"Tidak Tertarik",	"Tidak Aktif", "Tidak Menjawab", "Tidak Terdaftar"],
+          datasets: [
+            {
+              backgroundColor: [
+                'rgba(0, 0, 0, 0.05)',      
+                'rgba(0, 0, 0, 0.05)',      
+                'rgba(0, 0, 0, 0.05)',      
+                'rgba(0, 0, 0, 0.05)',      
+                'rgba(0, 0, 0, 0.05)',      
+                'rgba(0, 0, 0, 0.05)'      
+              ],
+              data: [1,1,1,1,1,1],
+            }
+          ]
+        }
+        this.options.tooltips = {
+          enabled: false
+        }
+        this.renderChart(this.chartData, this.options)
+      },
+      generateCallLogChart(callLogStatus) {
+        this.chartData = {
+          labels: ["Tertarik",	"Hubungi Kembali",	"Tidak Tertarik",	"Tidak Aktif", "Tidak Menjawab", "Tidak Terdaftar"],
+          datasets: [
+            {
+              backgroundColor: [
+              '#2e7d32',
+              '#1565c0',
+              '#c62828',
+              '#9e9e9e',
+              '#fb8c00',                
+              '#000000',                
+              ],
+              data: [
+                callLogStatus.tertarik, 
+                callLogStatus.hubungiKembali, 
+                callLogStatus.tidakTertarik,
+                callLogStatus.tidakAktif,
+                callLogStatus.tidakMenjawab,
+                callLogStatus.tidakTerdaftar
+              ],
+            }
+          ]
+        }
+        this.options.tooltips = {
+          enabled: true
+        }
+        this.renderChart(this.chartData, this.options)
+      }
     },
     
+    watch: {
+      callLogStatus: {
+        handler(newVal){
+          if (newVal.tertarik == 0 && newVal.hubungiKembali == 0 && newVal.tidakTertarik == 0 && newVal.tidakAktif == 0 && newVal.tidakMenjawab == 0 && newVal.tidakTerdaftar == 0) {
+            this.generateEmptyChart() 
+          } else {
+            this.generateCallLogChart(newVal)
+          }
+        },
+        deep: true
+      }
+    },
+
+    props: {
+      callLogStatus: {
+        type: Object,
+        required: true
+      },
+    }
   }
 </script>

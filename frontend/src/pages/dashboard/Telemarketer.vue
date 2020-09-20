@@ -97,7 +97,7 @@
           </q-card>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="section">
           <div class="title-section text-center">Call Log</div>
           <q-card>
@@ -110,8 +110,84 @@
                   <q-select outlined v-model="selectedCallLog" :options="callLogOptions" dense style="min-width: 100px" @input="processingCallLog"/>
                 </div>
               </div>
-              <div>
-                <CallLogChart />
+              <div class="row no-wrap call-log-chart-container justify-evenly">
+                <div class="call-log-chart">
+                  <CallLogChart v-bind:callLogStatus="callLogStatus" />
+                  <q-spinner-pie
+                    class="loading"
+                    color="primary"
+                    size="30px"
+                    v-if="callLogChartLoading"
+                  />
+                </div>
+                <div class="column justify-evenly call-log-chart-legend">
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-smile"
+                      stack
+                      color="green-9"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.tertarik}}</span> Tertarik</span>
+                  </div>
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-reply"
+                      stack
+                      color="blue-9"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.hubungiKembali}}</span> Hubungi Kembali</span>
+                  </div>
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-frown"
+                      stack
+                      color="red-9"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.tidakTertarik}}</span>  Tidak Tertarik</span>
+                  </div>
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-times"
+                      stack
+                      color="grey-6"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.tidakAktif}}</span>  Tidak Aktif</span>
+                  </div>
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-share"
+                      stack
+                      color="orange-7"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.tidakMenjawab}}</span>  Tidak Menjawab</span>
+                  </div>
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-ban"
+                      stack
+                      color="black"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.tidakTerdaftar}}</span>  Tidak Terdaftar</span>
+                  </div>
+                </div>
               </div>
             </q-card-section>
           </q-card>
@@ -183,7 +259,6 @@ export default {
         performanceStr: "0",
         targetStr: "0",
         progress: 0,
-        progressPercentage: 0,
       },
 
       selectedClosing: "Daily",
@@ -192,7 +267,6 @@ export default {
         performance: 0,
         target: 0,
         progress: 0,
-        progressPercentage: 0,
       },
 
       selectedCall: "Daily",
@@ -201,16 +275,16 @@ export default {
         performance: 0,
         target: 0,
         progress: 0,
-        progressPercentage: 0,
       },
 
-      callLog: [],
-      totalTertarik: 0,
-      totalHubungiKembali: 0,
-      totalTidakTertarik: 0,
-      totalTidakAktif: 0,
-      totalTidakMenjawab: 0,
-      totalTidakTerdaftar: 0,
+      callLogStatus: {
+        tertarik: 0,
+        hubungiKembali: 0,
+        tidakTertarik: 0,
+        tidakAktif: 0,
+        tidakMenjawab: 0,
+        tidakTerdaftar: 0,
+      },
       selectedCallLog: "Today",
       callLogOptions: [
         "Today",
@@ -221,7 +295,7 @@ export default {
         "Last 60 days",
         "Last 90 days",
       ],
-
+      callLogChartLoading: false,
     }
   },
 
@@ -277,32 +351,47 @@ export default {
         this.revenue.performanceStr = this.telemarketer.Performance.Daily.BuyAmountStr
         this.revenue.targetStr = this.telemarketer.Target.Daily.BuyAmountStr
         this.revenue.progress =  this.telemarketer.Performance.Daily.BuyAmount/this.telemarketer.Target.Daily.BuyAmount
+        if (this.telemarketer.Target.Daily.BuyAmount == 0) {
+          this.revenue.progress = 0
+        }
       } else if (this.selectedRevenue == "Weekly"){
         this.revenue.performanceStr = this.telemarketer.Performance.Weekly.BuyAmountStr
         this.revenue.targetStr = this.telemarketer.Target.Weekly.BuyAmountStr
         this.revenue.progress =  this.telemarketer.Performance.Weekly.BuyAmount/this.telemarketer.Target.Weekly.BuyAmount
+        if (this.telemarketer.Target.Weekly.BuyAmount == 0) {
+          this.revenue.progress = 0
+        }
       } else if (this.selectedRevenue == "Monthly"){
         this.revenue.performanceStr = this.telemarketer.Performance.Monthly.BuyAmountStr
         this.revenue.targetStr = this.telemarketer.Target.Monthly.BuyAmountStr
         this.revenue.progress =  this.telemarketer.Performance.Monthly.BuyAmount/this.telemarketer.Target.Monthly.BuyAmount
+        if (this.telemarketer.Target.Monthly.BuyAmount == 0) {
+          this.revenue.progress = 0
+        }
       }
-      this.$nextTick(() => { 
-      Number.isNan(this.revenue.progress) ? 0 : this.revenue.progress
-      })
     },
     processingClosingData() {
       if (this.selectedClosing == "Daily") {
         this.closing.performance = this.telemarketer.Performance.Daily.Closing
         this.closing.target = this.telemarketer.Target.Daily.Closing
         this.closing.progress =  this.telemarketer.Performance.Daily.Closing/this.telemarketer.Target.Daily.Closing
+        if (this.telemarketer.Target.Daily.Closing == 0){
+          this.closing.progress = 0
+        }
       } else if (this.selectedClosing == "Weekly"){
         this.closing.performance = this.telemarketer.Performance.Weekly.Closing
         this.closing.target = this.telemarketer.Target.Weekly.Closing
         this.closing.progress =  this.telemarketer.Performance.Weekly.Closing/this.telemarketer.Target.Weekly.Closing
+        if (this.telemarketer.Target.Weekly.Closing == 0){
+          this.closing.progress = 0
+        }
       } else if (this.selectedClosing == "Monthly"){
         this.closing.performance = this.telemarketer.Performance.Monthly.Closing
         this.closing.target = this.telemarketer.Target.Monthly.Closing
         this.closing.progress =  this.telemarketer.Performance.Monthly.Closing/this.telemarketer.Target.Monthly.Closing
+        if (this.telemarketer.Target.Monthly.Closing == 0){
+          this.closing.progress = 0
+        }
       }
     },
     processingCallData() {
@@ -310,14 +399,23 @@ export default {
         this.call.performance = this.telemarketer.Performance.Daily.Call
         this.call.target = this.telemarketer.Target.Daily.Call
         this.call.progress =  this.telemarketer.Performance.Daily.Call/this.telemarketer.Target.Daily.Call
+        if (this.telemarketer.Target.Daily.Call == 0){
+          this.call.progress = 0
+        }
       } else if (this.selectedCall == "Weekly"){
         this.call.performance = this.telemarketer.Performance.Weekly.Call
         this.call.target = this.telemarketer.Target.Weekly.Call
         this.call.progress =  this.telemarketer.Performance.Weekly.Call/this.telemarketer.Target.Weekly.Call
+        if (this.telemarketer.Target.Weekly.Call == 0){
+          this.call.progress = 0
+        }
       } else if (this.selectedCall == "Monthly"){
         this.call.performance = this.telemarketer.Performance.Monthly.Call
         this.call.target = this.telemarketer.Target.Monthly.Call
         this.call.progress =  this.telemarketer.Performance.Monthly.Call/this.telemarketer.Target.Monthly.Call
+        if (this.telemarketer.Target.Monthly.Call == 0){
+          this.call.progress = 0
+        }
       }
     },
     getFromToTimestamp(selectedCallLog) {
@@ -350,15 +448,8 @@ export default {
       return StartEndDate
     },
     processingCallLog() {
+      this.callLogChartLoading = true
       var vm = this
-      vm.callLog = [];
-      vm.totalTertarik = 0
-      vm.totalHubungiKembali = 0
-      vm.totalTidakTertarik = 0
-      vm.totalTidakAktif = 0
-      vm.totalTidakMenjawab = 0
-      vm.totalTidakTerdaftar = 0
-
       var fromDateTime = ""
       var toDateTime = ""
       var StartEndDate = this.getFromToTimestamp(this.selectedCallLog)
@@ -378,21 +469,39 @@ export default {
         .post("/api/call-log/get", data_submit)
         .then(function (response) {
           if (response.data) {
-            if (response.data.CallLogs) {
+            setTimeout(function(){
               vm.assignDataCallLog(response.data.CallLogs);
-            } else {
-              console.log("tidak ada")
-            }
+            }, 1000)
           }
         });
     },
     assignDataCallLog(dataResponse) {
-      this.totalTertarik = dataResponse.filter(x => x.Status == "Tertarik").length
-      this.totalHubungiKembali = dataResponse.filter(x => x.Status == "Hubungi Kembali").length
-      this.totalTidakTertarik = dataResponse.filter(x => x.Status == "Tidak Tertarik").length
-      this.totalTidakAktif = dataResponse.filter(x => x.Status == "Tidak Aktif").length
-      this.totalTidakMenjawab = dataResponse.filter(x => x.Status == "Tidak Menjawab").length
-      this.totalTidakTerdaftar = dataResponse.filter(x => x.Status == "Tidak Terdaftar").length
+      if(dataResponse != null) {
+        var tertarik = dataResponse.filter(x => x.Status == "Tertarik").length
+        var hubungiKembali = dataResponse.filter(x => x.Status == "Hubungi Kembali").length
+        var tidakTertarik = dataResponse.filter(x => x.Status == "Tidak Tertarik").length
+        var tidakAktif = dataResponse.filter(x => x.Status == "Tidak Aktif").length
+        var tidakMenjawab = dataResponse.filter(x => x.Status == "Tidak Menjawab").length
+        var tidakTerdaftar = dataResponse.filter(x => x.Status == "Tidak Terdaftar").length 
+        this.callLogStatus = Object.assign({}, this.callLogStatus, { 
+          tertarik: tertarik,
+          hubungiKembali: hubungiKembali,
+          tidakTertarik: tidakTertarik,
+          tidakAktif: tidakAktif,
+          tidakMenjawab: tidakMenjawab,
+          tidakTerdaftar: tidakTerdaftar, 
+        })
+      }else {
+        this.callLogStatus = Object.assign({}, this.callLogStatus, { 
+          tertarik: 0,
+          hubungiKembali: 0,
+          tidakTertarik: 0,
+          tidakAktif: 0,
+          tidakMenjawab: 0,
+          tidakTerdaftar: 0, 
+        })
+      }
+      this.callLogChartLoading = false
     },
   }
 }
