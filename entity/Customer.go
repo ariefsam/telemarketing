@@ -2,6 +2,7 @@ package entity
 
 type Customer struct {
 	ID                string
+	UserID            string
 	Name              string
 	PhoneNumber       string
 	Status            string
