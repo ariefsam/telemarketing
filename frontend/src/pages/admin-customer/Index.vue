@@ -83,13 +83,14 @@ export default {
     return {
       customers: [],
       customerDataColumns: [
+        { name: 'userID', label: 'USER ID', align: 'center', field: 'UserID', sortable: true },
         { name: 'name', label: 'NAME', align: 'left', field: 'Name', sortable: true },
         { name: 'phoneNumber', label: 'PHONE NUMBER', align: 'center', field: 'PhoneNumber', sortable: true },
         { name: 'status', label: "STATUS", align: 'center', field: 'Status', sortable: true },
         { name: 'telemarketerName', label: "TELEMARKETER NAME", align: 'center', field: 'TelemarketerName', sortable: true }
       ],
       customerDataFilter: "",
-      customerDataVisible: ['name', 'phoneNumber', 'status', 'telemarketerName'],
+      customerDataVisible: ['userID', 'name', 'phoneNumber', 'status', 'telemarketerName'],
       customerDataPagination: {
         rowsPerPage: 5 // current rows per page being displayed
       },

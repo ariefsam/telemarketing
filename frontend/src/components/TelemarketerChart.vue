@@ -63,14 +63,14 @@
               backgroundColor: teleChartData.achievementColor,
               data: teleChartData.achievement,
               xAxisID: "achievement",
-              barThickness: 40,
+              barThickness: 15,
             },
             {
               label: 'Target',
               backgroundColor: teleChartData.targetColor,
               data: teleChartData.target,
               xAxisID: "target",
-              barThickness: 70,
+              barThickness: 30,
             }
           ]
         }
