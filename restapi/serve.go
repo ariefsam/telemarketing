@@ -44,6 +44,7 @@ func Serve(usecase usecaseinterface.Usecase) {
 	r.HandleFunc("/api/customer", api.ListCustomer).Methods("POST")
 	r.HandleFunc("/api/customer/closing", api.ClosingCustomer).Methods("POST")
 	r.HandleFunc("/api/customer/call", api.Call).Methods("POST")
+	r.HandleFunc("/api/customer/create", api.CreateCustomer).Methods("POST")
 	r.HandleFunc("/api/call-log/get", api.GetCallLog).Methods("POST")
 	r.HandleFunc("/api/customer/assign", api.AssignCustomer).Methods("POST")
 	r.HandleFunc("/api/telemarketer/save", api.SaveTelemarketer).Methods("POST")
