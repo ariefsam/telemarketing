@@ -86,6 +86,19 @@
           <q-card-section class="content">
             <div class="q-mb-xs">
               <div class="field-name q-mb-xs">
+                User ID
+                <span style="color: red; font-weight: normal">*</span>
+              </div>
+              <q-input
+                filled
+                v-model="closingUserID"
+                dense
+                :rules="[val => !!val || 'Field is required']"
+                @focus="focusInput"
+              />
+            </div>
+            <div class="q-mb-xs">
+              <div class="field-name q-mb-xs">
                 Name
                 <span style="color: red; font-weight: normal">*</span>
               </div>
@@ -179,6 +192,7 @@ export default {
       closingPrompt: false,
       closingCustomer: {},
       closingPhoneNumber: "",
+      closingUserID: "",
       closingName: "",
       closingBuyAmount: "",
       closingFailed: false,
@@ -224,6 +238,7 @@ export default {
     onClosingSubmit(){
       var vm = this
       var copyClosingCustomer = this.deepCopyObj(this.closingCustomer)
+      copyClosingCustomer.UserID = this.closingUserID
       copyClosingCustomer.Name = this.closingName
       copyClosingCustomer.BuyAmount = parseInt(this.closingBuyAmount.replace(/\./g,''))
       copyClosingCustomer.IsClosing = true
@@ -237,6 +252,7 @@ export default {
           if (response.data) {
             vm.closingPrompt = false
             vm.closingPhoneNumber = ""
+            vm.closingUserID = ""
             vm.closingName = ""
             vm.closingBuyAmount = ""
             vm.closingCustomer.IsClosing = true
@@ -261,6 +277,7 @@ export default {
       this.closingPrompt = false
       this.closingCustomer = {}
       this.closingPhoneNumber = ""
+      this.closingUserID = ""
       this.closingName = ""
       this.closingBuyAmount = ""
       this.closingFailed = false
