@@ -50,11 +50,14 @@ export default {
   methods: {
     onSubmit() {
       var vm = this;
+      var user = vm.$authService.getUser();
       var data_submit = {
         Token: vm.$authService.getToken(),
         Customer: {
           Name: vm.name,
-          PhoneNumber: vm.phoneNumber
+          PhoneNumber: vm.phoneNumber,
+          DataSource: user.ID,
+          CreatedBy: user.Name,
         },
       };
       this.$axios
