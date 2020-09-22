@@ -2,15 +2,27 @@
   <q-page class="page-index">
     <div class="row justify-between">
       <div class="title">Customer</div>
-      <div>
-        <q-btn
-          color="light-green-9"
-          text-color="white"
-          icon="add"
-          label="Assign New Customer To Me"
-          class="q-pr-sm"
-          @click="assignCustomer"
-        />
+      <div class="row no-wrap">
+        <div>
+          <q-btn
+            color="light-green-9"
+            text-color="white"
+            icon="add"
+            label="Assign New Customer To Me"
+            class="q-pr-sm q-mr-sm"
+            @click="assignCustomer"
+          />
+        </div>
+        <div>
+          <q-btn
+            color="light-green-9"
+            text-color="white"
+            icon="add"
+            label="Add Customer"
+            class="q-pr-sm"
+            @click="addCustomer"
+          />
+        </div>
       </div>
     </div>
     <div class="table-filter">
@@ -298,8 +310,12 @@ export default {
           }
         });
     },
+    addCustomer() {
+      this.$router.push({
+        name: "customer-add"
+      });
+    },
     onRowClick(evt, row) {
-      var vm=this;
       this.$router.push({
         name: "customer-detail",
         params: { phoneNumber: row.PhoneNumber },
