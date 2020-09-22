@@ -8,7 +8,7 @@ import (
 func (api *RestAPI) CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	post := getPostModel(r)
 
-	_, err := api.authOrResponseError(post, w)
+	telemarketer, err := api.authOrResponseError(post, w)
 	if err != nil {
 		return
 	}
@@ -16,7 +16,9 @@ func (api *RestAPI) CreateCustomer(w http.ResponseWriter, r *http.Request) {
 		responseError(w, errors.New("No Customer"), http.StatusBadGateway)
 		return
 	}
-	post.Telemarketer.ID = api.Usecase.GenerateID()
+	// post.Telemarketer.ID = api.Usecase.GenerateID()
+	post.Customer.ID = api.Usecase.GenerateID()
+	post.Customer.CreatedBy = telemarketer.ID
 	err = api.Usecase.CreateCustomer(*post.Customer)
 	if err != nil {
 		responseError(w, err, http.StatusBadGateway)
