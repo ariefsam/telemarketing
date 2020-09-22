@@ -9,6 +9,7 @@ const routes = [
       { path: '/admin-dashboard', name: 'admin-dashboard', component: () => import('pages/dashboard/Admin.vue') },
       { path: '/telemarketer-dashboard', name: 'telemarketer-dashboard', component: () => import('pages/dashboard/Telemarketer.vue') },
       { path: '/customer', name: 'customer', component: () => import('pages/customer/Index.vue') },
+      { path: '/customer/add', name: 'customer-add', component: () => import('pages/customer/Add.vue') },
       { path: '/customer/:phoneNumber', name: 'customer-detail', component: () => import('pages/customer/Detail.vue') },
       { path: '/call-log', name: 'call-log', component: () => import('pages/call-log/Index.vue') },
       { path: '/report', name: 'report', component: () => import('pages/report/Index.vue') },
