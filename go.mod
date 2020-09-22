@@ -7,6 +7,7 @@ require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.0 // indirect
+	github.com/NYTimes/gziphandler v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0

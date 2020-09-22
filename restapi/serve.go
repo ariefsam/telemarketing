@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/NYTimes/gziphandler"
 	"github.com/ariefsam/telemarketing/restapi/usecaseinterface"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -60,10 +61,10 @@ func Serve(usecase usecaseinterface.Usecase) {
 	})
 
 	r.PathPrefix("/").Handler(quasarHandler())
-
+	gzip := gziphandler.GzipHandler(r)
 	s := &http.Server{
 		Addr:           ":8885",
-		Handler:        handlers.CORS()(r),
+		Handler:        handlers.CORS()(gzip),
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
