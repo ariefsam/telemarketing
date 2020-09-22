@@ -19,6 +19,7 @@ func (api *RestAPI) CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	// post.Telemarketer.ID = api.Usecase.GenerateID()
 	post.Customer.ID = api.Usecase.GenerateID()
 	post.Customer.CreatedBy = telemarketer.ID
+	post.Customer.TelemarketerID = telemarketer.ID
 	err = api.Usecase.CreateCustomer(*post.Customer)
 	if err != nil {
 		responseError(w, err, http.StatusBadGateway)
