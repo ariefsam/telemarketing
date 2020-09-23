@@ -10,7 +10,7 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title @click="goToHome" style="cursor:pointer">Telemarketing</q-toolbar-title>
+        <q-toolbar-title @click="goToHome" style="cursor:pointer">tmtracker</q-toolbar-title>
         <q-space />
         <!--here is account-->
         <div>

@@ -7,16 +7,53 @@
           <div class="title-section text-center">Telemarketer Performance</div>
           <q-card>
             <q-card-section>
-              <div class="row justify-between items-center q-mb-md">
-                <div class="title-summary">
+              <div class="column justify-between items-center q-mb-md">
+                <div class="title-summary q-mb-sm">
                   Telemarketer {{selectedTeleTimestamp}} {{selectedTeleType}}
                 </div>
-                <div class="row no-wrap">
-                  <div class="q-mr-sm">
-                    <q-select outlined v-model="selectedTeleTimestamp" :options="teleTimestampOptions" dense style="min-width: 120px" @input="processingTeleData"/>
+                <div class="row justify-between full-width">
+                  <div class="row no-wrap">
+                    <!--<div class="q-mr-sm">
+                      <q-select
+                        outlined
+                        v-model="filterTimestamp"
+                        :options="filterTimestampOptions"
+                        label="Timestamp"
+                        dense
+                        style="min-width: 165px"
+                        @input="inputFilterTimestamp"
+                      >
+                        <template v-if="filterTimestamp" v-slot:append>
+                          <q-icon name="cancel" @click.stop="clearFilterTimestamp" class="cursor-pointer" />
+                        </template>
+                      </q-select>
+                    </div>-->
+                    <div>
+                      <q-input
+                        outlined
+                        v-model="filterCustomTimestamp"
+                        label="Custom Timestamp"
+                        dense
+                        style="width: 165px"
+                        @keydown.enter.prevent="inputFilterCustomTimestamp"
+                      >
+                        <template v-slot:append>
+                          <q-icon name="event" class="cursor-pointer">
+                            <q-popup-proxy transition-show="scale" transition-hide="scale">
+                              <q-date v-model="filterCustomTimestamp" mask="DD-MM-YYYY" @input="inputFilterCustomTimestamp"/>
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </div>
                   </div>
-                  <div>
-                    <q-select outlined v-model="selectedTeleType" :options="teleTypeOptions" dense style="min-width: 120px" @input="processingTeleData"/>
+                  <div class="row no-wrap">
+                    <div class="q-mr-sm">
+                      <q-select outlined v-model="selectedTeleTimestamp" :options="teleTimestampOptions" dense style="min-width: 120px" @input="processingTeleData"/>
+                    </div>
+                    <div>
+                      <q-select outlined v-model="selectedTeleType" :options="teleTypeOptions" dense style="min-width: 120px" @input="processingTeleData"/>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -116,6 +153,8 @@
 </template>
 
 <script>
+import { date } from "quasar";
+import moment from "moment-timezone";
 import TelemarketerChart from "components/TelemarketerChart.vue";
 
 export default {
@@ -162,30 +201,43 @@ export default {
         progress: 0,
       },
       telemarketerChartLoading: true,
+
+      // filterTimestamp: "",
+      // filterTimestampOptions: [
+      //   "Today",
+      //   "Yesterday",
+      //   "Last 7 days",
+      //   "Last 15 days",
+      //   "Last 30 days",
+      //   "Last 60 days",
+      //   "Last 90 days",
+      // ],
+      filterCustomTimestamp: "",
     }
   },
 
   mounted() {
-    var vm = this;
-    var data_submit = {
-      Token: vm.$authService.getToken(),
-      Limit: 10000,
-    }
-    this.$axios
-      .post("/api/telemarketer/get", data_submit)
-      .then(function (response) {
-        if (response.data) {
-          vm.$nextTick(() => { 
-            vm.removeAdminTele(response.data.Telemarketers)
-          })
-        }
-      })
+    this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+    this.filter();
+    // var vm = this;
+    // var data_submit = {
+    //   Token: vm.$authService.getToken(),
+    //   Limit: 10000,
+    // }
+    // this.$axios
+    //   .post("/api/telemarketer/get", data_submit)
+    //   .then(function (response) {
+    //     if (response.data) {
+    //       vm.$nextTick(() => { 
+    //         vm.removeAdminTele(response.data.Telemarketers)
+    //       })
+    //     }
+    //   })
   },
 
   methods: {
     processingTotalTeleData(){
       var vm = this
-      console.log(this.selectedTotalTeleTimestamp)
       var revenuePerformance = 0
       var revenueTarget = 0
       var closingPerformance = 0
@@ -307,6 +359,59 @@ export default {
     },
     randomColor() {
       return Math.floor(Math.random() * 16777215).toString(16);
+    },
+
+    // getDate(){
+    //  console.log("get Date from filterTimestampOptions") 
+    // },
+    filter() {
+      var vm = this
+      vm.telemarketers = []
+      var targetDate
+
+      // if (this.filterTimestamp) {
+      //   console.log("OPTION DATE")
+      //   targetDate = this.getDate(this.filterTimestamp)
+      // } else {
+      //   console.log("CUSTOM DATE")
+      //   targetDate = moment.tz(this.filterCustomTimestamp, "DD-MM-YYYY HH:mm", "Asia/Jakarta").startOf("day");
+      // }
+      // console.log(targetDate.unix() * 1000000000)
+
+      targetDate = moment.tz(this.filterCustomTimestamp, "DD-MM-YYYY HH:mm", "Asia/Jakarta").startOf("day");
+      console.log(targetDate)
+
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+        FilterTelemarketer: {
+          ReportTimestamp: targetDate.unix() * 1000000000,
+        },
+        Limit: 10000,
+      }
+      this.$axios
+        .post("/api/telemarketer/get", data_submit)
+        .then(function (response) {
+          if (response.data) {
+            vm.$nextTick(() => { 
+              vm.removeAdminTele(response.data.Telemarketers)
+            })
+          }
+        })
+    },
+    // inputFilterTimestamp() {
+    //   this.filter();
+    // },
+    // clearFilterTimestamp() {
+    //   this.filterTimestamp = "";
+    //   this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+    //   this.filter();
+    // },
+    inputFilterCustomTimestamp() {
+      // this.filterTimestamp = "";
+      if(this.filterCustomTimestamp == ""){
+        this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+      }
+      this.filter();
     },
   }
 }
