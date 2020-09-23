@@ -2,58 +2,50 @@
   <q-page class="page-index">
     <div class="title">Dashboard</div>
     <div class="row q-col-gutter-md admin-dashboard">
+      <div class="col-md-12">
+        <div class="section">
+          <div class="title-section text-center">Filter</div>
+          <q-card>
+            <q-card-section class="row">
+              <div class="col-md-4">
+                <div class="field-name q-mb-xs">Custom Timestamp</div>
+                <q-input
+                  outlined
+                  v-model="filterCustomTimestamp"
+                  label="Custom Timestamp"
+                  dense
+                  @keydown.enter.prevent="inputFilterCustomTimestamp"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-date v-model="filterCustomTimestamp" mask="DD-MM-YYYY" @input="inputFilterCustomTimestamp"/>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+    </div>
+    <div class="row q-col-gutter-md admin-dashboard">
       <div class="col-md-8">
         <div class="section">
           <div class="title-section text-center">Telemarketer Performance</div>
           <q-card>
             <q-card-section>
-              <div class="column justify-between items-center q-mb-md">
+              <div class="row justify-between items-center q-mb-md">
                 <div class="title-summary q-mb-sm">
                   Telemarketer {{selectedTeleTimestamp}} {{selectedTeleType}}
                 </div>
-                <div class="row justify-between full-width">
-                  <div class="row no-wrap">
-                    <!--<div class="q-mr-sm">
-                      <q-select
-                        outlined
-                        v-model="filterTimestamp"
-                        :options="filterTimestampOptions"
-                        label="Timestamp"
-                        dense
-                        style="min-width: 165px"
-                        @input="inputFilterTimestamp"
-                      >
-                        <template v-if="filterTimestamp" v-slot:append>
-                          <q-icon name="cancel" @click.stop="clearFilterTimestamp" class="cursor-pointer" />
-                        </template>
-                      </q-select>
-                    </div>-->
-                    <div>
-                      <q-input
-                        outlined
-                        v-model="filterCustomTimestamp"
-                        label="Custom Timestamp"
-                        dense
-                        style="width: 165px"
-                        @keydown.enter.prevent="inputFilterCustomTimestamp"
-                      >
-                        <template v-slot:append>
-                          <q-icon name="event" class="cursor-pointer">
-                            <q-popup-proxy transition-show="scale" transition-hide="scale">
-                              <q-date v-model="filterCustomTimestamp" mask="DD-MM-YYYY" @input="inputFilterCustomTimestamp"/>
-                            </q-popup-proxy>
-                          </q-icon>
-                        </template>
-                      </q-input>
-                    </div>
+                <div class="row no-wrap">
+                  <div class="q-mr-sm">
+                    <q-select outlined v-model="selectedTeleTimestamp" :options="teleTimestampOptions" dense style="min-width: 120px" @input="processingTeleData"/>
                   </div>
-                  <div class="row no-wrap">
-                    <div class="q-mr-sm">
-                      <q-select outlined v-model="selectedTeleTimestamp" :options="teleTimestampOptions" dense style="min-width: 120px" @input="processingTeleData"/>
-                    </div>
-                    <div>
-                      <q-select outlined v-model="selectedTeleType" :options="teleTypeOptions" dense style="min-width: 120px" @input="processingTeleData"/>
-                    </div>
+                  <div>
+                    <q-select outlined v-model="selectedTeleType" :options="teleTypeOptions" dense style="min-width: 120px" @input="processingTeleData"/>
                   </div>
                 </div>
               </div>
