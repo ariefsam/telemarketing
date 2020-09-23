@@ -1,7 +1,8 @@
 package entity
 
 type FilterTelemarketer struct {
-	ID      *string
-	Email   *string
-	IsAdmin *bool
+	ID              *string
+	Email           *string
+	IsAdmin         *bool
+	ReportTimestamp *int64
 }
