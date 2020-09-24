@@ -49,12 +49,7 @@ func (c *Customer) saveToFirestore(customer entity.Customer) (err error) {
 }
 
 func (c *Customer) Get(filter entity.FilterCustomer, limit int) (customers []entity.Customer, err error) {
-	if filter.PhoneNumber != nil || filter.ID != nil {
-		customers, err = c.getFromRedis(filter, limit)
-		return
-	}
-
-	customers, err = c.getFromFirestore(filter, limit)
+	customers, err = c.getFromRedis(filter, limit)
 	return
 }
 
