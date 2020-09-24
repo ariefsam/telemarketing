@@ -137,6 +137,7 @@
               <div>Total Tidak Aktif</div>
               <div>Total Tidak Menjawab</div>
               <div>Total Tidak Terdaftar</div>
+              <div>Total HOT 80%</div>
             </div>
             <div class="column">
               <div class="text-bold">{{totalTertarik}}</div>
@@ -145,6 +146,7 @@
               <div class="text-bold">{{totalTidakAktif}}</div>
               <div class="text-bold">{{totalTidakMenjawab}}</div>
               <div class="text-bold">{{totalTidakTerdaftar}}</div>
+              <div class="text-bold">{{totalHOT}}</div>
             </div>
           </div>
         </template>
@@ -211,6 +213,7 @@ export default {
         "Tidak Aktif",
         "Tidak Menjawab",
         "Tidak Terdaftar",
+        "HOT 80%"
       ],
       response: "All",
       totalTertarik: 0,
@@ -219,6 +222,7 @@ export default {
       totalTidakAktif: 0,
       totalTidakMenjawab: 0,
       totalTidakTerdaftar: 0,
+      totalHOT: 0,
       filterTimestamp: "",
       filterTimestampOptions: [
         "Today",
@@ -257,6 +261,7 @@ export default {
       vm.totalTidakAktif = vm.data.filter(x => x.Status == "Tidak Aktif").length
       vm.totalTidakMenjawab = vm.data.filter(x => x.Status == "Tidak Menjawab").length
       vm.totalTidakTerdaftar = vm.data.filter(x => x.Status == "Tidak Terdaftar").length
+      vm.totalHOT = vm.data.filter(x => x.Status == "HOT 80%").length
     },
     onRowClick(evt, row) {
       var vm = this;
@@ -343,6 +348,7 @@ export default {
       vm.totalTidakAktif = 0
       vm.totalTidakMenjawab = 0
       vm.totalTidakTerdaftar = 0
+      vm.totalHOT = 0
 
       var fromDateTime = ""
       var toDateTime = ""

@@ -187,6 +187,17 @@
                     />
                     <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.tidakTerdaftar}}</span>  Tidak Terdaftar</span>
                   </div>
+                  <div class="row no-wrap items-center">
+                    <q-btn
+                      no-ripple
+                      icon="fas fa-star"
+                      stack
+                      color="deep-purple"
+                      no-caps
+                      size="sm"
+                    />
+                    <span class="legend q-ml-sm"><span class="legend-number">{{callLogStatus.hot}}</span>  HOT 80%</span>
+                  </div>
                 </div>
               </div>
             </q-card-section>
@@ -284,6 +295,7 @@ export default {
         tidakAktif: 0,
         tidakMenjawab: 0,
         tidakTerdaftar: 0,
+        hot: 0,
       },
       selectedCallLog: "Today",
       callLogOptions: [
@@ -483,6 +495,7 @@ export default {
         var tidakAktif = dataResponse.filter(x => x.Status == "Tidak Aktif").length
         var tidakMenjawab = dataResponse.filter(x => x.Status == "Tidak Menjawab").length
         var tidakTerdaftar = dataResponse.filter(x => x.Status == "Tidak Terdaftar").length 
+        var hot = dataResponse.filter(x => x.Status == "HOT 80%").length 
         this.callLogStatus = Object.assign({}, this.callLogStatus, { 
           tertarik: tertarik,
           hubungiKembali: hubungiKembali,
@@ -490,6 +503,7 @@ export default {
           tidakAktif: tidakAktif,
           tidakMenjawab: tidakMenjawab,
           tidakTerdaftar: tidakTerdaftar, 
+          hot: hot,
         })
       }else {
         this.callLogStatus = Object.assign({}, this.callLogStatus, { 
@@ -499,6 +513,7 @@ export default {
           tidakAktif: 0,
           tidakMenjawab: 0,
           tidakTerdaftar: 0, 
+          hot: 0, 
         })
       }
       this.callLogChartLoading = false

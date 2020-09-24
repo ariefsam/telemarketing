@@ -206,10 +206,16 @@ export default {
           field: "Status",
           sortable: true,
         },
+        {
+          name: "detail",
+          label: "DETAIL",
+          align: "left",
+          field: "Detail",
+        },
         { name: "action", align: "center", label: "ACTION" },
       ],
       customerDataFilter: "",
-      customerDataVisible: ["name", "phoneNumber", "status", "action"],
+      customerDataVisible: ["name", "phoneNumber", "status", "detail", "action"],
       customerDataPagination: {
         rowsPerPage: 5, // current rows per page being displayed
       },
@@ -221,6 +227,7 @@ export default {
         "Tidak Aktif",
         "Tidak Menjawab",
         "Tidak Terdaftar",
+        "HOT 80%",
       ],
       response: "",
 

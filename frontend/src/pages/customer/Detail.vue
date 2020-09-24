@@ -41,10 +41,10 @@
                   :rules="[val => !!val || 'Field is required']"
                 />
               </div>
-              <!--<div>
-                <div class="field-name q-mb-xs">Additonal Information </div>
-                <q-input filled v-model="additionalInfo" type="textarea"/>
-              </div>-->
+              <div>
+                <div class="field-name q-mb-xs">Detail </div>
+                <q-input filled v-model="detail" type="textarea"/>
+              </div>
             </q-card-section>
           </q-card>
 
@@ -151,6 +151,19 @@
                           @click="activateTidakTerdaftar"
                         />
                       </div>
+                      <div class="col-md-4">
+                        <q-btn
+                          outline
+                          icon="fas fa-star"
+                          stack
+                          color="deep-purple"
+                          label="HOT 80%"
+                          class="full-width q-py-sm"
+                          no-caps
+                          v-bind:class="{ 'active-hot': hot }"
+                          @click="activateHot"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -215,7 +228,7 @@ export default {
     return {
       customerPhoneNumber: this.$route.params.phoneNumber,
       customer: {},
-      additionalInfo: "",
+      detail: "",
       response: "",
       alert: false,
 
@@ -225,6 +238,7 @@ export default {
       tidakAktif: false,
       tidakMenjawab: false,
       tidakTerdaftar: false,
+      hot: false,
 
       callHistory: [],
       callHistoryColumns: [
@@ -325,9 +339,6 @@ export default {
     },
     onSubmit() {
       var vm = this;
-      // console.log(this.customer);
-      // console.log(this.additionalInfo);
-      // console.log(this.response);
       if (this.response == "") {
         this.alert = true;
       } else {
@@ -336,6 +347,7 @@ export default {
           Token: vm.$authService.getToken(),
           PhoneNumber: vm.customerPhoneNumber,
           Status: vm.response,
+          Detail: vm.detail
         };
         vm.$restapi.callCustomer(data_submit, ()=>{vm.$router.push({ name: "customer" })});
       }
@@ -359,6 +371,9 @@ export default {
       } else if (status == "Tidak Terdaftar") {
         this.tidakTerdaftar = true;
         this.response = "Tidak Terdaftar";
+      } else if (status == "HOT 80%") {
+        this.hot = true;
+        this.response = "HOT 80%";
       }
     },
     reset() {
@@ -368,6 +383,7 @@ export default {
       this.tidakAktif = false;
       this.tidakMenjawab = false;
       this.tidakTerdaftar = false;
+      this.hot = false;
     },
     activateTertarik() {
       if (this.tertarik) {
@@ -427,6 +443,16 @@ export default {
         this.reset();
         this.tidakTerdaftar = true;
         this.response = "Tidak Terdaftar";
+      }
+    },
+    activateHot() {
+      if (this.hot) {
+        this.hot = false;
+        this.response = "";
+      } else {
+        this.reset();
+        this.hot = true;
+        this.response = "HOT 80%";
       }
     },
   },

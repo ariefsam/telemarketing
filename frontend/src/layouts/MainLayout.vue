@@ -9,8 +9,9 @@
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
+          class="q-mr-sm"
         />
-        <q-toolbar-title @click="goToHome" style="cursor:pointer">tmtrackers</q-toolbar-title>
+        <img src="~assets/logo.jpeg" height="40" @click="goToHome" style="cursor:pointer" />
         <q-space />
         <!--here is account-->
         <div>

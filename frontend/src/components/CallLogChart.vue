@@ -26,7 +26,7 @@
     methods: {
       generateEmptyChart() {
         this.chartData = {
-          labels: ["Tertarik",	"Hubungi Kembali",	"Tidak Tertarik",	"Tidak Aktif", "Tidak Menjawab", "Tidak Terdaftar"],
+          labels: ["Tertarik",	"Hubungi Kembali",	"Tidak Tertarik",	"Tidak Aktif", "Tidak Menjawab", "Tidak Terdaftar", "HOT 80%"],
           datasets: [
             {
               backgroundColor: [
@@ -35,9 +35,10 @@
                 'rgba(0, 0, 0, 0.05)',      
                 'rgba(0, 0, 0, 0.05)',      
                 'rgba(0, 0, 0, 0.05)',      
-                'rgba(0, 0, 0, 0.05)'      
+                'rgba(0, 0, 0, 0.05)',      
+                'rgba(0, 0, 0, 0.05)'   
               ],
-              data: [1,1,1,1,1,1],
+              data: [1,1,1,1,1,1,1],
             }
           ]
         }
@@ -48,7 +49,7 @@
       },
       generateCallLogChart(callLogStatus) {
         this.chartData = {
-          labels: ["Tertarik",	"Hubungi Kembali",	"Tidak Tertarik",	"Tidak Aktif", "Tidak Menjawab", "Tidak Terdaftar"],
+          labels: ["Tertarik",	"Hubungi Kembali",	"Tidak Tertarik",	"Tidak Aktif", "Tidak Menjawab", "Tidak Terdaftar", "HOT 80%"],
           datasets: [
             {
               backgroundColor: [
@@ -57,7 +58,8 @@
               '#c62828',
               '#9e9e9e',
               '#fb8c00',                
-              '#000000',                
+              '#000000',   
+              '#673ab7'     
               ],
               data: [
                 callLogStatus.tertarik, 
@@ -65,7 +67,8 @@
                 callLogStatus.tidakTertarik,
                 callLogStatus.tidakAktif,
                 callLogStatus.tidakMenjawab,
-                callLogStatus.tidakTerdaftar
+                callLogStatus.tidakTerdaftar,
+                callLogStatus.hot
               ],
             }
           ]
@@ -80,7 +83,7 @@
     watch: {
       callLogStatus: {
         handler(newVal){
-          if (newVal.tertarik == 0 && newVal.hubungiKembali == 0 && newVal.tidakTertarik == 0 && newVal.tidakAktif == 0 && newVal.tidakMenjawab == 0 && newVal.tidakTerdaftar == 0) {
+          if (newVal.tertarik == 0 && newVal.hubungiKembali == 0 && newVal.tidakTertarik == 0 && newVal.tidakAktif == 0 && newVal.tidakMenjawab == 0 && newVal.tidakTerdaftar == 0 && newVal.hot == 0) {
             this.generateEmptyChart() 
           } else {
             this.generateCallLogChart(newVal)

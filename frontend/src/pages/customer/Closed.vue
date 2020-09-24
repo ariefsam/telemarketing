@@ -116,6 +116,7 @@ export default {
       //   "Tidak Aktif",
       //   "Tidak Menjawab",
       //   "Tidak Terdaftar",
+      //   "HOT 80%",
       // ],
       // response: "",
     };

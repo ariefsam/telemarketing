@@ -100,7 +100,7 @@ export default {
       // filter model
       response: null,
       responseOptions: [
-        'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar'
+        'Tertarik', 'Hubungi Kembali', 'Tidak Tertarik', 'Tidak Aktif', 'Tidak Menjawab', 'Tidak Terdaftar', 'HOT 80%'
       ],
       
       telemarketerName: null,
