@@ -11,6 +11,7 @@ const routes = [
       { path: '/customer', name: 'customer', component: () => import('pages/customer/Index.vue') },
       { path: '/customer/add', name: 'customer-add', component: () => import('pages/customer/Add.vue') },
       { path: '/customer/:phoneNumber', name: 'customer-detail', component: () => import('pages/customer/Detail.vue') },
+      { path: '/closed-customer', name: 'closed-customer', component: () => import('pages/customer/Closed.vue') },
       { path: '/call-log', name: 'call-log', component: () => import('pages/call-log/Index.vue') },
       { path: '/report', name: 'report', component: () => import('pages/report/Index.vue') },
       { path: '/telemarketer', name: 'telemarketer', component: () => import('pages/telemarketer/Index.vue') },

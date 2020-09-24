@@ -10,7 +10,7 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title @click="goToHome" style="cursor:pointer">tmtracker</q-toolbar-title>
+        <q-toolbar-title @click="goToHome" style="cursor:pointer">tmtrackers</q-toolbar-title>
         <q-space />
         <!--here is account-->
         <div>
@@ -104,6 +104,12 @@ export default {
           label: "Call Log",
           separator: false,
           link: { name: "call-log" },
+        },
+        {
+          icon: "fas fa-calendar-alt",
+          label: "Closed Customer",
+          separator: false,
+          link: { name: "closed-customer" },
         }
       );
       // this.menuList.push({

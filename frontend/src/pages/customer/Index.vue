@@ -139,6 +139,27 @@
                 </template>
               </q-input>
             </div>
+            <div class="q-mb-xs">
+              <div class="field-name q-mb-xs">
+                Closing Date
+                <span style="color: red; font-weight: normal">*</span>
+              </div>
+              <q-input
+                filled
+                v-model="closingTimestamp"
+                dense
+                :rules="[val => !!val || 'Field is required']"
+                @focus="focusInput"
+              >
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy transition-show="scale" transition-hide="scale">
+                      <q-date v-model="closingTimestamp" mask="DD-MM-YYYY" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
             <div v-if="closingFailed" class="text-center" style="font-size: 12px; color: #C10015">
               Closing Failed
             </div>
@@ -155,6 +176,8 @@
 </template>
 
 <script>
+import moment from "moment-timezone";
+
 export default {
   name: "CustomerIndex",
 
@@ -207,6 +230,7 @@ export default {
       closingUserID: "",
       closingName: "",
       closingBuyAmount: "",
+      closingTimestamp:  "",
       closingFailed: false,
     };
   },
@@ -228,13 +252,15 @@ export default {
       var vm = this;
       var data_submit = {
         Token: vm.$authService.getToken(),
+        FilterCustomer: {
+          IsClosing: false
+        },
         Limit: 10000,
       };
       this.$axios.post("/api/customer", data_submit).then(function (response) {
         if (response.data) {
           if (response.data.Customers != null){
             vm.customers = response.data.Customers;
-            vm.removeClosedCustomer()
           } else {
             vm.customers = []
           }
@@ -253,11 +279,13 @@ export default {
       copyClosingCustomer.UserID = this.closingUserID
       copyClosingCustomer.Name = this.closingName
       copyClosingCustomer.BuyAmount = parseInt(this.closingBuyAmount.replace(/\./g,''))
+      copyClosingCustomer.ClosingTimestamp = moment.tz(this.closingTimestamp, "DD-MM-YYYY", "Asia/Jakarta").unix() * 1000000000;
       copyClosingCustomer.IsClosing = true
       var data_submit = {
         Token: vm.$authService.getToken(),
         Customer: copyClosingCustomer
       };
+      console.log(data_submit)
       this.$axios
         .post("/api/customer/closing", data_submit)
         .then(function (response) {
@@ -267,6 +295,7 @@ export default {
             vm.closingUserID = ""
             vm.closingName = ""
             vm.closingBuyAmount = ""
+            vm.closingTimestamp = ""
             vm.closingCustomer.IsClosing = true
             vm.removeClosedCustomer()
             vm.closingCustomer = {}
@@ -292,6 +321,7 @@ export default {
       this.closingUserID = ""
       this.closingName = ""
       this.closingBuyAmount = ""
+      this.closingTimestamp = ""
       this.closingFailed = false
     },
     focusInput() {
@@ -327,6 +357,7 @@ export default {
         Token: vm.$authService.getToken(),
         FilterCustomer: {
           Status: vm.response,
+          IsClosing: false,
         },
         Limit: 10000,
       };
@@ -334,7 +365,6 @@ export default {
         if (response.data) {
           if (response.data.Customers) {
             vm.customers = response.data.Customers;
-            vm.removeClosedCustomer()
           } else {
             vm.customers = [];
           }
