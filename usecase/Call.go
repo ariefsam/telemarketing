@@ -24,10 +24,6 @@ func (u *Usecase) Call(telemarketer entity.Telemarketer, customer entity.Custome
 	}
 	u.CustomerRepository.Save(customer)
 
-	telemarketer.Performance.Daily.Call += 1
-	telemarketer.Performance.Weekly.Call += 1
-	telemarketer.Performance.Monthly.Call += 1
-	u.TelemarketerRepository.Save(telemarketer)
 	myTime := timer.Unix(0, u.CurrentTimestamp())
 	u.ReportRepository.Increment(customer.TelemarketerID, "CALL", 1, myTime)
 	return

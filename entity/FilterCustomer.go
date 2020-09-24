@@ -5,4 +5,5 @@ type FilterCustomer struct {
 	PhoneNumber    *string
 	Status         *string
 	TelemarketerID *string
+	IsClosing      *bool
 }

@@ -8,6 +8,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/ariefsam/telemarketing/entity"
 	"github.com/ariefsam/telemarketing/ioc"
+	"github.com/ariefsam/telemarketing/lib/timer"
 	"github.com/keimoon/gore"
 
 	"github.com/mitchellh/mapstructure"
@@ -75,10 +76,24 @@ func (p *Projection) FirestoreProjection() {
 	}
 }
 
-func (p *Projection) ProcessEvent(event Event) {
-	usecase := ioc.Usecase()
+var i int
 
-	// log.Printf("Processing %+v", event)
+type CustomTimer struct {
+	timer.Timer
+	Timestamp int64
+}
+
+func (t *CustomTimer) CurrentTimestamp() int64 {
+	return t.Timestamp
+}
+func (p *Projection) ProcessEvent(event Event) {
+	i++
+	go log.Println("Processing ", i)
+	usecase := ioc.Usecase()
+	customTimer := CustomTimer{
+		Timestamp: event.Timestamp,
+	}
+	usecase.Timer = &customTimer
 	if event.Name == "CreateCustomer" {
 		var data entity.Customer
 		mapstructure.Decode(event.Data, &data)

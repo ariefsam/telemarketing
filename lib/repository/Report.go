@@ -27,7 +27,7 @@ func InitRedis() {
 func (r *Report) incrementByPeriod(telemarketerID, periodType, action string, amount int, t timer.Time) (err error) {
 	periodString := t.Format("20060102")
 	key := "REPORT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString
-	// log.Println("increment ", key)
+	log.Println("increment ", key)
 	_, err = gore.NewCommand("INCRBY", key, amount).Run(conn)
 	if err != nil {
 		log.Println(err, "error closings")
@@ -35,6 +35,19 @@ func (r *Report) incrementByPeriod(telemarketerID, periodType, action string, am
 	}
 	return
 }
+
+func (r *Report) dailySnapshotReport(telemarketerID, periodType, action string, amount int, t timer.Time) (err error) {
+	periodString := t.Format("20060102")
+	key := "REPORT_SNAPSHOT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString + "_" + t.BeginningDay().Format("20060102")
+	log.Println("increment ", key)
+	_, err = gore.NewCommand("INCRBY", key, amount).Run(conn)
+	if err != nil {
+		log.Println(err, "error closings")
+		return
+	}
+	return
+}
+
 func (r *Report) Increment(telemarketerID, action string, amount int, t timer.Time) (err error) {
 
 	periodType := "daily"
@@ -44,35 +57,6 @@ func (r *Report) Increment(telemarketerID, action string, amount int, t timer.Ti
 	periodType = "monthly"
 	r.incrementByPeriod(telemarketerID, periodType, action, amount, t.BeginningMonth())
 
-	// periodString := t.BeginningDay().Format("20060102")
-	// key := "REPORT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString
-	// log.Println("increment ", key)
-	// _, err = gore.NewCommand("INCRBY", key, amount).Run(conn)
-	// if err != nil {
-	// 	log.Println(err, "error closings")
-	// 	return
-	// }
-
-	// periodType = "weekly"
-	// periodString = t.BeginningWeek().Format("20060102")
-	// key = "REPORT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString
-	// log.Println("increment ", key)
-	// _, err = gore.NewCommand("INCRBY", key, amount).Run(conn)
-	// if err != nil {
-	// 	log.Println(err, "error closings")
-	// 	return
-	// }
-
-	// periodType = "monthly"
-	// periodString = t.BeginningMonth().Format("20060102")
-	// key = "REPORT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString
-	// log.Println("increment ", key)
-	// _, err = gore.NewCommand("INCRBY", key, amount).Run(conn)
-	// if err != nil {
-	// 	log.Println(err, "error closings")
-	// 	return
-	// }
-
 	return
 }
 
@@ -80,7 +64,6 @@ func (r *Report) getAction(telemarketerID, periodType, action string, t timer.Ti
 
 	periodString := t.Format("20060102")
 	key := "REPORT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString
-	// log.Println("Get ", key)
 	temp, err := gore.NewCommand("GET", key).Run(conn)
 	if err != nil {
 		log.Println(err, "error closings")
@@ -112,6 +95,5 @@ func (r *Report) Get(telemarketerID string, t timer.Time) (tp entity.TargetPerio
 
 	periodType = "monthly"
 	tp.Monthly = r.getByPeriod(telemarketerID, periodType, t.BeginningMonth())
-	// log.Printf("%+v", tp)
 	return
 }
