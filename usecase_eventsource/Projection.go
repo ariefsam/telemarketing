@@ -20,13 +20,14 @@ type Projection struct {
 }
 
 var NewEvent bool
+var RedisDB int
 
 func (p *Projection) FirestoreProjection() {
 	conn, err := gore.Dial("localhost:6379") //Connect to redis server at localhost:6379
 	if err != nil {
 		return
 	}
-	gore.NewCommand("SELECT", 15).Run(conn)
+	gore.NewCommand("SELECT", RedisDB).Run(conn)
 	defer conn.Close()
 	ctx, docRef, err := getFirestoreClient()
 	if err != nil {
@@ -88,7 +89,7 @@ func (t *CustomTimer) CurrentTimestamp() int64 {
 }
 func (p *Projection) ProcessEvent(event Event) {
 	i++
-	go log.Println("Processing ", i)
+	log.Println("Processing ", i, " ", event.Name)
 	usecase := ioc.Usecase()
 	customTimer := CustomTimer{
 		Timestamp: event.Timestamp,

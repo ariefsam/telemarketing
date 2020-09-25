@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"strconv"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -23,18 +24,23 @@ func main() {
 	ProjectionDB = os.Getenv("projection_db")
 	FirebaseAccountPath = "../firebase.json"
 	conn, err := gore.Dial("localhost:6379") //Connect to redis server at localhost:6379
-	gore.NewCommand("SELECT", 15).Run(conn)
+	defer conn.Close()
+
+	redis_db := os.Getenv("redis_db")
+	redis_db_int, _ := strconv.Atoi(redis_db)
+
+	gore.NewCommand("SELECT", redis_db_int).Run(conn)
 	gore.NewCommand("FLUSHDB").Run(conn)
 	if err != nil {
 		return
 	}
-	defer conn.Close()
-	ctx, docRef, err := getFirestoreClient()
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	docRef.Delete(ctx)
+
+	// ctx, docRef, err := getFirestoreClient()
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+	// docRef.Delete(ctx)
 
 	_, err = gore.NewCommand("DEL", "event-from-server-last-time").Run(conn)
 	if err != nil {
