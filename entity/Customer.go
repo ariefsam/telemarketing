@@ -15,4 +15,5 @@ type Customer struct {
 	DataSource        string
 	BuyAmount         int
 	CreatedBy         string
+	Detail            string
 }
