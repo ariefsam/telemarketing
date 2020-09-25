@@ -139,6 +139,12 @@ export default {
           label: "Admin Customer",
           separator: false,
           link: { name: "admin-customer" },
+        },
+        {
+          icon: "fas fa-calendar-alt",
+          label: "Closed Customer",
+          separator: false,
+          link: { name: "closed-admin-customer" },
         }
       );
     }
