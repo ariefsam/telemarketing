@@ -587,7 +587,7 @@ export default {
 
       var data_submit = {
         Token: vm.$authService.getToken(),
-        FilterTelemarketer: {
+        FilterReportTelemarketer: {
           TimestampStart: fromDateTime.unix() * 1000000000,
           TimestampEnd: toDateTime.unix() * 1000000000
         },

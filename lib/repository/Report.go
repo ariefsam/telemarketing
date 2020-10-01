@@ -91,7 +91,7 @@ func (r *Report) getAction(telemarketerID, periodType, action string, t, snapsho
 
 	periodString := t.Format("20060102")
 	key := "REPORT_SNAPSHOT_" + action + "_" + telemarketerID + "_" + periodType + "_" + periodString + "_" + snapshotTime.Format("20060102")
-	log.Println(key)
+	// log.Println(key)
 	temp, err := gore.NewCommand("GET", key).Run(conn)
 	if err != nil {
 		log.Println(err, "error closings")
