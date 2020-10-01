@@ -10,6 +10,7 @@ type RequestModel struct {
 	Status             string
 	Telemarketer       entity.Telemarketer
 	FilterTelemarketer entity.FilterTelemarketer
+	FilterReportTelemarketer *entity.FilterReportTelemarketer
 	FilterCallLog      entity.FilterCallLog
 	Customer           *entity.Customer
 }

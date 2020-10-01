@@ -594,7 +594,7 @@ export default {
         Limit: 10000,
       }
       this.$axios
-        .post("/api/telemarketer/get", data_submit)
+        .post("/api/telemarketer/report", data_submit)
         .then(function (response) {
           if (response.data.Telemarketers != null) {
             vm.$nextTick(() => { 
