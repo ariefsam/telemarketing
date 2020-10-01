@@ -647,12 +647,12 @@ export default {
       var callPerformance = 0
       var callTarget = 0
       this.telemarketersLog.forEach(function(data) {
-        revenuePerformance = revenuePerformance + data.Performance.BuyAmount
-        revenueTarget = revenueTarget + data.Target.BuyAmount
-        closingPerformance = closingPerformance + data.Performance.Closing
-        closingTarget = closingTarget + data.Target.Closing
-        callPerformance = callPerformance + data.Performance.Call
-        callTarget = callTarget + data.Target.Call
+        revenuePerformance = revenuePerformance + data.Performance.Daily.BuyAmount
+        revenueTarget = revenueTarget + data.Target.Daily.BuyAmount
+        closingPerformance = closingPerformance + data.Performance.Daily.Closing
+        closingTarget = closingTarget + data.Target.Daily.Closing
+        callPerformance = callPerformance + data.Performance.Daily.Call
+        callTarget = callTarget + data.Target.Daily.Call
       });
       this.revenueLog.performanceStr = revenuePerformance.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       this.revenueLog.targetStr = revenueTarget.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -687,14 +687,14 @@ export default {
         targetColor.push('rgba(0, 0, 0, 0.2)')
         achievementColor.push('#2e7d32')
         if (vm.selectedTeleLogType == 'Revenue') {
-          target.push(data.Target.BuyAmount)
-          achievement.push(data.Performance.BuyAmount)
+          target.push(data.Target.Daily.BuyAmount)
+          achievement.push(data.Performance.Daily.BuyAmount)
         } else if (vm.selectedTeleLogType == 'Closing') {
-          target.push(data.Target.Closing)
-          achievement.push(data.Performance.Closing)
+          target.push(data.Target.Daily.Closing)
+          achievement.push(data.Performance.Daily.Closing)
         } else if (vm.selectedTeleLogType == 'Call') {
-          target.push(data.Target.Call)
-          achievement.push(data.Performance.Call)
+          target.push(data.Target.Daily.Call)
+          achievement.push(data.Performance.Daily.Call)
         }
       });
       this.teleLogChartData = Object.assign({}, this.teleLogChartData, { 
