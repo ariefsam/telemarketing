@@ -132,6 +132,7 @@ export default {
         if (response.data) {
           if (response.data.Customers != null){
             vm.customers = response.data.Customers;
+            console.log(vm.customers)
             vm.generateTelemarketers()
           } else {
             vm.customers = []
