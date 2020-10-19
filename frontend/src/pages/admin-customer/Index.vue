@@ -95,7 +95,6 @@ export default {
         rowsPerPage: 5 // current rows per page being displayed
       },
       telemarketers: [],
-      isTelemarketersReady: false, 
 
       // filter model
       response: null,
@@ -110,36 +109,41 @@ export default {
   },
 
   mounted() {
-    var vm=this;
-    var data_submit = {
-      Token: vm.$authService.getToken(),
-      Limit: 10000,
-    }
-    this.$axios
-      .post("/api/telemarketer/get", data_submit)
+    this.loadTelemarketer()
+  },
+
+  methods: {
+    loadTelemarketer() {
+      var vm = this;
+      var data_submit_telemarketer = {
+        Token: vm.$authService.getToken(),
+        Limit: 10000,
+      }
+      this.$axios
+      .post("/api/telemarketer/get", data_submit_telemarketer)
       .then(function (response) {
         if (response.data) {
           vm.telemarketers = response.data.Telemarketers
           vm.telemarketerNameOptionsStr = vm.telemarketers.filter(x => x.IsAdmin == false).map(x => x.Name)
-          vm.isTelemarketersReady = true
+          vm.loadCustomer()
         }
       })
-
-    this.$axios
-      .post("/api/customer", data_submit)
-      .then(function (response) {
-        if (response.data) {
-          vm.customers = response.data.Customers
-          if (vm.isTelemarketersReady){
+    },
+    loadCustomer(){
+      var vm=this;
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+        Limit: 10000,
+      }
+      this.$axios
+        .post("/api/customer", data_submit)
+        .then(function (response) {
+          if (response.data) {
+            vm.customers = response.data.Customers
             vm.generateTelemarketers()
-          } else {
-            setTimeout(function(){ vm.generateTelemarketers() }, 1000);
           }
-        }
-      })
-  },
-
-  methods: {
+        })
+    },
     generateTelemarketers(){
       var vm = this
       this.customers.forEach(function(data) {

@@ -19,6 +19,7 @@ const routes = [
       { path: '/telemarketer/:id/edit', name: 'telemarketer-edit', component: () => import('pages/telemarketer/Edit.vue') },
       { path: '/admin-customer', name: 'admin-customer', component: () => import('pages/admin-customer/Index.vue') },
       { path: '/admin-customer/:phoneNumber', name: 'admin-customer-detail', component: () => import('pages/admin-customer/Detail.vue') },
+      { path: '/closed-admin-customer', name: 'closed-admin-customer', component: () => import('pages/admin-customer/Closed.vue') },
       { path: '/import-customer/:source', name: 'import-customer', component: () => import('pages/admin-customer/ImportCustomer.vue') },
     ],
     meta: {

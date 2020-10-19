@@ -4,7 +4,7 @@
     <div class="row q-col-gutter-md admin-dashboard">
       <div class="col-md-12">
         <div class="section">
-          <div class="title-section text-center">Filter</div>
+          <div class="title-section text-center">Telemarketer Performance Filter</div>
           <q-card>
             <q-card-section class="row">
               <div class="col-md-4">
@@ -12,14 +12,13 @@
                 <q-input
                   outlined
                   v-model="filterCustomTimestamp"
-                  label="Custom Timestamp"
                   dense
                   @keydown.enter.prevent="inputFilterCustomTimestamp"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
-                        <q-date v-model="filterCustomTimestamp" mask="DD-MM-YYYY" @input="inputFilterCustomTimestamp"/>
+                        <q-date v-model="filterCustomTimestamp" mask="DD-MMM-YYYY" @input="inputFilterCustomTimestamp"/>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -141,6 +140,174 @@
         </div>
       </div>
     </div>
+
+    <q-separator class="q-my-lg"/>
+
+    <div class="row q-col-gutter-md admin-dashboard">
+      <div class="col-md-12">
+        <div class="section">
+          <div class="title-section text-center">Telemarketer Performance Log Filter</div>
+          <q-card>
+            <q-card-section class="row">
+              <div class="col-md-4 q-pr-md">
+                <div class="field-name q-mb-xs">Timestamp</div>
+                <q-select
+                  outlined
+                  v-model="filterLogTimestamp"
+                  :options="filterLogTimestampOptions"
+                  label="Please select"
+                  dense
+                  @input="inputLogTimestamp"
+                >
+                  <template v-if="filterLogTimestamp" v-slot:append>
+                    <q-icon name="cancel" @click.stop="clearFilterLogTimestamp" class="cursor-pointer" />
+                  </template>
+                </q-select>
+              </div>
+              <div class="col-md-8 q-pl-md">
+                <div class="field-name q-mb-xs">Custom Timestamp</div>
+                <div class="row no-wrap items-center">
+                  <q-input
+                    outlined
+                    v-model="filterLogCustomTimestampStart"
+                    label="Start Date"
+                    dense
+                    class="full-width"
+                    @keydown.enter.prevent="inputLogCustomTimestampStart"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy transition-show="scale" transition-hide="scale">
+                          <q-date v-model="filterLogCustomTimestampStart" mask="DD-MMM-YYYY" @input="inputLogCustomTimestampStart"/>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                  <div class="q-mx-sm">to</div>
+                  <q-input
+                    outlined
+                    v-model="filterLogCustomTimestampEnd"
+                    label="End Date"
+                    dense
+                    class="full-width"
+                    @keydown.enter.prevent="inputLogCustomTimestampEnd"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy transition-show="scale" transition-hide="scale">
+                          <q-date v-model="filterLogCustomTimestampEnd" mask="DD-MMM-YYYY" @input="inputLogCustomTimestampEnd"/>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+    </div>
+    <div class="row q-col-gutter-md admin-dashboard">
+      <div class="col-md-8">
+        <div class="section">
+          <div class="title-section text-center">Telemarketer Performance Log</div>
+          <q-card>
+            <q-card-section>
+              <div class="row justify-between items-center q-mb-md">
+                <div class="title-summary q-mb-sm">
+                  {{selectedTeleLogType}} {{getLogTimestamp()}}
+                </div>
+                <div>
+                  <q-select outlined v-model="selectedTeleLogType" :options="teleLogTypeOptions" dense style="min-width: 120px" @input="processingTeleLogData"/>
+                </div>
+              </div>
+              <div class="telemarketer-chart">
+                <TelemarketerChart v-bind:teleChartData="teleLogChartData" v-if="teleLogChartData.label.length > 0"/>
+                <q-spinner-pie
+                  class="loading"
+                  color="primary"
+                  size="50px"
+                  v-if="telemarketerLogChartLoading"
+                />
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="section">
+          <div class="title-section text-center">Summary</div>
+          <q-card>
+            <q-card-section>
+              <div class="row justify-between items-center q-mb-md">
+                <div class="title-summary">
+                  Performance {{getLogTimestamp()}}
+                </div>
+              </div>
+              <div class="title-subsummary q-mb-sm text-center">
+                Total Target Revenue
+              </div>
+              <div class="q-mb-md">
+                <div class="rev-performance">
+                  <span style="font-size: 24px;">Rp.</span> {{revenueLog.performanceStr}}
+                </div>
+                <div>
+                  <q-linear-progress stripe rounded size="20px" :value="revenueLog.progress" color="green" class="q-mt-sm" />
+                </div>
+              </div>
+              <div class="row justify-between rev-target">
+                <div>
+                  from total target <span style="font-size:15px; font-weight: bold">Rp. {{revenueLog.targetStr}}</span>
+                </div>
+                <div>
+                  <span style="font-size:15px; font-weight: bold">{{(revenueLog.progress * 100).toFixed(0)}} %</span>
+                </div>
+              </div>
+
+              <q-separator class="q-my-md" />
+
+              <div class="title-subsummary q-mb-md  text-center">
+                Total Target Closing
+              </div>
+              <div class="q-mb-sm">
+                <div class="rev-performance row justify-end">
+                  <div>{{closingLog.performance}} <span style="font-size: 16px;color: grey">/ {{closingLog.target}} Closings</span></div>
+                </div>
+                <div>
+                  <q-linear-progress stripe rounded size="20px" :value="closingLog.progress" color="green" class="q-mt-sm" />
+                </div>
+              </div>
+              <div class="row justify-between rev-target">
+                <div></div>
+                <div>
+                  <span style="font-size:15px; font-weight: bold">{{(closingLog.progress * 100).toFixed(0)}} %</span>
+                </div>
+              </div>
+
+              <q-separator class="q-my-md" />
+
+              <div class="title-subsummary q-mb-md  text-center">
+                Total Target Call
+              </div>
+              <div class="q-mb-sm">
+                <div class="rev-performance row justify-end">
+                  <div>{{callLog.performance}} <span style="font-size: 16px;color: grey">/ {{callLog.target}} Calls</span></div>
+                </div>
+                <div>
+                  <q-linear-progress stripe rounded size="20px" :value="callLog.progress" color="green" class="q-mt-sm" />
+                </div>
+              </div>
+              <div class="row justify-between q-mb-md rev-target">
+                <div></div>
+                <div>
+                  <span style="font-size:15px; font-weight: bold">{{(callLog.progress * 100).toFixed(0)}} %</span>
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -171,8 +338,6 @@ export default {
         achievement: [], 
         type: "Revenue",
       },
-      colorList: [],
-
       selectedTotalTeleTimestamp: "Monthly",
       totalTeleTimestampOptions: ["Daily", "Weekly", "Monthly"],
       revenue: {
@@ -193,41 +358,78 @@ export default {
         progress: 0,
       },
       telemarketerChartLoading: true,
-
-      // filterTimestamp: "",
-      // filterTimestampOptions: [
-      //   "Today",
-      //   "Yesterday",
-      //   "Last 7 days",
-      //   "Last 15 days",
-      //   "Last 30 days",
-      //   "Last 60 days",
-      //   "Last 90 days",
-      // ],
       filterCustomTimestamp: "",
+
+      // Telemarketer Performance Log
+      telemarketersLog: {},
+      selectedTeleLogType: "Revenue",
+      teleLogTypeOptions: ["Revenue", "Closing", "Call"],
+      teleLogChartData: {
+        label: [],
+        targetColor: [],
+        achievementColor: [],
+        target: [],
+        achievement: [], 
+        type: "Revenue",
+      },
+      revenueLog: {
+        performanceStr: "0",
+        targetStr: "0",
+        performance: 0,
+        target: 0,
+        progress: 0,
+      },
+      closingLog: {
+        performance: 0,
+        target: 0,
+        progress: 0,
+      },
+      callLog: {
+        performance: 0,
+        target: 0,
+        progress: 0,
+      },
+      telemarketerLogChartLoading: true,
+      filterLogTimestamp: "",
+      filterLogTimestampOptions: [
+        "Today",
+        "Yesterday",
+        "Last 7 days",
+        "Last 15 days",
+        "Last 30 days",
+        "Last 60 days",
+        "Last 90 days",
+      ],
+      filterLogCustomTimestampStart: "",
+      filterLogCustomTimestampEnd: "",
     }
   },
 
   mounted() {
-    this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+    this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
     this.filter();
-    // var vm = this;
-    // var data_submit = {
-    //   Token: vm.$authService.getToken(),
-    //   Limit: 10000,
-    // }
-    // this.$axios
-    //   .post("/api/telemarketer/get", data_submit)
-    //   .then(function (response) {
-    //     if (response.data) {
-    //       vm.$nextTick(() => { 
-    //         vm.removeAdminTele(response.data.Telemarketers)
-    //       })
-    //     }
-    //   })
+    // Telemarketer Performance Log
+    this.filterLogCustomTimestampStart = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
+    this.filterLogCustomTimestampEnd = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
+    this.filterLog(this.filterLogCustomTimestampStart, this.filterLogCustomTimestampEnd);
   },
 
   methods: {
+    getLogTimestamp(){
+      if (this.filterLogTimestamp) {
+        if (this.filterLogCustomTimestampStart == this.filterLogCustomTimestampEnd){
+          return ": " + this.filterLogTimestamp + " (" + this.filterLogCustomTimestampStart + ")"
+        } else {
+          return ": " + this.filterLogTimestamp + " (from " + this.filterLogCustomTimestampStart + " to " + this.filterLogCustomTimestampEnd + ")"
+        }
+      } else {
+        if (this.filterLogCustomTimestampStart == this.filterLogCustomTimestampEnd){
+          return "in " + this.filterLogCustomTimestampStart
+        } else {
+          return "from " + this.filterLogCustomTimestampStart + " to " + this.filterLogCustomTimestampEnd
+        }
+      }
+    },
     processingTotalTeleData(){
       var vm = this
       var revenuePerformance = 0
@@ -286,10 +488,12 @@ export default {
       var label = []
       var targetColor = []
       var target = []
+      var achievementColor = []
       var achievement = []
       this.telemarketers.forEach(function(data) {
         label.push(data.Name)
         targetColor.push('rgba(0, 0, 0, 0.2)')
+        achievementColor.push('#2e7d32')
         if (vm.selectedTeleTimestamp == 'Daily') {
           if (vm.selectedTeleType == 'Revenue') {
             target.push(data.Target.Daily.BuyAmount)
@@ -328,7 +532,7 @@ export default {
       this.teleChartData = Object.assign({}, this.teleChartData, { 
         label: label,
         targetColor: targetColor,
-        achievementColor: vm.colorList,
+        achievementColor: achievementColor,
         target: target,
         achievement: achievement, 
         type: vm.selectedTeleType,
@@ -338,41 +542,16 @@ export default {
     removeAdminTele(telemarketers) {
       var vm = this
       this.telemarketers = telemarketers.filter(x => x.IsAdmin == false);
-      var colorList = []
-      this.telemarketers.forEach(function(data) {
-        // colorList.push("#"+vm.randomColor())
-        colorList.push('#2e7d32')
-      });
-      this.colorList = colorList
       this.processingTotalTeleData()
       setTimeout(function(){
         vm.processingTeleData();
       }, 1000)
     },
-    randomColor() {
-      return Math.floor(Math.random() * 16777215).toString(16);
-    },
-
-    // getDate(){
-    //  console.log("get Date from filterTimestampOptions") 
-    // },
     filter() {
       var vm = this
       vm.telemarketers = []
       var targetDate
-
-      // if (this.filterTimestamp) {
-      //   console.log("OPTION DATE")
-      //   targetDate = this.getDate(this.filterTimestamp)
-      // } else {
-      //   console.log("CUSTOM DATE")
-      //   targetDate = moment.tz(this.filterCustomTimestamp, "DD-MM-YYYY HH:mm", "Asia/Jakarta").startOf("day");
-      // }
-      // console.log(targetDate.unix() * 1000000000)
-
-      targetDate = moment.tz(this.filterCustomTimestamp, "DD-MM-YYYY HH:mm", "Asia/Jakarta").startOf("day");
-      console.log(targetDate)
-
+      targetDate = moment.tz(this.filterCustomTimestamp, "DD-MMM-YYYY HH:mm", "Asia/Jakarta").startOf("day");
       var data_submit = {
         Token: vm.$authService.getToken(),
         FilterTelemarketer: {
@@ -383,27 +562,207 @@ export default {
       this.$axios
         .post("/api/telemarketer/get", data_submit)
         .then(function (response) {
-          if (response.data) {
+          if (response.data.Telemarketers != null) {
             vm.$nextTick(() => { 
               vm.removeAdminTele(response.data.Telemarketers)
             })
           }
         })
     },
-    // inputFilterTimestamp() {
-    //   this.filter();
-    // },
-    // clearFilterTimestamp() {
-    //   this.filterTimestamp = "";
-    //   this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
-    //   this.filter();
-    // },
     inputFilterCustomTimestamp() {
-      // this.filterTimestamp = "";
       if(this.filterCustomTimestamp == ""){
-        this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MM-YYYY");
+        this.filterCustomTimestamp = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
       }
       this.filter();
+    },
+    
+    // Telemarketing Performance Log
+    filterLog(from, to){
+      var vm = this
+      var fromDateTime = moment.tz(from, "DD-MMM-YYYY HH:mm", "Asia/Jakarta").startOf("day");
+      var toDateTime = moment.tz(to, "DD-MMM-YYYY HH:mm", "Asia/Jakarta").endOf("day");
+
+      console.log(fromDateTime)
+      console.log(toDateTime)
+
+      var data_submit = {
+        Token: vm.$authService.getToken(),
+        FilterReportTelemarketer: {
+          TimestampStart: fromDateTime.unix() * 1000000000,
+          TimestampEnd: toDateTime.unix() * 1000000000
+        },
+        Limit: 10000,
+      }
+      this.$axios
+        .post("/api/telemarketer/report", data_submit)
+        .then(function (response) {
+          if (response.data.Telemarketers != null) {
+            vm.$nextTick(() => { 
+              vm.removeAdminTeleLog(response.data.Telemarketers)
+            })
+          }
+        })
+      // ALTERNATIVE
+      // this.getLogTelemarketerFromAPI(fromDateTime, toDateTime)
+    },
+    // async getLogTelemarketerFromAPI(fromDateTime, toDateTime){
+    //   var vm = this
+    //   var teles = []
+    //   console.log('Start')
+    //   for (var i = fromDateTime.unix(); i < toDateTime.unix(); i += 86400) {
+    //     var data_submit = {
+    //       Token: vm.$authService.getToken(),
+    //       FilterTelemarketer: {
+    //         ReportTimestamp: i * 1000000000,
+    //       },
+    //       Limit: 10000,
+    //     }
+    //     await this.$axios
+    //       .post("/api/telemarketer/get", data_submit)
+    //       .then(function (response) {
+    //         if (response.data.Telemarketers != null) {
+    //           teles.push(response.data.Telemarketers)
+    //           console.log(i)
+    //           console.log(response.data.Telemarketers)
+    //         }
+    //       })
+    //   }
+    //   console.log(teles)
+    //   console.log('End')
+    // },
+    removeAdminTeleLog(telemarketers) {
+      var vm = this
+      this.telemarketersLog = telemarketers.filter(x => x.IsAdmin == false);
+      this.processingTotalTeleLogData()
+      setTimeout(function(){
+        vm.processingTeleLogData();
+      }, 1000)
+    },
+    processingTotalTeleLogData(){
+      var vm = this
+      var revenuePerformance = 0
+      var revenueTarget = 0
+      var closingPerformance = 0
+      var closingTarget = 0
+      var callPerformance = 0
+      var callTarget = 0
+      this.telemarketersLog.forEach(function(data) {
+        revenuePerformance = revenuePerformance + data.Performance.Daily.BuyAmount
+        revenueTarget = revenueTarget + data.Target.Daily.BuyAmount
+        closingPerformance = closingPerformance + data.Performance.Daily.Closing
+        closingTarget = closingTarget + data.Target.Daily.Closing
+        callPerformance = callPerformance + data.Performance.Daily.Call
+        callTarget = callTarget + data.Target.Daily.Call
+      });
+      this.revenueLog.performanceStr = revenuePerformance.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      this.revenueLog.targetStr = revenueTarget.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      this.revenueLog.performance = revenuePerformance
+      this.revenueLog.target = revenueTarget
+      this.revenueLog.progress =  revenuePerformance/revenueTarget
+      if (revenueTarget == 0) {
+        this.revenueLog.progress = 0
+      }
+      this.closingLog.performance = closingPerformance
+      this.closingLog.target = closingTarget
+      this.closingLog.progress =  closingPerformance/closingTarget
+      if (closingTarget == 0) {
+        this.closingLog.progress = 0
+      }
+      this.callLog.performance = callPerformance
+      this.callLog.target = callTarget
+      this.callLog.progress =  callPerformance/callTarget
+      if (callTarget == 0) {
+        this.callLog.progress = 0
+      }
+    },
+    processingTeleLogData() {
+      var vm = this
+      var label = []
+      var targetColor = []
+      var target = []
+      var achievementColor = []
+      var achievement = []
+      this.telemarketersLog.forEach(function(data) {
+        label.push(data.Name)
+        targetColor.push('rgba(0, 0, 0, 0.2)')
+        achievementColor.push('#2e7d32')
+        if (vm.selectedTeleLogType == 'Revenue') {
+          target.push(data.Target.Daily.BuyAmount)
+          achievement.push(data.Performance.Daily.BuyAmount)
+        } else if (vm.selectedTeleLogType == 'Closing') {
+          target.push(data.Target.Daily.Closing)
+          achievement.push(data.Performance.Daily.Closing)
+        } else if (vm.selectedTeleLogType == 'Call') {
+          target.push(data.Target.Daily.Call)
+          achievement.push(data.Performance.Daily.Call)
+        }
+      });
+      this.teleLogChartData = Object.assign({}, this.teleLogChartData, { 
+        label: label,
+        targetColor: targetColor,
+        achievementColor: achievementColor,
+        target: target,
+        achievement: achievement, 
+        type: vm.selectedTeleLogType,
+      })
+      this.telemarketerLogChartLoading = false
+    },
+    getFromToTimestamp(filterLogTimestamp) {
+      var StartEndDate = {
+        from: "",
+        to: ""
+      }
+      if (filterLogTimestamp == "Today") {
+        StartEndDate.from = moment().startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (filterLogTimestamp == "Yesterday") {
+        StartEndDate.from = moment().subtract(1, "days").startOf("day");
+        StartEndDate.to = moment().subtract(1, "days").endOf("day");
+      } else if (filterLogTimestamp == "Last 7 days") {
+        StartEndDate.from = moment().subtract(7, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (filterLogTimestamp == "Last 15 days") {
+        StartEndDate.from = moment().subtract(15, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (filterLogTimestamp == "Last 30 days") {
+        StartEndDate.from = moment().subtract(30, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (filterLogTimestamp == "Last 60 days") {
+        StartEndDate.from = moment().subtract(60, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      } else if (filterLogTimestamp == "Last 90 days") {
+        StartEndDate.from = moment().subtract(90, "days").startOf("day");
+        StartEndDate.to = moment().endOf("day");
+      }
+      return StartEndDate
+    },
+    inputLogTimestamp() {
+      var StartEndDate = this.getFromToTimestamp(this.filterLogTimestamp)
+      var fromDate = StartEndDate.from
+      var toDate = StartEndDate.to
+      this.filterLogCustomTimestampStart = fromDate.format("DD-MMM-YYYY")
+      this.filterLogCustomTimestampEnd = toDate.format("DD-MMM-YYYY")
+      this.filterLog(this.filterLogCustomTimestampStart, this.filterLogCustomTimestampEnd);
+    },
+    inputLogCustomTimestampStart() {
+      this.filterLogTimestamp = "";
+      if(this.filterLogCustomTimestampStart == ""){
+        this.filterLogCustomTimestampStart = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
+      }
+      this.filterLog(this.filterLogCustomTimestampStart, this.filterLogCustomTimestampEnd);
+    },
+    inputLogCustomTimestampEnd() {
+      this.filterLogTimestamp = "";
+      if(this.filterLogCustomTimestampEnd == ""){
+        this.filterLogCustomTimestampEnd = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
+      }
+      this.filterLog(this.filterLogCustomTimestampStart, this.filterLogCustomTimestampEnd);
+    },
+    clearFilterLogTimestamp(){
+      this.filterLogTimestamp = "";
+      this.filterLogCustomTimestampStart = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
+      this.filterLogCustomTimestampEnd = moment.tz("Asia/Jakarta").format("DD-MMM-YYYY");
+      this.filterLog(this.filterLogCustomTimestampStart, this.filterLogCustomTimestampEnd);
     },
   }
 }

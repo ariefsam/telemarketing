@@ -17,5 +17,6 @@ type Usecase interface {
 	CreateTelemarketer(telemarketer entity.Telemarketer) (err error)
 	SaveTelemarketer(telemarketer entity.Telemarketer) (err error)
 	GetTelemarketer(filter entity.FilterTelemarketer, limit int) ([]entity.Telemarketer, error)
+	ReportTelemarketer(filter entity.FilterReportTelemarketer, limit int) ([]entity.Telemarketer, error)
 	GenerateID() (id string)
 }
