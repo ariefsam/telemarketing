@@ -90,6 +90,7 @@ func (t *CustomTimer) CurrentTimestamp() int64 {
 func (p *Projection) ProcessEvent(event Event) {
 	i++
 	log.Println("Processing ", i, " ", event.Name)
+	log.Println("%+v", event.Data)
 	usecase := ioc.Usecase()
 	customTimer := CustomTimer{
 		Timestamp: event.Timestamp,
