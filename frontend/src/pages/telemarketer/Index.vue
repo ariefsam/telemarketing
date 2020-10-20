@@ -65,6 +65,15 @@
           >
             <q-tooltip>Edit Telemarketer</q-tooltip>
           </q-btn>
+          <q-btn
+            color="red"
+            icon="fas fa-trash"
+            class="action-btn q-mx-xs"
+            @click.stop="confirmDeleteTelemarketer(props.row)"
+            padding="sm"
+          >
+            <q-tooltip>Delete Telemarketer</q-tooltip>
+          </q-btn>
         </q-td>
       </q-table>
     </div>
@@ -142,6 +151,36 @@ export default {
         params: { id: telemarketerID },
       });
     },
+    confirmDeleteTelemarketer(telemarketer) {
+      var vm = this;
+      this.$q.dialog({
+        title: 'Delete',
+        message: 'Are you sure you want to delete ' + telemarketer.Email,
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        vm.deleteTelemarketer(telemarketer.ID)
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })      
+    },
+    deleteTelemarketer(telemarketerID) {
+      var vm = this;
+      var data_submit = {
+        Telemarketer: {
+          ID: telemarketerID
+        }
+      }
+      this.$axios
+      .post("/api/telemarketer/delete", data_submit)
+      .then(function (response) {
+        if (response.data) {
+          vm.telemarketers.splice(vm.telemarketers.findIndex(item => item.ID === telemarketerID), 1)
+        }
+      })
+    }
   }
 }
 </script>
